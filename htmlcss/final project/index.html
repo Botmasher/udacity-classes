@@ -1,0 +1,130 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial scale=1">
+
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/styles.css" rel="stylesheet">
+
+	<link href='http://fonts.googleapis.com/css?family=Lato:100' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Roboto:300' rel='stylesheet' type='text/css'>
+
+	<script src="js/jquery-2.1.4.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+
+	<title>Portfolio of Jane Doette, Front-End Ninja</title>
+</head>
+
+<body>
+	<div class="container">
+
+		<div class="row">
+			<div class="col-md-2"><!--empty for color swatch--></div>
+			<div class="col-md-5"><br><img src="img/logo.png" alt="Udacity logo"></div>
+			<div class="col-md-5 text-right">
+				<h1>Jane Doette</h1>
+				<h2>Front-End Ninja</h2>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-2"><!--empty for color swatch--></div>
+			<div class="col-md-10"><hr></div>
+		</div>
+	
+		<div class="row text-center space-bottom">
+			<div class="col-md-2">
+				<img src="img/color-swatch.png" alt="3 orange, light gray and gray color swatches"><br><br>
+				<p class="bold">F8981C<br>BCBBBB<br>747704</p>
+			</div>
+			<div class="col-md-10"><br><img src="img/splash-screen.jpg" class="img-responsive" alt="zoom in on html code - main page image"></div>
+		</div>
+	
+		<div class="row text-center">
+			<div class="col-md-2"><!--empty for color swatch--></div>
+			<div class="col-md-3"><h4>Featured Work</h4></div>
+			<div class="col-md-4 even-middle"></div>
+			<div class="col-md-3"></div>
+		</div>
+	
+		<div class="row">
+			<div class="col-md-2"><!--empty for color swatch--></div>
+			<div class="col-md-3 text-center"><img src="img/bar-img-1.jpg" alt="300x200 placeholder image" data-toggle="modal" data-target="#img1Modal">
+				<h3>Appify</h3>
+				<p><a href="https://github.com/udacity/Appify/">https://github.com/udacity/Appify/</a></p>
+			</div>
+			<div class="col-md-4 even-middle text-center"><img src="img/bar-img-2.jpg" data-toggle="modal" data-target="#img2Modal" alt="300x200 placeholder image">
+				<h3>Sunflower</h3>
+				<p><a href="https://github.com/udacity/Sunflower/">https://github.com/udacity/Sunflower/</a></p>
+			</div>
+			<div class="col-md-3 text-center"><img src="img/bar-img-3.jpg" alt="300x200 placeholder image" data-toggle="modal" data-target="#img3Modal">
+				<h3>Bokeh</h3>
+				<p><a href="https://github.com/udacity/Bokeh/">https://github.com/udacity/Bokeh/</a></p>
+			</div>
+		</div>
+
+	</div><!--/container-->
+
+	<!-- modals for 3 bottom bar imgs -->
+		<div class="modal fade text-center" id="img1Modal" tabindex="-1" role="dialog" aria-labelledby="img1ModalLabel" aria-hidden="true">
+  			<div class="modal-dialog">
+    			<div class="modal-content">
+      				<div class="modal-header">
+        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    	    			<h4 class="modal-title" id="img1ModalLabel">Appify</h4>
+    	 			</div>
+    				<div class="modal-body">
+    	    			<img src="img/bar-img-1.jpg" alt="300x200 placeholder image">
+						<p>Jane Doette does awesome appifications. Just check out her work and be stunned by it for days!</p>
+						<p><a href="https://github.com/udacity/Appify/">https://github.com/udacity/Appify/</a></p>
+    	  			</div>
+    	  			<div class="modal-footer">
+     	 	  			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      				</div>
+    			</div>
+  			</div>
+		</div>
+
+
+		<div class="modal fade text-center" id="img2Modal" tabindex="-1" role="dialog" aria-labelledby="img2ModalLabel" aria-hidden="true">
+  			<div class="modal-dialog">
+    			<div class="modal-content">
+      				<div class="modal-header">
+        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    	    			<h4 class="modal-title" id="img2ModalLabel">Sunflower</h4>
+    	 			</div>
+    				<div class="modal-body">
+    	    			<img src="img/bar-img-2.jpg" alt="300x200 placeholder image">
+						<p>Sunflowers are the most beautiful of all the large, openey, fanning-out yellow petaled plants. This thing was inspired by them. Or, at least, the name was, because tech is often so hipster that I can't name things with a name that's representative of the final product.</p>
+						<p><a href="https://github.com/udacity/Sunflower/">https://github.com/udacity/Sunflower/</a></p>
+    	  			</div>
+    	  			<div class="modal-footer">
+     	 	  			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      				</div>
+    			</div>
+  			</div>
+		</div>
+
+		<div class="modal fade text-center" id="img3Modal" tabindex="-1" role="dialog" aria-labelledby="img3ModalLabel" aria-hidden="true">
+  			<div class="modal-dialog">
+    			<div class="modal-content">
+      				<div class="modal-header">
+        				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    	    			<h4 class="modal-title" id="img3ModalLabel">Bokeh</h4>
+    	 			</div>
+    				<div class="modal-body">
+    	    			<img src="img/bar-img-2.jpg" alt="300x200 placeholder image">
+						<p>Don't know what Bokeh is? Neither do I, and yet I built this project like an expert. Marvel at my amazing combination of unknowingness and brilliance.</p>
+						<p><a href="https://github.com/udacity/Bokeh/">https://github.com/udacity/Bokeh/</a></p>
+    	  			</div>
+    	  			<div class="modal-footer">
+     	 	  			<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+      				</div>
+    			</div>
+  			</div>
+		</div>
+
+</body>
+</html>

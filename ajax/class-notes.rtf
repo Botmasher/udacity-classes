@@ -1,0 +1,75 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;\f1\fnil\fcharset0 HelveticaNeue;\f2\fnil\fcharset0 Menlo-Regular;
+}
+{\colortbl;\red255\green255\blue255;\red26\green26\blue26;\red0\green0\blue120;\red234\green234\blue234;
+\red43\green39\blue19;\red107\green0\blue1;\red109\green109\blue109;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\b\fs24 \cf0 $.ajax (url, [optional params]);
+\b0 \
+In practice, only the URL is needed to call ajax request\
+\
+
+\b $.ajax ();
+\b0 \
+This is also technically possible, but why would you use it?\
+\
+Callback functions - append .done, .fail, .always (instead of .success, .error, .complete)\
+\
+\
+
+\b $.getJSON (url, success handler);
+\b0 \
+Most implementations fire off AJAX request and specify a success handler to iterate through the JSON file and do something with the data.\
+\
+Used in class with NYT API to list each article returned.\
+\
+\
+
+\b variable names with $
+\b0 \
+\pard\pardeftab720
+
+\f1\fs30 \cf2 \expnd0\expndtw0\kerning0
+A very common use in jQuery is to distinguish jQuery objects stored in variables from other variables. For example, I would define\
+\pard\pardeftab720
+
+\f2\fs26 \cf3 \cb4 \expnd0\expndtw0\kerning0
+var\cf5 \expnd0\expndtw0\kerning0
+ $email = $(\cf6 \expnd0\expndtw0\kerning0
+"#email"\cf5 \expnd0\expndtw0\kerning0
+); \cf7 \expnd0\expndtw0\kerning0
+// refers to the jQuery object representation of the dom object\cf5 \expnd0\expndtw0\kerning0
+\
+\cf3 \expnd0\expndtw0\kerning0
+var\cf5 \expnd0\expndtw0\kerning0
+ email_field = $(\cf6 \expnd0\expndtw0\kerning0
+"#email"\cf5 \expnd0\expndtw0\kerning0
+).\cf3 \expnd0\expndtw0\kerning0
+get\cf5 \expnd0\expndtw0\kerning0
+(\cf6 \expnd0\expndtw0\kerning0
+0\cf5 \expnd0\expndtw0\kerning0
+); \cf7 \expnd0\expndtw0\kerning0
+// refers to the dom object itself\cf5 \expnd0\expndtw0\kerning0
+\
+\pard\pardeftab720
+
+\f1\fs30 \cf2 \cb1 \expnd0\expndtw0\kerning0
+I find this to be very helpful in writing jQuery code and makes it easy to see jQuery objects which have a different set of properties.
+\f0\fs24 \cf0 \kerning1\expnd0\expndtw0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 - Stack Overflow, answered by jonstjohn\
+\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b \cf0 OAUTH
+\b0 \
+Need to know more about if building ways for users to interact with secure data on your site/app.\
+\
+
+\b JSONP versus CORS\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b0 \cf0 Cross-domain AJAX requests and the same-origin security policy, which (as part of the web application security model) allows only scripts from one page to access data in another only if they\'92re same domain (actually, same origin).}
