@@ -62,14 +62,28 @@ I find this to be very helpful in writing jQuery code and makes it easy to see j
 \cf0 - Stack Overflow, answered by jonstjohn\
 \
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
 
-\b \cf0 OAUTH
+\b OAUTH
 \b0 \
 Need to know more about if building ways for users to interact with secure data on your site/app.\
 \
 
 \b JSONP versus CORS\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
 
-\b0 \cf0 Cross-domain AJAX requests and the same-origin security policy, which (as part of the web application security model) allows only scripts from one page to access data in another only if they\'92re same domain (actually, same origin).}
+\b0 Cross-domain AJAX requests and the same-origin security policy, which (as part of the web application security model) allows only scripts from one page to access data in another only if they\'92re same domain (actually, same origin).\
+\
+
+\b Implementing JSONP
+\b0 \
+/* for example, test calling Wikipedia API in script.js in the mini project subfolder\
+$.ajax (\{\
+	url: \'91
+\i myURL
+\i0 ?json&callback=wrappedPayloadFunction\'92, 	// or whatever vars for the api\
+	dataType: \'91jsonp\'92,\
+	success: function (data) \{\
+		var myStuff = data[1];			// get requested data out of the jsonp function\
+		// do something with jsonp data\
+	\},\
+	error:  // error stuff\
+\});}
