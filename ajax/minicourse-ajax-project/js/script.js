@@ -30,7 +30,7 @@ function loadData() {
 
         articles = data.response.docs;
         for (var i = 0; i < articles.length; i++) {
-            nytElem.append ('<li class = "article"><a href="'+articles[i].web_url+'">'+articles[i].headline.main+'</a> <p>'+articles[i].snippet+'</p> </li>');
+            $nytElem.append ('<li class = "article"><a href="'+articles[i].web_url+'">'+articles[i].headline.main+'</a> <p>'+articles[i].snippet+'</p> </li>');
         };
         
         /*
@@ -76,19 +76,20 @@ function loadData() {
 
     $.ajax({
         url: wikiURL, 
-        dataTye: "jsonp",
-        success: function(data) {
-            $wikiHeaderElem.text ('Wikipedia article about ' + $city);            
-            var articles = data[1];            
+        dataType: 'jsonp',
+        success: function (json) {
+            $wikiElem.append (json);
+            $wikiElem.text ('Wikipedia article(s) about ' + $city);
+            var articles = json[1];
             for (var i = 0; i < articles.length; i++) {
-                var article = articles[i];
-                var url = 'http://en.wikipedia.org/wiki/' + article;
-                $wikiElem.append('<li><a href="'+url+'">' + article + '</a></li>');
+                var url = 'http://en.wikipedia.org/wiki/' + articles[i];
+                $wikiElem.append('<li><a href="'+url+'">' + articles[i] + '</a></li>');
             };
         },
+        // can jsonp throw errors? isn't it just returning a function?
         error: function (e) {
-            $wikiHeaderElem.text ('Failed to load articles.'); 
-        }        
+            $wikiElem.text ('Failed to load articles.'); 
+        }
     });
 
     return false;
