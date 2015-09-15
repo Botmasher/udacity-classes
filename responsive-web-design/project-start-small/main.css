@@ -137,7 +137,65 @@ main {
  * Content
  *
  */
+.content {
+  /* flexbox */
+  display: flex;
+  flex-wrap: wrap;
+}
 
+/**
+ *
+ * Breakpoints
+ *
+ */
+
+@media screen and (max-width: 700px) {
+  .hero, .news-top-news {
+    width: 100%;
+  }
+}
+
+@media screen and (min-width: 701px) {
+  .hero {
+    width: 60%;
+    order: -4;
+  }
+
+  .news-top-news {
+    width: 35%;
+    order: -3;
+    margin-left:5%;
+  }
+
+  .weather {
+    width: 100%;
+    order: -2;
+  }
+  .snippet-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .snippet {
+    width: 25%;
+  }
+
+  .nav, .header {
+    margin-left: auto;
+    margin-right: auto;
+    width: 700px;
+  }
+
+}
+
+@media screen and (min-width: 800px) {
+  .weather__next {
+    width: 750px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
 
 /*
  *

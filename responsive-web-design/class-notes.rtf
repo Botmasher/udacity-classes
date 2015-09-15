@@ -8,6 +8,7 @@
 \b0 \
 DIPs aren\'92t the same as physical pixels. The device independent pixel to device pixel ratio tells you how many physical pixels a DIP takes up on a given device (along one vector, not in 2 dimensions).\
 \
+\
 
 \b Keep things relative
 \b0 \
@@ -15,6 +16,7 @@ DIPs aren\'92t the same as physical pixels. The device independent pixel to devi
 - Use max-width and percentages to keep things responsive\
 - Fixed pixel widths are ok for things smaller than most every device (like a 125px logo)\
 - Set catch-all css for img, video and other to max-width: 100%\
+\
 \
 
 \b Build good Tap Targets for mobile users
@@ -26,6 +28,7 @@ Keep buttons, links big enough that users don\'92t hit two at once (or none at a
 		min-height: 48px;\
 	\}\
 \
+\
 
 \b Start Small
 \b0 \
@@ -33,4 +36,87 @@ Keep buttons, links big enough that users don\'92t hit two at once (or none at a
 - work up devices\
 - then, when get to tablet/laptop sizes, decide if need to make changes for larger\
 - avoids cutting and hiding key content on smaller devices to make layout work\
-- also CODE from small to large and think about performance from beginning (how much data)}
+- also CODE from small to large and think about performance from beginning (how much data)\
+\
+\
+
+\b Media queries are your friend
+\b0 \
+Apply different CSS to different devices\
+- Add new stylesheet with media queries\
+	<link rel = \'93stylesheet\'94 media = \'93screen and (min-width:500px)\'94 href = \'93over500.css\'94>\
+\
+- can also css @media (fewer requests, bigger files than link) or @import (VERY expensive)\
+- min-width and max-width are most common; matched when viewport hits that point\
+- min-device-width and max-device-width are HIGHLY discouraged (based on size of screen)\
+	- tough for desktop and laptop devices that allow things to run in windows\
+	- legacy android browser and others report the wrong value for device\
+\
+\
+
+\b Breakpoint
+\b0 \
+- point at which your size changes layout\
+- get good at messing with pages and figuring out how many breakpoints (columns, fonts, etc.)\
+	- check out all the changes on CNN\
+- Chasing devices for breakpoints is chasing changing hotness; devise based on your content instead\
+	1. set viewport as small as possible\
+	2. open dev tools\
+	3. slowly resize until content wants breakpoint (e.g. column spaces in table get too big)\
+	4. add media query for min-width\
+	5. repeat 3 and 4 until get to desktop sizes\
+	- don\'92t forget: also pay attention to hero images, nav links, font sizes, spacing\
+	- may get at least below 500s (small), medium, above 700s (large viewport)\
+\
+\
+
+\b Grid Fluid System\
+
+\b0 - like Bootstrap, columns wrap to next line on small widths\
+- covered in HTML and CSS course (yeah, I remember)\
+\
+
+\b Flexbox
+\b0 \
+- hit candidate recommendation and supported by most browsers\
+- vendor prefixed versions for older browsers\
+- fills space available if element has extra room (expands) or is too crowded (shrinks)\
+	- display: flex;	divs are displayed in a row, won\'92t wrap, browser displays and shrinks\
+	- flex-wrap: wrap;	div will wrap around on resize\
+	- order attribute	in different layouts, contents can appear in different orders!\
+		- first setup flex on the container element\
+		- set width % and order, and watch them line up!\
+\
+
+\b Common Responsive Patterns\
+
+\b0 1. Mostly Fluid\
+2. Column Drop\
+3. Layout Shifter\
+4. Off Canvas\
+- hybrids combo two, like Column Drop + Off Canvas\
+\
+Column drop\
+	- easiest\
+	- starts by stacking divs on top of e.o.\
+	- at first breakpoint, two elements are side by side while third below\
+	- then things get three-col, with (at max devices) whitespace margins added to L and R\
+\
+Mostly Fluid\
+	- a bit more grid like, with more columns\
+	- narrowest is still stacked\
+	- wider, grid pattern appears\
+	- at widest, has margins added instead of expanding cols\
+		- container around all of the elements becomes fixed width\
+\
+Layout Shifter\
+	- smallest screens: stacked elements\
+	- small screens: left element has container, others stack to right, last below\
+	- larger: change order of some of the more vertical ones next to column/horiz ones\
+		- default order: 0, so can use -1/1 to adjust around\
+\
+Off Canvas\
+	- place less frequently used content off screen on smaller\
+	- usually shown when user clicks a hamburger icon\
+	- content can come in from left or right\
+	- transition from hidden to visible, like on-click}
