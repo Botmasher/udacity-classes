@@ -153,12 +153,29 @@ main {
   .hero, .news-top-news {
     width: 100%;
   }
+
+  .scores {
+    width: 100%;
+    overflow-x: auto;
+  }
+
 }
 
 @media screen and (min-width: 701px) {
   .hero {
     width: 60%;
     order: -4;
+  }
+
+  .scores {
+    width: 700px;
+    margin: auto;
+  }
+
+  .scores__table {
+    max-width: 710px;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .news-top-news {
@@ -168,9 +185,17 @@ main {
   }
 
   .weather {
-    width: 100%;
+    max-width: 750px;
+    margin-right: auto;
+    margin-left: auto;
     order: -2;
   }
+  
+  .weather-today {
+    max-width: 500px;
+    margin: auto;
+  }
+
   .snippet-list {
     display: flex;
     flex-wrap: wrap;
@@ -191,9 +216,16 @@ main {
 
 @media screen and (min-width: 800px) {
   .weather__next {
-    width: 750px;
-    margin-left: auto;
-    margin-right: auto;
+    width: 700px;
+    margin-left: 80px;
+  }
+  .weather__next__item {
+    max-width: 50px;
+    margin-left: 20px;
+    display: table-column;
+  }
+  .weather, .weather-today, .weather__next {
+    display: inline;
   }
 }
 

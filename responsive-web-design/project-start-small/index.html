@@ -59,59 +59,60 @@
           <table class="scores__table">
             <thead>
               <tr>
-                <th>date</th>
-                <th>team</th>
-                <th colspan="2">score</th>
-                <th>team</th>
+                <th class = "scores-th">date</th>
+                <th class = "scores-th">team</th>
+                <th class = "scores-th" colspan="2">score</th>
+                <th class = "scores-th">team</th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <td>Friday</td>
-                <td>Bears</td>
-                <td>95</td>
-                <td class="winner">109</td>
+                <td class = "day">Friday</td>
+                <td class="loser">Bears</td>
+                <td class="loser-score">95</td>
+                <td class="winner-score">109</td>
                 <td class="winner">Cubs</td>
               </tr>
               <tr>
-                <td>Friday</td>
+                <td class = "day">Friday</td>
                 <td class="winner">Otters</td>
-                <td class="winner">3</td>
-                <td>1</td>
-                <td>Cubs</td>
+                <td class="winner-score">3</td>
+                <td class="loser-score">1</td>
+                <td class="loser">Cubs</td>
               </tr>
               <tr>
-                <td>Saturday</td>
+                <td class = "day">Saturday</td>
                 <td class="winner">Wolves</td>
-                <td class="winner">7</td>
-                <td>0</td>
-                <td>Panthers</td>
+                <td class="winner-score">7</td>
+                <td class="loser-score">0</td>
+                <td class="loser">Panthers</td>
               </tr>
               <tr>
-                <td>Sunday</td>
-                <td>Hawks</td>
-                <td>11</td>
-                <td class="winner">12</td>
+                <td class = "day">Sunday</td>
+                <td class="loser">Hawks</td>
+                <td class="loser-score">11</td>
+                <td class="winner-score">12</td>
                 <td class="winner">Capons</td>
               </tr>
               <tr>
-                <td>Sunday</td>
+                <td class = "day">Sunday</td>
                 <td class="winner">Stags</td>
-                <td class="winner">6</td>
-                <td>2</td>
-                <td>Foxes</td>
+                <td class="winner-score">6</td>
+                <td class="loser-score">2</td>
+                <td class="loser">Foxes</td>
               </tr>
-              
             </tbody>
           </table>
         </section>
 
         <section class="weather">
-          <span class="weather__location">Brighton, UK</span>
-          <span class="weather__desc">Sunny</span>
-          <span class="weather__today">
-          <img class="weather__today__image" src="images/weather.png" alt="icon of a partially sunny day"><span class="weather__today__temp">13</span><span class="weather__today__deg">&deg;C</span>
-          </span>
+          <div class = "weather-today">
+            <span class="weather__location">Brighton, UK</span>
+            <span class="weather__desc">Sunny</span>
+            <span class="weather__today">
+            <img class="weather__today__image" src="images/weather.png" alt="icon of a partially sunny day"><span class="weather__today__temp">13</span><span class="weather__today__deg">&deg;C</span>
+            </span>
+          </div>
           <ul class="weather__next">
             <li class="weather__next__item">
               <span>Mon</span>
