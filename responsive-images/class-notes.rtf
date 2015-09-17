@@ -32,17 +32,14 @@ Make sure images work well wherever they\'92re seen\
 - Avg website makes 56 img requests\
 - Google: 0.4sec => 0.9sec == -20% ad revenue\
 - Amazon: -1% sales per +100ms pageload\
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
-\cf0 - Don\'92t just pay attention to number of file requests, but total size of all requested too\
+- Don\'92t just pay attention to number of file requests, but total size of all requested too\
 - No need to send images higher than their display resolutions (caveat: high dpi displays)\
 - use device emulator to test throttling connection speeds (3G) and see how imgs load\
 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
 
-\b \cf0 Calculating CSS sizes and margins
+\b Calculating CSS sizes and margins
 \b0 \
-\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
-\cf0 - Absolute image sizing can make horrible scrolling on small viewports\
+- Absolute image sizing can make horrible scrolling on small viewports\
 - Relative image sizing can mess up above img dimensions\
 - use relative % sizing + max-width to respond to large displays\
 - use calc to define a fixed margin with relative sizing\
@@ -106,7 +103,7 @@ Make sure images work well wherever they\'92re seen\
 - Check if graphic symbols are available as character or icon in font\
 	- unicode-table.com lists em out, all 110000+\
 	- use them instead of forcing a browser to download an image!\
-	- don\'92t forget about emoticons, music symbols, etc. etc. etc.\
+	- @import & use emoticons, music symbols, etc. etc. etc. (Zocial)\
 	- make sure meta charset=utf-8\
 \
 
@@ -117,4 +114,36 @@ Make sure images work well wherever they\'92re seen\
 	- the other dimension actually overflows the container (meaning crops!)\
 - contain - as large as possible while still completely visible inside container\
 \
-}
+
+\b Inline Your Images vs External
+\b0 \
+- you can inline SVG logos or DataURI to reduce size\
+	- code looks a bit crazy, but reduces HTTP requests\
+- inlining reduces the number of requests on a page (think mobile!)\
+	- requests add roundtrips, one of biggest problems on mobile\
+- BUT external files can be cached and not reloaded every page\
+\
+
+\b Art Direction
+\b0 \
+- @media is forcing browser to behave rather than giving info for browser to choose at runtime\
+- provide alternative files for same img with 
+\b srcset\
+	
+\b0 - 1x 2x syntax for pixel density\
+	- w unit tells browser width of each img for browser to pick\
+	- sizes attribute tells browser % wv img will take (e.g. 50vw, so doesn\'92t load bigger image)\
+		- this DOESN\'92T set the size of img in CSS, it ONLY tells browser what you will display\
+		- use @media queries with width: 100vw	, 50vw, etc at breakpoints to take advantage\
+	- check device pixel ratio\
+- still use src for default loads in case browser can\'92t srcset\
+- Pay attention not just to numbers but to img details (is image scaling well to small screen? Too wide for portrait orientation that mobile provides?)\
+\
+
+\b Picture element
+\b0 \
+- <picture></picture> encloses options and img tag\
+- use <source srcset> to set alternatives for supported formats\
+- <img> is non-optional\
+- combine with @media and srcset to do all your art direction!\
+- Oh, don\'92t leave out good ALT tags for the visually impaired}
