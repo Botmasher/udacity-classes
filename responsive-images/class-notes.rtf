@@ -1,0 +1,120 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
+{\fonttbl\f0\fswiss\fcharset0 Helvetica;}
+{\colortbl;\red255\green255\blue255;}
+\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\f0\fs24 \cf0 Images are 62% of the bandwidth used on the web\
+Scrolling on mobile horiz and vertically makes for terrible experience\
+Make sure images work well wherever they\'92re seen\
+\'93Create a product, don\'92t reimagine one for small screens\'94 -Brian Fling\
+\
+- highest quality imgs with fewest bytes possible\
+\
+
+\b Test to optimize small bandwidth, good looks\
+
+\b0 - Dev Tools > Elements\
+	- click on img tag\
+	- in console: 		$0.naturalWidth to check actual img resolution\
+				// $0 just refers to element selected in pane\
+- check for different compression levels\
+\
+
+\b Optimal File size
+\b0 \
+- pixels * number of bits per pixel\
+- means keep size as small as possible and compression as high as possible\
+\
+
+\b Cost of expensive images
+\b0 \
+- Avg website makes 56 img requests\
+- Google: 0.4sec => 0.9sec == -20% ad revenue\
+- Amazon: -1% sales per +100ms pageload\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 - Don\'92t just pay attention to number of file requests, but total size of all requested too\
+- No need to send images higher than their display resolutions (caveat: high dpi displays)\
+- use device emulator to test throttling connection speeds (3G) and see how imgs load\
+\
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+
+\b \cf0 Calculating CSS sizes and margins
+\b0 \
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
+\cf0 - Absolute image sizing can make horrible scrolling on small viewports\
+- Relative image sizing can mess up above img dimensions\
+- use relative % sizing + max-width to respond to large displays\
+- use calc to define a fixed margin with relative sizing\
+	width: calc ((100% - 10px) / 2)		// half width of viewport, with margin\
+	// there MUST be a space on either side of the operators!!!\
+- combine with :last-of-type to set the last image in a row\'92s margin-right: 0px\
+\
+
+\b Responsively cover height or width of viewport
+\b0 \
+- use vh (viewport height) units, where 1vh = 1% of viewport height\
+- can do same with vw\
+- fit smaller of the units: set both vh and vw to 100%\
+- height: 100vmax		// image resizes to cover the viewport\
+\
+
+\b Raster vs Vector
+\b0 \
+- grids of dots of color (camera, scanner, html canvas, etc)\
+- logos and lineart, shapes, colors, fills, gradients\
+- browser can render vector img at any size, since describe geometry of img\
+\
+
+\b Automate Your Image Pipeline Workflow!
+\b0 \
+- Grunt + ImageMagic\
+- automate just about anything you\'92d do in GUI img editor (compress, apply filters, etc.)\
+- webp can be smaller than jpeg\
+- try running Grunt from command line for a workflow that generates multiple responsive imgs\
+- ImageOptim and ImageAlpha for processing and eking out better png compression\
+- \'93Image Pipeline\'94 is a workflow for automating tasks for generating multiple versions of imgs\
+\
+
+\b Google PageSpeed Insights\
+
+\b0 - simple hierarchy of analysis along with scoring for how page loads on mobile and desktop\
+- use grunt or grunt plugin to optimize for loading\
+\
+
+\b Setup simple http server and test images locally\
+
+\b0 - navigate to project directory and python -m SimpleHTTPServer\
+- define width so image stays in parent container\
+- grunt compress resolutions to web sizes (check out this project\'92s grunt.js)\
+\
+
+\b Image alternatives using Markup\
+
+\b0 - number of file requests does matter (potential delays each request)\
+- data can\'92t travel any faster than speed of light\
+- optical fiber can only achieve half speed of life (latency is the new bottleneck)\
+- use Web Fonts for beautiful typography instead of text in png\
+- use images really sparingly. (Do I need this placeholder for an image?) \
+- CSS\
+	- shadows, animations, rounded corners (BUT processing and rendering cost esp mobile)\
+	- use effects sparingly\
+	- background images\
+	- background-size: cover;  // doesn\'92t squash or stretch in viewports\
+	- @media to display smaller crop on smaller devices, but full image on desktop\
+	- gradients\
+- Check if graphic symbols are available as character or icon in font\
+	- unicode-table.com lists em out, all 110000+\
+	- use them instead of forcing a browser to download an image!\
+	- don\'92t forget about emoticons, music symbols, etc. etc. etc.\
+	- make sure meta charset=utf-8\
+\
+
+\b Background-images - Cover versus Contain
+\b0 \
+- cover - as small as possible while filling its container\
+	- its smallest dimension will match its container\'92s smallest dimension\
+	- the other dimension actually overflows the container (meaning crops!)\
+- contain - as large as possible while still completely visible inside container\
+\
+}
