@@ -50,7 +50,7 @@ Things in different tables can refer to same thing. But they\'92re different kin
 	- think about the kind of data you\'92d need to join when structuring each table\
 \
 
-\b SQL
+\b SQL basics
 \b0 \
 - datatypes are complicated and have different names and distinctions than scripting langs\
 	- Strings: text type, but others exist like char and varchar\
@@ -60,4 +60,87 @@ Things in different tables can refer to same thing. But they\'92re different kin
 	- SELECT (data) FROM (tables) WHERE (col-x = \'91value\'92 AND col-y = \'91value\'92)\
 - Comparisons = < > != >= <=\
 \
-- SQL is tough/varied with respect to table columns and rows listed in a standard way. }
+- SQL is tough/varied with respect to table columns and rows listed in a standard way. \
+\
+
+\b SQL select clauses and adjusting returns
+\b0 \
+*			select all\
+order by		choose field to order results\
+asc/desc		after order by\
+limit x			how many results to return\
+offset n		how far into results to start\
+min/max(field)	return smallest/largest value for column\
+group by		combines rows into summary rows for aggregates (instead of individual rows)\
+			- only with aggregations like count, sum\
+as			gives column a name\
+\
+Why not just do work in script lang?\
+- count is like length, and limit is like slicing, and order is like key:val, BUT\
+- SPEED and SPACE. Python can take 1 sec to go thru 1 million items. SQL is faster.\
+- the big speedup is 
+\b INDEXING
+\b0 . not so much this course, but look it up!!\
+\
+
+\b SQL adding to table
+\b0 \
+- INSERT into table(col1,col2) values(\'911', \'922\'92)\
+- column names are optional, unless you just want to add those specific columns\
+- Inserts are simple, and just add a row to a table\
+\
+
+\b SQL JOIN
+\b0 \
+
+\i select T.thing, S.stuff from T join S on T.target = S.match
+\i0 \
+OR you can do it simply (and more commonly in real code):\
+
+\i select T.thing, S.stuff from T, S where T.target = S.match
+\i0 \
+\
+
+\b Aggregating
+\b0 \
+Note that when you
+\b  count(*) as col_name
+\b0 , you CANNOT where col_name=n\
+	- the value of col_name comes from COUNT and GROUP BY, but\'85\
+	- WHERE always runs before aggregations, on the underlying tables\
+	- SOLUTION: use 
+\b having
+\b0  as easy way to run after. 
+\b Subselects
+\b0  are more complex, but work\
+Use GROUP BY col 
+\i before
+\i0  HAVING aggregate_col\
+\
+
+\b Opening up the Database Black Box with Python
+\b0 \
+- SERVERS <-> PYTHON CODE <\'97DB-API METHOD CALLS \'97> SQLITE <\'97> DATA\
+- Systems (eg. SQLite, PostgreSQL, MySQL) all have different DB-API modules. Here psychopg2\
+\
+import 
+\i dbapi_name
+\i0 \
+conn = dbapi_name.connect(\'93Session_Name\'94)\
+cursor = conn.cursor()\
+cursor.execute (\'93query\'94)\
+# if query inserts, run this\
+conn.commit()\
+results = cursor.fetchall()\
+conn.close()			# always close your connections! stale connections take up resources\
+\
+Cursor can .execute(query), fetchall, fetchone\
+Connection can commit() or rollback() if make changes\
+
+\b Atomicity:
+\b0  the change happens as a whole or it does not happen!\
+\
+Browsers use SQL database to store cookies and web history\
+\
+\
+}
