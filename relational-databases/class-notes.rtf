@@ -91,6 +91,7 @@ Why not just do work in script lang?\
 - UPDATE table SET column=value WHERE restriction;\
 	- like select, without WHERE restrictions it applies to every row (not usu desirable here!)\
 	- WHERE content LIKE \'91%string%\'92;	lets you match pattern, e.g. in long strings\
+- DELETE from table where restriction; \
 \
 
 \b SQL JOIN
@@ -176,4 +177,113 @@ Browsers use SQL database to store cookies and web history\
 \b Script injection attacks
 \b0 \
 - your db may see it as text but avoid the browser seeing it as script\
-- use BLEACH for python (can install with pip)}
+- use BLEACH for python (can install with pip)\
+\
+\
+
+\b Normalized Design
+\b0 \
+- tables in database match relationships that are really there among the data.\
+{\field{\*\fldinst{HYPERLINK "http://www.bkent.net/Doc/simple5.htm"}}{\fldrslt http://www.bkent.net/Doc/simple5.htm}}\
+\
+
+\b Deeper into SQL
+\b0 \
+- normalized forms\
+	- Every row has the same number of columns\
+	- > 0 columns are part of the key\
+	- Any other columns in the table have to describe something about the key\
+	- non-key columns do not describe other non-key columns (hence splitting out into new relations)\
+	- rows don\'92t imply relationships among the data that don\'92t actually exist\
+		- e.g. mapping people their computer skills and native languages are two different relations\
+- CREATE table name (column1 type [constraints], column2 type [constraints], \'85 [row constraints]);\
+	- PostgreSQL knows crazy lots of types, MySQL less, SQLite stores lots as strings\
+	- while possible to create tables from app code, this is a bad idea outside of initial setup\
+		(think of it more like having your app rewrite its own code!)\
+- CREATE / DROP database name [options];		can also drop tables\
+	- these DO NOT come with warnings, so use with caution\
+- Serial columns do sequence (internal data structure) - so do work for us.\
+\
+- JOINING table to itself\
+	- done to compare data in that table to data in that table\
+	- check which animals eat the same food as which other animals, or who lives in the same room\
+		select a.id, b.id from table1 as a, table1 as b where a.val1=b.val1 and a.val2=b.val2;\
+	- to clean up duplicate data, add restrictions:\
+		where a.id != b.id\
+	- 
+\i or better
+\i0 : to make sure not listed in alternating order:\
+		where a.id < b.id\
+\
+
+\b SQL primary and foreign keys
+\b0 \
+- 
+\b Primary key
+\b0 \
+	- put after the column\'92s type when have one key in table\
+	- put after all columns when using multiple primary keys (e.g. Postal Code, Country if using both)\
+- Inserting a duplicate primary key:\
+	- SQL error (it doesn\'92t insert or overwrite the old one, nor does it delete the new one)\
+	- python will return an exception\
+	- You\'92ll have to use rollback() on your db connection\
+- Inserting missing keys\
+	- db can let you know that a missing/incorrect value was entered as long as you set up tables to do it\
+	- create table sales (sku text 
+\b references
+\b0  products(sku), sale_date date, count integer);\
+		- note that since (sku) is same name in products table, it\'92s optional in this example\
+		- references is a bit like type checking. It maintains \'93
+\i\b referential integrity
+\i0\b0 \'94\
+- Column with references constraint is called a 
+\b foreign key
+\b0 \
+	- a table often has 2 or more foreign keys\
+	- usually a foreign key will point to the primary key of the referenced table (to uniquely id a row)\
+	- mastering foreign key relationships is essential to understanding relational databases\
+	- if a pair of foreign keys should be used once (e.g. voting on posts), that pair is a good primary key\
+\
+
+\b Aggregates over the result of joins
+\b0 \
+- Looking for key in the first table that doesn\'92t exist in the second joined table causes unexpected returns\
+	- you might want how many of each sku (table 1) has been sold recently (table 2)\
+		- the straightforward query will list all skus that exist in table 2\
+		- but if it hasn\'92t been sold in table 2, it won\'92t be returned with 0 (or at all!)\
+- 
+\b Left
+\b0  and 
+\b Right outer 
+\b0 joins (referring to tables to left/right of operator)\
+	- regular (
+\b inner
+\b0  join) only returns results matching the join-on columns in two tables\
+	- left/right also returns columns that left/right has but other doesn\'92t\
+	- think about which table is the basic topic of your whole sentence\
+		(above: for each sku, how many have I sold?) Clearly, I want a left join.\
+	- /!\\ pay attention to aggr vars, as you might need to change them to spec columns in the other table\
+\
+
+\b Subqueries / Subselects
+\b0 \
+- result of query is a table\
+- can select, join, aggregate, etc.\
+- queries inside of queries! (outside gives avg of inside query)\
+	select avg(hiscore) from\
+		(select max(score) as hiscore\
+		from batball\
+		group by team)\
+	as maxes;	# gotta name it! REQUIRED\
+Even better uses: {\field{\*\fldinst{HYPERLINK "http://www.postgresql.org/docs/9.4/static/sql-expressions.html#SQL-SYNTAX-SCALAR-SUBQUERIES"}}{\fldrslt http://www.postgresql.org/docs/9.4/static/sql-expressions.html#SQL-SYNTAX-SCALAR-SUBQUERIES}}\
+- Try answering, for example: which results are less than the average result?\
+\
+
+\b Views for refactoring and reusing queries
+\b0 \
+- a 
+\b view
+\b0 : select query stored in db in a way that lets you use it like a table\
+	create view viewname as select\
+- Say you have a huge table, but only query four of the columns. Store those as a view!\
+- Updates and delete rows in some views, not others (think about aggregate functions)}
