@@ -10,4 +10,29 @@
 - prereqs: OO Python, database and SQL, CSS and HTML to style, command line basics\
 - use: ORM, frameworks (Flask), Vagrant\
 \
-}
+
+\b CRUD\
+
+\b0 - all actions a user takes on data-driven website\
+- correspond to specific SQL keywords\
+\
+
+\b ORM: how to structure DB?
+\b0 \
+- imagine restaurant menu\
+	- relation Restaurants: id, name\
+	- relation for MenuItem: name, id, description, price, course (appetizer/main/dessert/beverage)\
+- Pass queries as objects instead of strings\
+	- allows for error checking\
+	- transformed into query and sent to database\
+	- SQL alchemy is FLOSS for Python\
+	- already installed if using vagrant; otherwise visit their site\
+- Using SQLAlchemy for ORM\
+	(1) Configuration: set up necessary modules\
+		- doesn\'92t change much from project to project\
+		- imports modules needed at beginning of file\
+		- creates instance of declarative base at beginning\
+		- creates/connects database and adds tables and columns at end of file\
+	(2) Class: represents our data in Python\
+	(3) Table: represents the specific table in our database\
+	(4) Mapper: }
