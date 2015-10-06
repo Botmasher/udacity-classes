@@ -1,7 +1,7 @@
 {\rtf1\ansi\ansicpg1252\cocoartf1265\cocoasubrtf210
 {\fonttbl\f0\fswiss\fcharset0 Helvetica;}
 {\colortbl;\red255\green255\blue255;}
-\margl1440\margr1440\vieww10800\viewh8400\viewkind0
+\margl1440\margr1440\vieww12540\viewh9460\viewkind0
 \pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural
 
 \f0\b\fs24 \cf0 Data-driven web applications
@@ -17,7 +17,7 @@
 - correspond to specific SQL keywords\
 \
 
-\b ORM: how to structure DB?
+\b ORM: how to structure DB from a Python File
 \b0 \
 - imagine restaurant menu\
 	- relation Restaurants: id, name\
@@ -27,12 +27,102 @@
 	- transformed into query and sent to database\
 	- SQL alchemy is FLOSS for Python\
 	- already installed if using vagrant; otherwise visit their site\
-- Using SQLAlchemy for ORM\
-	(1) Configuration: set up necessary modules\
+- Using 
+\b SQLAlchemy
+\b0  for 
+\b ORM
+\b0 \
+	(1) 
+\b Configuration
+\b0 : set up necessary modules\
 		- doesn\'92t change much from project to project\
 		- imports modules needed at beginning of file\
+		- 
+\b Base = declarative_base()
+\b0  #base class pointing to declarative_base once imported\
 		- creates instance of declarative base at beginning\
 		- creates/connects database and adds tables and columns at end of file\
-	(2) Class: represents our data in Python\
-	(3) Table: represents the specific table in our database\
-	(4) Mapper: }
+	(2) 
+\b Class
+\b0 : represents our data in Python\
+	(3) 
+\b Table
+\b0 : represents the specific table in our database\
+	(4) 
+\b Mapper
+\b0 : create vars for table columns; MUST add attribs! Example attributes:\
+		- String(250), Integer, primary_key=True, relationship(Class), ForeignKey(\'93table.id\'94), etc.\
+		- 
+\b nullable = False
+\b0 	# if this variable isn\'92t filled, we cannot create this row in the db\
+- when you set a foreign key relationship, on the next line: 
+\b table = relationship(Table)
+\b0 \
+\
+
+\b How to CRUD with your ORM py
+\b0 \
+# you\'92ll first need to import some things\
+from sqlalchemy import 
+\b create_engine
+\b0 \
+from sqlalchemy.orm import 
+\b session maker
+\b0 \
+\
+# our database, as described in the section above\
+from database_setup import Base, Restaurant, Menu Item\
+engine = create_engine(\'91sqlite:///restaurantmenu.db')\
+Base.metadata.bind = engine\
+\
+# CRUD requires a session\
+DBSession = session maker (bind = engine)	# possibility to CRUD\
+session = DBSession()	# open instance of the DBSession\
+\
+# now can call method from session\
+# notice that we pass the first variable to the foreign key in the second table\
+myFirstRestaurant = Restaurant(name=\'93Pizzeria Snausage\'94)\
+cheese_pizza = MenuItem (name=\'93Cheese Pizza\'94, description = \'93Super fresh!\'94, course=\'93Entree\'94, price=\'939\'94, restaurant=myFirstRestaurant)\
+\
+# use session to store\
+session.add(myFirstRestaurant)\
+session.add(cheese_pizza)\
+session.commit()\
+\
+# query to see objects exist\
+session.query(Restaurant).all()\
+session.query(MenuItem).all()\
+session.query(Restaurant).first()	# first result; or iterate with for\
+\
+
+\b Update an item in db
+\b0 \
+1. Find entry\
+	updated_things = session.query(Table).filter_by(column=\'91Value\'92)	# always returns a collection\
+	print updated_things.id\
+	print updated_things.val_to_change	# search for what you\'92re looking to update to check its value\
+	print \'93\\n\'94\
+2. Reset values\
+	specific_row_to_update = session.query(Table).filter_by(id=n).one()\
+	
+\b specific_thing_to_update.val_to_change = new_value
+\b0 \
+3. 
+\b session.add
+\b0 (specific_row_to_update)\
+4. 
+\b session.commit
+\b0 ()\
+\
+
+\b Delete an item in db
+\b0 \
+- Just as above, but with one tweak:\
+1. Find entry\
+2. 
+\b session.delete
+\b0 (entry)\
+3. session.commit()\
+	- you will now have a \'93no row was found\'94 error!\
+\
+}

@@ -1,3 +1,6 @@
+## Working copy of code stored in UDACITY-FULLSTACK dir
+## That's where vagrant and SQLAlchemy actually live :)
+
 # CONFIG functions for manipulating python runtime
 import sys
 
@@ -16,18 +19,30 @@ from sqlalchemy import create_engine
 Base = declarative_base()
 
 
-# CLASS represent table as a class; extend base class
+# CLASS represent restaurants table, extending base class
 class Restaurant (Base):
 	# TABLE setup
-	__tablename__ = 'restaurant' 
+	__tablename__ = 'restaurant'
+	# MAPPER variables for columns in table
+	name = Column(String(80), nullable = False)
+	id = Column(Integer, primary_key = True)
+
+# CLASS represent menu items table, extending base class	
 class MenuItem (Base):
 	# TABLE setup
 	__tablename__ = 'menu_item'
-
+	# MAPPER variables for columns in table
+	name = Column (String(80), nullable = False)
+	id = Column (Integer, primary_key = True)
+	course = Column(String(250))
+	description = Column (String(720))
+	restaurant_id = Column(Integer, ForeignKey('restaurant.id'))
+	# store relationship with my class restaurant
+	restaurant = relationship(Restaurant)
 
 ## CONFIG end of file ##
 # point to db - here create a sqlite file to sim db #
-engine = create_engine('sqlite://restaurantmenu.db')
+engine = create_engine('sqlite:///restaurantmenu.db')
 
 # go into db, add classes created as new tables in db #
 Base.metadata.create_all(engine)
