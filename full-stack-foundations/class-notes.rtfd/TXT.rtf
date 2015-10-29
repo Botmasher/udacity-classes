@@ -157,4 +157,63 @@ session.query(Restaurant).first()	# first result; or iterate with for\
 - on modifying structure, instead of deleting old database and repopulating with data, migrate existing to new structure\
 - Flask migrate\
 - SQLAlchemy-migrate\
-}
+\
+
+\b Client Server Communications
+\b0 \
+- client wants info, server has info to share\
+- client initiates a request, while a server responds with data the client requested\
+- Protocols: grammatical rules all machines on internet can understand each other\
+	- 
+\b TCP
+\b0  : info broken into small packets, sender/receiver can figure out which packets are missing (vs UDP)\
+	- 
+\b IP
+\b0  : static or dynamic address assignment, DNS is a big online phonebook with web URLs by IP; ports are channels on same IP\
+		- first 10000 ports are reserved for system use\
+		- 80 and 8080 by convention are commonly used for web servers\
+		- localhost is on the same machine (127.0.0.1), so OS knows to look on this machine and not go out to the internet\
+	- 
+\b HTTP
+\b0  : client tells server what they want using an 
+\b HTTP method
+\b0 , and then gets back a reply in the form of 
+\b status code
+\b0  + resources\
+		- 
+\b GET
+\b0  request tells server to send back information (\'93SAFE METHODS\'94)\
+		- 
+\b POST
+\b0  request tells server to modify some information \
+		- 200 successful GET\
+		- 301 successful POST\
+		- 404 file not found\
+
+\b Build your own web server! (see webserver.py for example and notes)\
+
+\b0 from BaseHTTPServer import BaseHTTPRequestHandler, HTTPServer\
+- then in your code, you\'92ll have a HANDLER class and a MAIN() method. Let\'92s make some GET functionality here.\
+	- main() instantiates and specifies what port it will listen on\
+	- handler indicates code to execute based on type of HTTP request received by server\
+	- notice that handler looks for URLs and can return different responses AND different content based on the URL\
+- Now onto POST (do_POST), which codes similarly to how you used do_GET\
+	- need to import 
+\b cgi
+\b0  (common gateway interface)\
+	- don\'92t look for specific URL, just post response (301)\
+
+\b Port Forwarding
+\b0 \
+- open vagrant file on local machine and add a new port forwarding line, changing the numbers as needed:\
+	config.vm.network \'93forwarded_port\'94, guest: 5000, host: 5000\
+\
+
+\b Add CRUD operations to your Server to run restaurants database described at beginning of course
+\b0 \
+OBJECTIVES:\
+	(1) opening localhost:8080/restaurants, user sees a list of all restaurants in database\
+	(2) there should be a link to edit or delete each restaurant in the list - visible, but not yet working\
+	(3) create new restaurants - link to form that does post request on restaurant name and adds to database\
+	(4) rename a restaurant - enhance the web server to that users can rename restaurant and persist to db via post\
+	(5) delete a restaurant - clicking link sends to confirmation page and also post to db to delete}
