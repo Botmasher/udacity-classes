@@ -216,4 +216,15 @@ OBJECTIVES:\
 	(2) there should be a link to edit or delete each restaurant in the list - visible, but not yet working\
 	(3) create new restaurants - link to form that does post request on restaurant name and adds to database\
 	(4) rename a restaurant - enhance the web server to that users can rename restaurant and persist to db via post\
-	(5) delete a restaurant - clicking link sends to confirmation page and also post to db to delete}
+	(5) delete a restaurant - clicking link sends to confirmation page and also post to db to delete\
+Added to before:\
+	- you can get there from here! : do_GET can catch a URL (like /restaurants) and do_POST can redirect back to it on submit\
+		# check if path, then run this 
+\i\b after
+\i0\b0  cgi parsing and any crud or other POST stuff\
+		self.send_response(301)\
+		self.send_header(\'91Content-type\'92, \'91text/html\'92)\
+		
+\b self.send_header(\'91Location\'92, \'91/url\'92)
+\b0 \
+		self.end_headers()}
