@@ -227,4 +227,34 @@ Added to before:\
 		
 \b self.send_header(\'91Location\'92, \'91/url\'92)
 \b0 \
-		self.end_headers()}
+		self.end_headers()\
+\
+
+\b FRAMEWORKS - Flask
+\b0 \
+Frameworks abstract away the repetitive and hard-to-manage aspects of building server app.\
+		- still use sqlalchemy to access db\
+		- templates organize your application by separating code\
+		- Flask function 
+\b url_for
+\b0  builds URLs for app\
+		- create forms \
+		- 
+\b message flashing
+\b0  notifies user on successful db change\
+		- use JSON messages instead of html\
+		- style with CSS\
+A basic Flask file - see commented flask-test.py in the vagrant directory!\
+	- import flask\
+	- 
+\b decorators
+\b0  are python @ functions that return functions. routes first. can write other ones like login checks\
+	- decorators can be stacked, especially used for getting routes to point to same function\
+Make paths dynamic by attaching 
+\b rules
+\b0 \
+	@app.route(\'91restaurants/
+\b <int:restaurant_id>
+\b0 /\'91)\
+	# looks for an integer restaurant_id, which can then be passed into function below the decorator\
+	# trailing slash allows load even when not there}
