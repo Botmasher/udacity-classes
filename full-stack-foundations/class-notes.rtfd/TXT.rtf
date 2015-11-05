@@ -257,4 +257,50 @@ Make paths dynamic by attaching
 \b <int:restaurant_id>
 \b0 /\'91)\
 	# looks for an integer restaurant_id, which can then be passed into function below the decorator\
-	# trailing slash allows load even when not there}
+	# trailing slash allows load even when not there\
+Render a 
+\b template
+\b0  instead of just adding to an output string\
+	render_template (templateName.html, kwargs)	 # include variables to pass to template as keyword arguments\
+	- flask looks for templates in a folder named /templates/\
+	- using 
+\b html escaping
+\b0 , can pass data directly from python code to template. \
+	- \{% logical code %\}, like running a for loop\
+	- \{\{printed code\}\}, like outputting a variable name\
+URL building using 
+\b url_for()\
+
+\b0 	- Helper method returns complete url string\
+	- takes the FUNCTION below the @app routes as the first arg to build this url\
+	- passes kwargs to fill in any vars in the route url string\
+	- allows you to change urls with method route declaration (all in one place!)\
+POST - by default a route in Flask only responds to GET, so write a decorator-plus-function that handles the POST, too!\
+	@app.route(\'91/path/<int:varName>/\'91, 
+\b methods=[\'91GET\'92,\'92POST\'92]
+\b0 )\
+	def handlerFunction(varName):\
+		
+\b if request.method == \'91POST\'92:
+\b0 \
+			new_thing = OrmClassThing (name=
+\b request.form[
+\b0 \'91name\'92
+\b ]
+\b0 , associative_id = varName)\
+			session.add(new_thing)\
+			session.commit()\
+			return 
+\b redirect(url_for(mainFunction, kwarg1=value1, \'85))\
+		return render_template(\'91templateName.html\'92, kwargs)\
+
+\b0 	# then add form in the render_template with method=post, action=url_for(handlerFunction,varname=var), name=value\
+
+\b Message Flashing
+\b0  - feedback to user there, prompt message immediately after action takes place, but then disappears on another action\
+	- import flash\
+	- uses sessions (across multiple webpages), so must use 
+\b app.key
+\b0 \
+	- flash(\'93message\'94) within control flow, then in template add a loop (see the flask test and edit.html for this combo in an example)\
+}
