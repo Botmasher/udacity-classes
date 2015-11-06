@@ -297,10 +297,47 @@ POST - by default a route in Flask only responds to GET, so write a decorator-pl
 \b0 	# then add form in the render_template with method=post, action=url_for(handlerFunction,varname=var), name=value\
 
 \b Message Flashing
-\b0  - feedback to user there, prompt message immediately after action takes place, but then disappears on another action\
+\b0  - 
+\b feedback
+\b0  to user, prompt message immediately after action takes place, but then disappears on another action\
 	- import flash\
 	- uses sessions (across multiple webpages), so must use 
 \b app.key
 \b0 \
 	- flash(\'93message\'94) within control flow, then in template add a loop (see the flask test and edit.html for this combo in an example)\
-}
+\
+\
+
+\b Styles
+\b0  in Flask with CSS\
+	- /static/ folder\
+\
+
+\b Responding with just the data!
+\b0  - 
+\b API
+\b0  - if server just wants your data without all your css and \
+RESTful API - communicated over the internet and following all the rules of HTTP\
+JSON and attribute/value pairs sent across in RESTful API\
+	- 
+\b jsonify
+\b0  in Flask\
+	- in the appropriate DATABASE CLASS (ORM) add a property and function to handle the serializable structure\
+
+\b 		@property\
+		def serialize (self):\
+			return \{\
+				\'91name\'92 : self.name,\
+				\'91id\'92 : self.id,\
+			\}
+\b0 \
+	- now write an API Endpoint (GET)\
+		
+\b @app.route (\'91/url/<int:var>/JSON\'92)\
+		def urlJSON (var):\
+
+\b0 			result = session.query(Table).filter_by(id=var).all()
+\b \
+			return jsonify(MyJSONName=[i.serialize for i in result])
+\b0 \
+	- }
