@@ -311,6 +311,10 @@ POST - by default a route in Flask only responds to GET, so write a decorator-pl
 \b Styles
 \b0  in Flask with CSS\
 	- /static/ folder\
+
+\b Templates
+\b0  for your main.html, forms.html, etc.\
+	- /templates/ folder\
 \
 
 \b Responding with just the data!
@@ -340,4 +344,49 @@ JSON and attribute/value pairs sent across in RESTful API\
 \b \
 			return jsonify(MyJSONName=[i.serialize for i in result])
 \b0 \
-	- }
+\
+
+\b Extensions and extras for the app
+\b0 \
+- reconfiguring your Flask app as a 
+\b package
+\b0 \
+	- instead of running from bottom of views.py\
+	- in its own subfolder\
+	- config.py in main folder\
+	- run.py in main folder\
+	- __init__.py in the subfolder\
+	- make sure to set up the right imports\
+- forms with 
+\b WTForms
+\b0 \
+	- forms.py file with a class for each form\
+	- separate forms template\
+	- form_handlers template as well\
+- logging with 
+\b logger
+\b0 \
+	- app.logger, which is a python Logger\
+	- import and set up handler (e.g. use log rotation if need to write to new file at certain size)\
+	- set up app.logger level to match handler and add that handler\
+- advanced logging\
+	- write to syslog (standard)\
+	- 
+\b spunk
+\b0  for managing, collecting, searching log data\
+	- remote logging with a service like rsyslog or loggly (splunk does for large enterprises)\
+	- log merging\
+	- logging to multiple files:\
+	{\field{\*\fldinst{HYPERLINK "http://stackoverflow.com/questions/9857284/how-to-configure-all-loggers-in-an-application"}}{\fldrslt http://stackoverflow.com/questions/9857284/how-to-configure-all-loggers-in-an-application}}\
+- emailing user\
+	- {\field{\*\fldinst{HYPERLINK "https://pythonhosted.org/flask-mail/"}}{\fldrslt https://pythonhosted.org/flask-mail/}}\
+	- note the misspelling: it\'92s flask DOT ext.mail\
+	- __init__ in the app package:\
+	from flask.ext.mail import Mail\
+	appmail = Mail(app)\
+	- views.py:\
+	# import\
+	from mail.message import Message\
+	# in the right branch\
+	structure message with mssg = Message (\'91some text!\'92, sender=(\'91name\'92,\'92me@mail.com\'92), recipients=[\'91\'92you@mail.com\'92])\
+	then send message with appmail.send (mssg)}
