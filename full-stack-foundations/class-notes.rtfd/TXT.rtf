@@ -369,6 +369,8 @@ JSON and attribute/value pairs sent across in RESTful API\
 	- app.logger, which is a python Logger\
 	- import and set up handler (e.g. use log rotation if need to write to new file at certain size)\
 	- set up app.logger level to match handler and add that handler\
+\
+/!\\ EVERYTHING BELOW BECAME AN ISSUE FOR ME WHEN TRYING TO IMPLEMENT\
 - advanced logging\
 	- write to syslog (standard)\
 	- 
@@ -402,4 +404,59 @@ JSON and attribute/value pairs sent across in RESTful API\
 \b0 \
 	- Flask-Testing - install then import then write test classes that inherit from TestCase\
 	- python unittest package\
-	- use Coverage to determine how much of code was accessed}
+	- use Coverage to determine how much of code was accessed\
+	- getting this to work with SQLAlchemy db will be a challenge in my current app (setup a test db, create and drop all tables)\
+- 
+\b deployment
+\b0 \
+	- can cause as many problems as writing the code!\
+	- stack: Nginx reverse proxy (handles client HTTP requests/responses) + Gunicorn (application runner: \'93real requests\'94 & threading)\
+	- deploy to amazon ec2, blue ocean, heroku, or check out Phusion Passenger\
+	- {\field{\*\fldinst{HYPERLINK "https://exploreflask.com/deployment.html"}}{\fldrslt https://exploreflask.com/deployment.html}}\
+\
+
+\b ITERATIVE DEVELOPMENT
+\b0 \
+- be 
+\b agile
+\b0  : always have a working prototype ready to test and integrate feedback quickly\
+	- extreme #1 : stay up for nights coding like a madman until the whole beast is done\
+	- extreme #2 : work on a bunch of separate pieces and wait until the end to put them together\
+	- recommendation : iterative development instead\
+		-
+\b  break project into smaller, easy-to-manage mini projects
+\b0 \
+- What should a prototype do after completing each iteration?\
+	- 
+\b mock-ups
+\b0  : draw and scheme visual representation of my app\
+		- GOAL - I can show my designs to you for feedback\
+	- 
+\b routing
+\b0  : setup all the routings for my app in Flask\
+		- GOAL - you can navigate to all of my routes (though pages not yet created)\
+	- 
+\b templates and forms (basic frontend)
+\b0  : create all of the html content structure for my app\
+		- GOAL - you can see all of my endpoint pages rendering\
+	- 
+\b Database
+\b0  : design and structure the database component of the app\
+		- GOAL - you can query my database and it will return the appropriate info\
+	- 
+\b CRUD functionality (basic backend)
+\b0  : implement core database functions\
+		- GOAL - all of the CRUD operations work and retrieve data from the database\
+	- 
+\b API endpoints
+\b0  : allow data to be returned in JSON\
+		- GOAL - you can request data from my pages or items in JSON from within a browser\
+	- 
+\b Styling & Message Flashing
+\b0  : add CSS, static images, JavaScript and message flashing\
+		- GOAL - you can see styles, images, movement and messages when navigating through my app\
+	- 
+\b Extensions
+\b0  : decide which extensions to install and code into the project\
+		- examples : error/update logging, authentication, testing, search, AJAX, email\
+		- GOAL - for each extension, you can successfully use its promised additional functionality}
