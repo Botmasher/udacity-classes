@@ -1,0 +1,70 @@
+OO JS
+
+SCOPE
+- lexical scope: in code (what usually think of)
+- execution context or in-memory scope: follow along as program being run
+	- e.g. multiple invocations of function create new contexts
+	- nested, with outer nest being global context
+- consider bindings in execution context when evaluating or predicting a program's output
+- think of object properties and methods as keys with different values
+- really think "what is the interpreter doing?" and in-memory scope when writing your code
+- use === for strict identity comparison
+
+CLOSURES
+- allow access to variables in function scope even after function returns
+- return values, global vars, settimeout
+- consider when comparing what values will be in different execution contexts
+
+KW THIS
+- NOT the current scope, not the scope invoked from, not the execution context...
+- IS typically object to left of dot when calling method (this in scope of that method)
+- if no dot, global context, then this=<global> in body of that function
+- functions called with .call explicitly set binding for this as first arg
+	- myfunc.call (this_arg, function args)
+	- this now refers to object of that added argument this_arg
+- this in global used to refer to <global>, but now doesn't? undefined/error?
+- new myobject.myfunc() creates a new object every time, so this binds to that new object in myfunc
+- what do you think this is bound to in running settimeout?
+	- Settimeout(obj.method,1000) does NOT pass obj, ONLY the callback function, so <global>
+
+PROTOTYPE CHAINS
+- when access a property on an object, looking that up as a key to find associated value
+- interpreter provides value "undefined" when does not find value at that key in that object
+- var newObj = extend({}, myObj);
+	- one-time copy of properties from myObj to {}
+- var newObj = Object.create(myObj);
+	- ongoing use of myObj as "up the chain" fallback for properties undefined in newObj
+- Prototype is the top-level object up the chain from all other objects
+- Object Prototype .contstructor property is Object; Array Prototype .constructor is Array
+
+OBJECT DECORATOR PATTERN
+- {} to represent in-memory object
+- decorator function: takes object and augment it with a property
+	- convention to use adjectives in name for decorator functions
+	- use "this" kw to refactor functions that change an object's property, then add function to object in decorator function
+- strict comparison shows that two objects returned from same function are two different objects
+- obj decorator pattern normally used to add properties to objs that already have properties
+
+FUNCTIONAL CLASSES
+- classes as functions to manufacture fleets of similar objects
+- only diff from decorator is that it also BUILDS the class it will augment
+- functional class pattern produces instances of the class
+- still results in duplicated methods (brand new functions every invoke of constructor)
+- Functional Shared Pattern builds methods outside of class constructors
+	- /!\ Memory saving /!\ avoid repeated visits to that code, write functions outside of the class and assign to properties in constructor
+	- use parameter this when writing those outside functions to refer to obj even though you don't have access to that obj variable inside the constructor closure
+	- problem that you're naming methods in two places (when created and also inside the constructor when assigning)
+	- instead use extend(obj, methods) and write functions within object methods={};
+	- add that methods {} as property of constructor function (MyClass=...; MyClass.methods=...;)
+- Note that functions are objects, so they can store properties
+	- no interaction between properties and the behavior when you invoke that function
+- if a function produces objects with roughly same interfaces of properties, think of it as a class
+	- gets into cross-language debates over whether or not this should be the case
+
+PROTOTYPAL CLASS
+- Recall that prototype chains delegate failed property lookups up the chain
+- object literal notation {} doesn't let us define what the prototype of the object will be
+- delegate to fallback prototypes instead of copying methods like Functional Shared Pattern did
+	- as above, use Object.create();
+	- pass in the Obj.methods {} from before into the Object.create()
+-
