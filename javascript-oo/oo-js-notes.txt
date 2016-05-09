@@ -65,6 +65,43 @@ PROTOTYPAL CLASS
 - Recall that prototype chains delegate failed property lookups up the chain
 - object literal notation {} doesn't let us define what the prototype of the object will be
 - delegate to fallback prototypes instead of copying methods like Functional Shared Pattern did
-	- as above, use Object.create();
+	- as above, use Object.create -- Object.create(Car.prototype);
 	- pass in the Obj.methods {} from before into the Object.create()
--
+	- now on lookups, finding nothing will DELEGATE failed lookups "keys" up the chain
+	- allows us to skip expensive step of copying properties when building new objects
+	- now we add new methods from methods object
+- this delegate pattern was so useful that it's now built into the language
+	- instead of key .methods, it's .prototype
+		Car.prototype =  {
+			methodName : function () {}
+		};
+	- can even define directly on prototype:
+		Car.prototype.move = function () {};
+	- prototype vs method
+		- purely cosmetic, no effect on in-memory model at runtime
+		- there's no delegation of failed lookups to Car.prototype
+		- the .prototype is just for storing things (mentally, it's a .methods list)
+- this property .prototype is ambiguous
+	- the instance's prototpye is now Car.prototype
+		- delegate failed lookups to the prototype (e.g. carInstance doesn't have method but Car.prototype does)
+	- Car's prototype is Car.prototype BUT this means something different:
+		- failed lookups fall back to the FUNCTION prototype (it's a function after all!)
+		- this is consistent: where all other function objects delegate failed lookups
+	- "object1's prototype is object2" thus has two senses
+- every .prototype has a .constructor pointing back to the object it's built with
+	- Car.prototype.constructor is Car itself (the constructor function is itself)
+	- myCarInstance.constructor is Car (same constructor function)
+	- console.log will show the memory value of that function (Car in this case)
+- INSTANCEOF sees if left operand found anywhere in right operand's chain:
+	- myCarInstance instanceof Car
+	- remember that assigning var someCar = Car(); assigns to Car itself, and does not create an instance down the chain
+- no discussion of decorator pattern (adding methods within constructor function)
+	- why not? as he sees it, the goal in prototypal pattern is shared methods
+
+PSEUDOCLASSICAL PATTERN
+- attempts to resemble Class system of other languages with some simple syntax
+	- abstract common logic from our constructor function
+	- every object is created with .prototype
+	- every object is returned
+	- these would be repeated
+- 
