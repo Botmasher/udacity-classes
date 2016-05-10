@@ -35,7 +35,8 @@ PROTOTYPE CHAINS
 - var newObj = Object.create(myObj);
 	- ongoing use of myObj as "up the chain" fallback for properties undefined in newObj
 - Prototype is the top-level object up the chain from all other objects
-- Object Prototype .contstructor property is Object; Array Prototype .constructor is Array
+- Object Prototype .contstructor property is Object
+- Array Prototype .constructor is Array
 
 OBJECT DECORATOR PATTERN
 - {} to represent in-memory object
@@ -72,9 +73,7 @@ PROTOTYPAL CLASS
 	- now we add new methods from methods object
 - this delegate pattern was so useful that it's now built into the language
 	- instead of key .methods, it's .prototype
-		Car.prototype =  {
-			methodName : function () {}
-		};
+		Car.prototype =  { methodName : function () {} };
 	- can even define directly on prototype:
 		Car.prototype.move = function () {};
 	- prototype vs method
@@ -104,4 +103,75 @@ PSEUDOCLASSICAL PATTERN
 	- every object is created with .prototype
 	- every object is returned
 	- these would be repeated
-- 
+- kw "new" makes our function run in "constructor mode" instead
+	new Obj (value0,value1...)
+	- "inserts" code into function MyObj returning Object.create(MyObj.prototype);
+	- refactoring a class constructor function to use the keyword "new" implies removing those create and return lines from the function
+- now your pseudoclassical class is just a named function with some lines for adding keys / properties, instantiated with the "new" keyword
+- pseudoclassical pattern has some performance optimizations in JS
+- Pseudoclassical, Prototypal and Functional Shared all have common division
+	(1) add methods in a function, e.g. prototypal pattern: MyClass.prototype.method1 = function() {};
+	(2) add properties in constructor function (whether or not use "new") that allow each instance to specify different values for that property
+	(3) instantiate those classes outside of the constructor and key/property definitions
+- NOT right vs wrong, but techniques with advantages and disadavantages
+	- In functional pattern, recall that all but instantiation was done in the body of one single Class function. Based on needs, this may be an asset or a drawback
+
+SUBCLASSES AND SUPERCLASSES
+- NB pseudoclassical pattern for subclasses much more documented online
+- what if you want to add methods just to some uses of a class?
+	- naïve solution: copy code from class, rename, refactor, add methods
+	- BUT now lots of duplicate code, and only those new methods differ
+	- instead of manually duplicating, make a SUPERCLASS function
+		var Car = function () { var obj={properties}; //return obj }}
+		var Van = function () { var obj = Car(); //+addtl props +return }
+- This uses the functional code paradigm, but what about with kw "new"?
+
+PSEUDOCLASSICAL SUBCLASSES
+- still need functions for the superclass and the subclass
+- create the superclass function
+	- can add methods within function BUT more function objects than needed
+	- recall instead the pattern X.prototype.methodName = function () {};
+	- define those shared properties outside of the constructor function!
+- pitfalls of creating pseudoclassical subclassses
+	- take expected input params
+	- DON'T just repeat property defs from the superclass; pass params up
+		- usually superclass constructor has much more code than subclasses
+	- DON'T instantiate "new Superclass();" - creates another in-memory obj
+		- "this" in superclass constructor will refer to new instance of SC
+		- you're already getting a brand new obj from using "new" inline, don't need a second within subclass constructor
+	- DON'T assign this=new Superclass();
+		- can't assign to this the way the interpreter can
+	- DON'T just call the superclass function like Superclass();
+		- kw "this" just refers to the global object
+		- any params would end up as global vars pointing to some values
+		- think for a moment about the above points. Why do they happen?
+	- DO use .call method from lessons ago: Superclass.call(this, params);
+		- "extra" first argument will bind to "this" in scope of superclass
+		- pass in so that parameter "this" is bound to subclass instance
+		- now superclass this.propName = prop1 will assign kvs to subclass
+		- BUT instances now delegate to Sub.prototype NOT Super.prototype
+- Setting up a prototype relationship
+	- ABOVE subclass wiring doesn't delegate method lookups to superclass
+	- you're actually delegating to Object.prototype!
+	- to access superclass methods, attach sub.prototype to super.prototype
+	- lookups should fall through from instance to subclass, then from subclass to superclass
+	- CANNOT officially do Sub.prototype.__proto__ = Super.prototype
+	- DO NOT do common mistake of Subclass.prototype = new Superclass();
+		- invokes Superclass function every time
+		- what if needed to pass constructor params?
+			- paramName.valueOf() would be undefined and constructor broken
+		- this was once prescribed before Object.create(ClassName);
+	- DON'T Sub.prototype = Super.prototype (two pointers to same object)
+	- DO overwrite Sub.prototype = Object.create(Super.prototype);
+		- using Object.create copies the properties of Superclass prototype
+		- now failed lookups fall through to the superclass prototype
+		- unlike "new Super()", does NOT instantiate new classes
+	- OR do it in the constructor function directly
+- Zipping up prototype relationship
+	- Sub.prototype = Object.create(Super.prototype) replaces its .constructor with Superclass
+	- replace that by Subclass.prototype.constructor = Subclass;
+	- now your subclass reports to the right constructor
+
+FINAL PROJECT
+- this is all basic out-of-the-box OO stuff in JS, including patterns on top of what's available
+- now go grab our game assets and make a simple froggery game!
