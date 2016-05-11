@@ -175,3 +175,4 @@ PSEUDOCLASSICAL SUBCLASSES
 FINAL PROJECT
 - this is all basic out-of-the-box OO stuff in JS, including patterns on top of what's available
 - now go grab our game assets and make a simple froggery game!
+- Forked instructor's base code with engine.js, app.js, styles.css and img sprites
