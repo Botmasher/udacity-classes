@@ -113,7 +113,7 @@ PSEUDOCLASSICAL PATTERN
 	(1) add methods in a function, e.g. prototypal pattern: MyClass.prototype.method1 = function() {};
 	(2) add properties in constructor function (whether or not use "new") that allow each instance to specify different values for that property
 	(3) instantiate those classes outside of the constructor and key/property definitions
-- NOT right vs wrong, but techniques with advantages and disadavantages
+- NOT right vs wrong, but techniques with advantages and disadvantages
 	- In functional pattern, recall that all but instantiation was done in the body of one single Class function. Based on needs, this may be an asset or a drawback
 
 SUBCLASSES AND SUPERCLASSES
@@ -163,11 +163,13 @@ PSEUDOCLASSICAL SUBCLASSES
 		- this was once prescribed before Object.create(ClassName);
 	- DON'T Sub.prototype = Super.prototype (two pointers to same object)
 	- DO overwrite Sub.prototype = Object.create(Super.prototype);
+		- /!\ do this OUTSIDE of the subclass constructor
 		- using Object.create copies the properties of Superclass prototype
 		- now failed lookups fall through to the superclass prototype
 		- unlike "new Super()", does NOT instantiate new classes
 	- OR do it in the constructor function directly
 - Zipping up prototype relationship
+	- /!\ do this OUTSIDE of the subclass constructor
 	- Sub.prototype = Object.create(Super.prototype) replaces its .constructor with Superclass
 	- replace that by Subclass.prototype.constructor = Subclass;
 	- now your subclass reports to the right constructor
@@ -176,3 +178,8 @@ FINAL PROJECT
 - this is all basic out-of-the-box OO stuff in JS, including patterns on top of what's available
 - now go grab our game assets and make a simple froggery game!
 - Forked instructor's base code with engine.js, app.js, styles.css and img sprites
+- Completed basic functional requirements for the game
+- Abstracted classes using Pseudoclassical super/subclass pattern
+- Implemented extras:
+	- score (currently logged to console offscreen)
+	- 
