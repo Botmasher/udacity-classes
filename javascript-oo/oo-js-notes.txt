@@ -182,4 +182,7 @@ FINAL PROJECT
 - Abstracted classes using Pseudoclassical super/subclass pattern
 - Implemented extras:
 	- score (currently logged to console offscreen)
-	- 
+	- player start screen with char sprite choice, then pass param to main game
+	- change player movement from (my switch - not an “extra” for the class)
+	- display score, simple instructions and updates on html page during play
+	- test adding one pickup
