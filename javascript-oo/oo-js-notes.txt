@@ -180,9 +180,12 @@ FINAL PROJECT
 - Forked instructor's base code with engine.js, app.js, styles.css and img sprites
 - Completed basic functional requirements for the game
 - Abstracted classes using Pseudoclassical super/subclass pattern
+	- GameObject -> Enemy, Player -> allEnemies[0,...n], player
 - Implemented extras:
+	- GameController has score and instantiates player obj, enemy array
 	- score (currently logged to console offscreen)
 	- player start screen with char sprite choice, then pass param to main game
 	- change player movement from (my switch - not an “extra” for the class)
 	- display score, simple instructions and updates on html page during play
 	- test adding one pickup
+	- develop pickup class and instantiate array of random pickups through GameController
