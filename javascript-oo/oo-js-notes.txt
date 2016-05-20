@@ -189,3 +189,5 @@ FINAL PROJECT
 	- display score, simple instructions and updates on html page during play
 	- test adding one pickup
 	- develop pickup class and instantiate array of random pickups through GameController
+	- implement hearts/lives counter and gameover.html final score page
+	- add sound effects and music in folders and script their play in app.js
