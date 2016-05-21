@@ -191,3 +191,4 @@ FINAL PROJECT
 	- develop pickup class and instantiate array of random pickups through GameController
 	- implement hearts/lives counter and gameover.html final score page
 	- add sound effects and music in folders and script their play in app.js
+	- add escape hatch that shows up at 100 pts and gives you +100 to leave now
