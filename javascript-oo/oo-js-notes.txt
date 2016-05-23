@@ -192,3 +192,5 @@ FINAL PROJECT
 	- implement hearts/lives counter and gameover.html final score page
 	- add sound effects and music in folders and script their play in app.js
 	- add escape hatch that shows up at 100 pts and gives you +100 to leave now
+- Responded to a comment about the difference between Object.create(Car) and Object.create(Car.prototye)
+- Declaring this class finished!
