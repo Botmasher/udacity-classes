@@ -1,0 +1,18 @@
+HTML5 Canvas
+
+BASICS
+- adding charts, maps, art: can do with CSS or Flash, but Canvas is easier
+- Set of functions for shapes, patterns, animations
+- Going to make memes in this class
+
+- Canvas tag with optional width and height to allocate space on page
+<canvas id="c" width="250" height="250"></canvas>
+
+- Grab canvas from JS code
+<script>
+var c = document.querySelector("#c");
+var ctx = c.getContext("2d"); 			// or "3d", but not in this class
+</script>
+
+- now use methods to start drawing!
+- use coordinates to figure out where to draw (0,0 is top left)
