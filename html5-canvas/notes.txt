@@ -9,10 +9,58 @@ BASICS
 <canvas id="c" width="250" height="250"></canvas>
 
 - Grab canvas from JS code
-<script>
-var c = document.querySelector("#c");
-var ctx = c.getContext("2d"); 			// or "3d", but not in this class
-</script>
+	<script>
+	var c = document.querySelector("#c");
+	var ctx = c.getContext("2d"); 		// or "3d"
+	var img = new Image();
+
+	img.onload = function () {
+		// do stuff once image is loaded
+		ctx.drawIamge(img, 0, 0, c.width, c.height);
+	}
+	img.src = "example.jpg";			// loaded asynchronously!
+	</script>
 
 - now use methods to start drawing!
 - use coordinates to figure out where to draw (0,0 is top left)
+- loaded async, so do stuff .onload like context's .drawImage() function: 
+	.drawImage(x, y, width, height)
+
+- Tainted Canvases may not be exported!
+	// saving the image like this will throw error
+	// if you aren't hosting the images directly
+	var savedImg = c.toDataURL();
+	window.open(savedImg);
+	- to do this straightforwardly, need own server locally or online
+	- can still save the image the old fashioned right-click way
+
+- Drawing rectangles
+	ctx.fillRect (x, y, width, height);
+	ctx.strokeRect (x, y, width, height);
+
+- Clear the rectangle
+	ctx.clearRect (...); 		// your rectangle dimensions
+
+	// or by filling with the bg color
+	ctx.fillStyle = "white";	// or whatever the bg color is
+	ctx.fillRect (...); 		// your rectangle dimensions 
+
+- Clear the entire canvas
+	// clear rect over the entire canvas dimensions
+	ctx.clearRect (0, 0, c.width,c.height);
+
+	// changing height or width clears it, too
+	c.height = c.height;
+
+- Drawing a Path
+	// like a pen moving on the canvas
+	ctx.beginPath();		// we will be drawing a new shape
+	ctx.moveTo (x0, y0);	// move pen on page to pos0
+	ctx.lineTo (x1, y1);	// draw line until a new pos1
+	ctx.lineTo (x2, y2); 	// draw a line until reaching pos2
+	ctx.lineTo (x0, y0);	// draw a line until reaching pos3
+
+	// now fill or stroke path to see the triangle!
+	ctx.fill(); 	// 	OR 	ctx.stroke();
+
+- 

@@ -1,0 +1,36 @@
+<html>
+
+<body>
+
+	<canvas id="c" width="250" height="250">
+	
+	<script>
+	var c = document.querySelector("#c");
+	var ctx = c.getContext("2d");
+
+	// Load and draw an image
+	// var img = new Image();
+	// img.onload = function () {
+	// 	ctx.drawImage(img,0,0,c.width,c.height);
+	// };
+	// img.src = "test-img.png";
+
+	// Clear the canvas
+	ctx.clearRect (0, 0, c.width, c.height);
+
+	// Draw a rectangle
+	ctx.fillStyle = "blue";
+	ctx.fillRect (10, 10, 50, 50);
+
+	// Draw a custom path
+	ctx.beginPath();
+	ctx.moveTo (60, 60);
+	ctx.lineTo (60, 90);
+	ctx.lineTo (90, 90);
+	ctx.lineTo (60, 60);
+	ctx.stroke();
+
+	</script>
+
+</body>
+</html>
