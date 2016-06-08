@@ -63,4 +63,9 @@ BASICS
 	// now fill or stroke path to see the triangle!
 	ctx.fill(); 	// 	OR 	ctx.stroke();
 
+- Scale, Rotate, Translate apply to all subsequent commands until they're reversed
+	ctx.scale(x,y);				// scale subsequent commands
+	ctx.rotate(angleRadians);	// rot subsequent commands
+	ctx.translate(x,y);			// move subsequent commands
+
 - 
