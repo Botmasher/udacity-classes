@@ -68,4 +68,14 @@ BASICS
 	ctx.rotate(angleRadians);	// rot subsequent commands
 	ctx.translate(x,y);			// move subsequent commands
 
-- 
+- canvas .save / .restore put state on / pop state from stack
+
+- Colors: name colors, hex colors
+	- like other things, only apply to fills/strokes AFTER color assigned
+
+- Text
+	// can fill or stroke text just like the shapes
+	ctx.strokeText ("My Text!", 50, 50);
+	ctx.strokeText ("My Text!", 50, 50);
+
+	// canvas also includes font style and line width

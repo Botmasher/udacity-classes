@@ -2,7 +2,7 @@
 
 <body>
 
-	<canvas id="c" width="250" height="250">
+	<canvas id="c" width="900" height="500">
 	
 	<script>
 	var c = document.querySelector("#c");
@@ -29,6 +29,18 @@
 	ctx.lineTo (90, 90);
 	ctx.lineTo (60, 60);
 	ctx.stroke();
+
+	// text and font
+	memeText = "canvas memes!";
+	ctx.font = "36px Impact";
+	ctx.textAlign = "center";
+
+	ctx.fillStyle = "white";
+	ctx.strokeStyle = "black";
+	ctx.lineWidth = 3;
+	
+	ctx.fillText(memeText.toUpperCase(), 150, 200);
+	ctx.strokeText(memeText.toUpperCase(), 150, 200);
 
 	</script>
 
