@@ -79,3 +79,5 @@ BASICS
 	ctx.strokeText ("My Text!", 50, 50);
 
 	// canvas also includes font style and line width
+
+- 
