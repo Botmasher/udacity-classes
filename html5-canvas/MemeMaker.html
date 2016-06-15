@@ -48,14 +48,22 @@
       var canvas = document.querySelector('canvas');
       var ctx = canvas.getContext("2d");
       
-      // Student code
-      var img = new Image();
-      img.src = image;
-      img.onload = function () {
-        ctx.drawImage(img,0,0,canvas.width,canvas.height);
+      // draw meme image
+      if (typeof image != null) {
+        ctx.drawImage(image,0,0,canvas.width,canvas.height);
       }
-      console.log(image);
-
+      // draw meme text
+      if (topLine != null && bottomLine != null) {
+        ctx.textAlign = "center";
+        ctx.font = "50px Impact"
+        ctx.fillStyle = "white";
+        ctx.strokeStyle = "black";
+        ctx.lineWidth = "10px";
+        ctx.fillText (topLine.toUpperCase(), 250, 50);
+        ctx.strokeText (topLine.toUpperCase(), 250, 50);
+        ctx.fillText (bottomLine.toUpperCase(), 250, 450);
+        ctx.strokeText (bottomLine.toUpperCase(), 250, 450);
+      }
     }
     
     function saveFile() {
