@@ -53,19 +53,23 @@
         ctx.drawImage(image,0,0,canvas.width,canvas.height);
       }
       // draw meme text
-      if (topLine != null && bottomLine != null) {
+      memeText(topLine, 250, 50);
+      memeText(bottomLine, 250, 450);
+    }
+    
+    function memeText (text, xPos, yPos) {
+      if (text != null) {
         ctx.textAlign = "center";
         ctx.font = "50px Impact"
         ctx.fillStyle = "white";
         ctx.strokeStyle = "black";
         ctx.lineWidth = "10px";
-        ctx.fillText (topLine.toUpperCase(), 250, 50);
-        ctx.strokeText (topLine.toUpperCase(), 250, 50);
-        ctx.fillText (bottomLine.toUpperCase(), 250, 450);
-        ctx.strokeText (bottomLine.toUpperCase(), 250, 450);
+        ctx.fillText (text.toUpperCase(), xPos, yPos);
+        ctx.strokeText (text.toUpperCase(), xPos, yPos);
       }
     }
-    
+
+
     function saveFile() {
       window.open(document.querySelector('canvas').toDataURL());
     }
