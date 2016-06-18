@@ -42,33 +42,29 @@
       
       redrawMeme(window.imageSrc, window.topLineText, window.bottomLineText);
     }
-    
+
     function redrawMeme(image, topLine, bottomLine) {
       // Get Canvas2DContext
       var canvas = document.querySelector('canvas');
       var ctx = canvas.getContext("2d");
-      
+
       // draw meme image
       if (typeof image != null) {
+        canvas.width = image.width;     // added to resize to img
+        canvas.height = image.height;   // added to resize to img
         ctx.drawImage(image,0,0,canvas.width,canvas.height);
       }
       // draw meme text
-      canvas.width = image.width;
-      canvas.height = image.height;
-      memeText(topLine, canvas.width/2, 50);
-      memeText(bottomLine, canvas.width/2, canvas.height-50);
-    }
-    
-    function memeText (text, xPos, yPos) {
-      if (text != null) {
-        ctx.textAlign = "center";
-        ctx.font = "50px Impact"
-        ctx.fillStyle = "white";
-        ctx.strokeStyle = "black";
-        ctx.lineWidth = "10px";
-        ctx.fillText (text.toUpperCase(), xPos, yPos);
-        ctx.strokeText (text.toUpperCase(), xPos, yPos);
-      }
+      var textSize = canvas.width*0.08;
+      ctx.textAlign = "center";
+      ctx.font = "" + textSize + "px Impact";
+      ctx.fillStyle = "white";
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = "10px";
+      ctx.fillText (topLine.toUpperCase(), canvas.width*0.5, textSize+20);
+      ctx.strokeText (topLine.toUpperCase(), canvas.width*0.5, textSize+20);
+      ctx.fillText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height-textSize+20);
+      ctx.strokeText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height-textSize+20);
     }
 
 
@@ -79,6 +75,7 @@
     function handleFileSelect(evt) {
       var canvasWidth = 500;
       var canvasHeight = 500;
+
       var file = evt.target.files[0];
       
       
@@ -89,14 +86,13 @@
         
         // Create an image object
         var image = new Image();
-        image.onload = function() {
-          
+        image.onload = function() { 
           window.imageSrc = this;
           redrawMeme(window.imageSrc, null, null);
         }
         
         // Set image data to background image.
-        image.src = data;
+        image.src = data;        
         console.log(fileObject.target.result);
       };
       reader.readAsDataURL(file)
