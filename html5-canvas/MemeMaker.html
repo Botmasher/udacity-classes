@@ -53,8 +53,10 @@
         ctx.drawImage(image,0,0,canvas.width,canvas.height);
       }
       // draw meme text
-      memeText(topLine, 250, 50);
-      memeText(bottomLine, 250, 450);
+      canvas.width = image.width;
+      canvas.height = image.height;
+      memeText(topLine, canvas.width/2, 50);
+      memeText(bottomLine, canvas.width/2, canvas.height-50);
     }
     
     function memeText (text, xPos, yPos) {
