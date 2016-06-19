@@ -8,6 +8,14 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <style>
+    body {
+      padding: auto;
+      margin: auto;
+    }
+    div {
+      margin-left: 10px;
+      margin-bottom: 10px;
+    }
     #image-container {
       display: flex;
     }
@@ -16,12 +24,17 @@
 
 <body>
 
-  <div>
+  <div id = "header">
+    <h1>MemeMaker</h1>
+  </div>
+  
+  <div id = "file-load">
     <input type="file" id="file" />  
   </div>
+  
   <div id="image-container">
     <canvas width="500" height="500"></canvas>
-    <div>
+    <div id="inputs">
       <span>Top Line:</span><br/>
       <input id="topLineText" type="text"><br/>
       <span>Bottom Line:</span><br/>
@@ -29,6 +42,7 @@
       <button id="saveBtn">Save</button>
     </div>
   </div>
+
   <script>
     function textChangeListener (evt) {
       var id = evt.target.id;
@@ -60,7 +74,7 @@
       ctx.font = "" + textSize + "px Impact";
       ctx.fillStyle = "white";
       ctx.strokeStyle = "black";
-      ctx.lineWidth = "10px";
+      ctx.lineWidth = textSize*0.03;
       ctx.fillText (topLine.toUpperCase(), canvas.width*0.5, textSize+20);
       ctx.strokeText (topLine.toUpperCase(), canvas.width*0.5, textSize+20);
       ctx.fillText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height-textSize+20);
@@ -77,8 +91,6 @@
       var canvasHeight = 500;
 
       var file = evt.target.files[0];
-      
-      
       
       var reader = new FileReader();
       reader.onload = function(fileObject) {
