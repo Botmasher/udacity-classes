@@ -66,21 +66,33 @@
       if (typeof image != null) {
         canvas.width = image.width;     // added to resize to img
         canvas.height = image.height;   // added to resize to img
-        ctx.drawImage(image,0,0,canvas.width,canvas.height);
+        ctx.drawImage(image,0,0,image.width,image.height);
       }
       // draw meme text
-      var textSize = canvas.width*0.08;
+      var textSize = parseInt(canvas.width*0.08);
       ctx.textAlign = "center";
       ctx.font = "" + textSize + "px Impact";
       ctx.fillStyle = "white";
       ctx.strokeStyle = "black";
       ctx.lineWidth = textSize*0.03;
-      ctx.fillText (topLine.toUpperCase(), canvas.width*0.5, textSize+20);
-      ctx.strokeText (topLine.toUpperCase(), canvas.width*0.5, textSize+20);
-      ctx.fillText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height-textSize+20);
-      ctx.strokeText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height-textSize+20);
+      if (topLine != null) {
+        var lineCount = parseInt(topLine.length/(textSize*0.1));
+        console.log (lineCount);
+        if (lineCount > 1) {
+          // split text into evenly sized lines
+          for (var i = 0; i <= lineCount; i++) {
+            ctx.fillText (topLine.slice(textSize*i,textSize*i+1), canvas.width*0.5, textSize+20);
+          }
+        } else {
+          ctx.fillText (topLine.toUpperCase(), canvas.width*0.5, textSize+20);
+          ctx.strokeText (topLine.toUpperCase(), canvas.width*0.5, textSize+20);
+        }
+      }
+      if (bottomLine != null) {
+        ctx.fillText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height-textSize+20);
+        ctx.strokeText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height-textSize+20);
+      }
     }
-
 
     function saveFile() {
       window.open(document.querySelector('canvas').toDataURL());
@@ -104,10 +116,10 @@
         }
         
         // Set image data to background image.
-        image.src = data;        
-        console.log(fileObject.target.result);
+        image.src = data;
+        console.log(image.src);
       };
-      reader.readAsDataURL(file)
+      reader.readAsDataURL(file);
     }
     
     window.topLineText = "";

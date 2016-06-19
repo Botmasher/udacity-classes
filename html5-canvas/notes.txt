@@ -80,4 +80,8 @@ BASICS
 
 	// canvas also includes font style and line width
 
+ANIMATION
+- they put together a neat silent film using greenscreen and canvas!
+- no sound in Canvas
+- pixels -> RGB(A)
 - 
