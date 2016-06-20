@@ -81,7 +81,8 @@
         if (lineCount > 1) {
           // split text into evenly sized lines
           for (var i = 0; i <= lineCount; i++) {
-            ctx.fillText (topLine.slice(textSize*i,textSize*i+1), canvas.width*0.5, textSize+20);
+            ctx.fillText (topLine.slice(textSize*0.4*i,textSize*0.4*(i+1)).toUpperCase(), canvas.width*0.5, textSize+20+(50*i));
+            ctx.strokeText (topLine.slice(textSize*0.4*i,textSize*0.4*(i+1)).toUpperCase(), canvas.width*0.5, textSize+20+(50*i));
           }
         } else {
           ctx.fillText (topLine.toUpperCase(), canvas.width*0.5, textSize+20);
