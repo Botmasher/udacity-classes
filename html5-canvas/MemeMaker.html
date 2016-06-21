@@ -77,7 +77,6 @@
       ctx.lineWidth = textSize*0.03;
       if (topLine != null) {
         var lineCount = parseInt(topLine.length/(textSize*0.1));
-        console.log (lineCount);
         if (lineCount > 1) {
           // split text into evenly sized lines
           for (var i = 0; i <= lineCount; i++) {
@@ -90,8 +89,17 @@
         }
       }
       if (bottomLine != null) {
-        ctx.fillText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height-textSize+20);
-        ctx.strokeText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height-textSize+20);
+        var lineCount = parseInt(bottomLine.length/(textSize*0.1));
+        if (lineCount > 1) {
+          // split text into evenly sized lines
+          for (var i = 0; i <= lineCount; i++) {
+            ctx.fillText (bottomLine.slice(-textSize*0.4*(i+1),-textSize*0.4*i).toUpperCase(), canvas.width*0.5, canvas.height - (textSize+20+(50*i)));
+            ctx.strokeText (bottomLine.slice(-textSize*0.4*(i+1),-textSize*0.4*i).toUpperCase(), canvas.width*0.5, canvas.height- (textSize+20+(50*i)));
+          }
+        } else {
+          ctx.fillText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height - textSize+20);
+          ctx.strokeText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height - textSize+20);
+        }
       }
     }
 
