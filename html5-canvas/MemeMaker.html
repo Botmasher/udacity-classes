@@ -57,48 +57,42 @@
       redrawMeme(window.imageSrc, window.topLineText, window.bottomLineText);
     }
 
-    function redrawMeme(image, topLine, bottomLine) {
-      // Get Canvas2DContext
-      var canvas = document.querySelector('canvas');
-      var ctx = canvas.getContext("2d");
-
-      // draw meme image
-      if (typeof image != null) {
+    function resizeAndDrawImage(image) {
         canvas.width = image.width;     // added to resize to img
         canvas.height = image.height;   // added to resize to img
-        ctx.drawImage(image,0,0,image.width,image.height);
+        ctx.drawImage (image, 0, 0, image.width, image.height);
+    }
+
+    function redrawMeme(image, topLine, bottomLine) {
+      // draw meme image
+      if (typeof image != null) {
+        resizeAndDrawImage (image);
       }
-      // draw meme text
+
+      // setup meme text
       var textSize = parseInt(canvas.width*0.08);
       ctx.textAlign = "center";
       ctx.font = "" + textSize + "px Impact";
       ctx.fillStyle = "white";
       ctx.strokeStyle = "black";
       ctx.lineWidth = textSize*0.03;
+
+      // draw meme text in lines
+      var maxLength = 20;
       if (topLine != null) {
-        var lineCount = parseInt(topLine.length/(textSize*0.1));
-        if (lineCount > 1) {
-          // split text into evenly sized lines
-          for (var i = 0; i <= lineCount; i++) {
-            ctx.fillText (topLine.slice(textSize*0.4*i,textSize*0.4*(i+1)).toUpperCase(), canvas.width*0.5, textSize+20+(50*i));
-            ctx.strokeText (topLine.slice(textSize*0.4*i,textSize*0.4*(i+1)).toUpperCase(), canvas.width*0.5, textSize+20+(50*i));
-          }
-        } else {
-          ctx.fillText (topLine.toUpperCase(), canvas.width*0.5, textSize+20);
-          ctx.strokeText (topLine.toUpperCase(), canvas.width*0.5, textSize+20);
+        var lineCount = parseInt(topLine.length/maxLength) + 1;
+        // fill and stroke each meme text line
+        for (var i = 0; i <= lineCount; i++) {
+          ctx.fillText (topLine.slice(maxLength*i,maxLength*(i+1)).toUpperCase(), canvas.width*0.5, textSize*(i+1));
+          ctx.strokeText (topLine.slice(maxLength*i,maxLength*(i+1)).toUpperCase(), canvas.width*0.5, textSize*(i+1));
         }
       }
       if (bottomLine != null) {
-        var lineCount = parseInt(bottomLine.length/(textSize*0.1));
-        if (lineCount > 1) {
-          // split text into evenly sized lines
-          for (var i = 0; i <= lineCount; i++) {
-            ctx.fillText (bottomLine.slice(-textSize*0.4*(i+1),-textSize*0.4*i).toUpperCase(), canvas.width*0.5, canvas.height - (textSize+20+(50*i)));
-            ctx.strokeText (bottomLine.slice(-textSize*0.4*(i+1),-textSize*0.4*i).toUpperCase(), canvas.width*0.5, canvas.height- (textSize+20+(50*i)));
-          }
-        } else {
-          ctx.fillText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height - textSize+20);
-          ctx.strokeText (bottomLine.toUpperCase(), canvas.width*0.5, canvas.height - textSize+20);
+        var lineCount = parseInt(bottomLine.length/maxLength) + 1;
+        // count meme text lines backwards to fill bottom-to-top
+        for (var i = lineCount; i >= 0; i--) {
+          ctx.fillText (bottomLine.slice(maxLength*i,maxLength*(i+1)).toUpperCase(), canvas.width*0.5, canvas.height - textSize*(lineCount-i-0.4));
+          ctx.strokeText (bottomLine.slice(maxLength*i,maxLength*(i+1)).toUpperCase(), canvas.width*0.5, canvas.height - textSize*(lineCount-i-0.4));
         }
       }
     }
@@ -108,8 +102,8 @@
     }
     
     function handleFileSelect(evt) {
-      var canvasWidth = 500;
-      var canvasHeight = 500;
+      //var canvasWidth = 500;
+      //var canvasHeight = 500;
 
       var file = evt.target.files[0];
       
@@ -123,16 +117,25 @@
           window.imageSrc = this;
           redrawMeme(window.imageSrc, null, null);
         }
-        
         // Set image data to background image.
         image.src = data;
-        console.log(image.src);
+
+        // Resize loaded img trick - focus on the first text box
+        setTimeout(function(){
+          document.getElementById('topLineText').focus();
+        }, 20);
+
       };
       reader.readAsDataURL(file);
     }
     
     window.topLineText = "";
     window.bottomLineText = "";
+
+    // Get Canvas2DContext
+    var canvas = document.querySelector('canvas');
+    var ctx = canvas.getContext("2d");
+
     var input1 = document.getElementById('topLineText');
     var input2 = document.getElementById('bottomLineText');
     input1.oninput = textChangeListener;
