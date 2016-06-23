@@ -80,8 +80,35 @@ BASICS
 
 	// canvas also includes font style and line width
 
-ANIMATION
+IMAGE EFFECTS PIXEL BY PIXEL
 - they put together a neat silent film using greenscreen and canvas!
 - no sound in Canvas
 - pixels -> RGB(A)
+- Filters for image editing - users can do things & save locally!
+- Image backing the canvas is ImageData object
+	ImageData
+	- width
+	- height
+	- data (Uint8ClampedArray)
+		unsigned (pos values only), 8-bit integers, one giant non-nested list
+- ImageData functions
+	createImageData
+	getImageData
+	putImageData
+- Use to change every nth pixel, create a grayscale effect, invert colors by subtracting rgba vals from 255
+
+ANIMATION
+- Moving images make effects more interesting
+- Videos have events we can subscribe to and listen
+	<video id = "v" controls loop src="test.mp4"></video>
+	<script type="text/javascript">
+		document.addEventListener('DOMContentLoaded', function() {
+			var v = document.querySelector('#v');
+			v.addEventListener('play', function(){
+				if (v.paused || v.ended) return;
+					draw();
+			});
+		});
+	</script>
+- The above shows a single frame of the video. Play events are fired when user clicks play!
 - 

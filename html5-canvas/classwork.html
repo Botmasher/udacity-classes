@@ -42,6 +42,53 @@
 	ctx.fillText(memeText.toUpperCase(), 150, 200);
 	ctx.strokeText(memeText.toUpperCase(), 150, 200);
 
+	// get and put image data
+	var imgData = ctx.getImageData(0,0,c.width,c.height);
+	//ctx.putImageData(imgData,0,0);
+
+
+	/* Change every nth pixel to green */
+
+	// calculate number of pixels based on r-g-b-a count in data
+	// this means there are 4 values per pixel!
+	var pixels = imgData.data.length / 4;
+	var n = 10;
+	// loop through pixels and change
+	for (var i = 0; i < pixels; i++) {
+		// set rgba value for every nth pixel to green
+		if (i % n === 0) {
+			imgData.data[i*4] = 0;
+			imgData.data[i*4+1] = 255;
+			imgData.data[i*4+2] = 0;
+			imgData.data[i*4+3] = 255;
+		}
+	}
+	ctx.putImageData(imgData,0,0);
+
+
+	/* Convert image to grayscale */
+
+	// return gray values for a given rgba pixel
+	function getGrayPixel (r,g,b,a) {
+		var gray = (0.212*r) + (0.7*g) + (0.07*b);
+		return gray;
+	}
+
+	// loop through pixels and turn to gray
+	var r,g,b,a;
+	for (var i = 0; i < pixels; i++) {
+		r = imgData.data[i*4+0];
+		g = imgData.data[i*4+1];
+		b = imgData.data[i*4+2];
+		a = imgData.data[i*4+3];
+		grayPixel = getGrayPixel(r,g,b,a);
+		imgData.data[i*4+0] = grayPixel;
+		imgData.data[i*4+1] = grayPixel;
+		imgData.data[i*4+2] = grayPixel;
+		imgData.data[i*4+3] = grayPixel;
+	}
+	ctx.putImageData(imgData,0,0);
+
 	</script>
 
 </body>
