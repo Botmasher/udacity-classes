@@ -89,6 +89,15 @@
 	}
 	ctx.putImageData(imgData,0,0);
 
+
+	// track the location of user clicks
+	function trackMouseClick(evt) {
+		x = evt.clientX;	// = evt.clientX - c.offsetLeft;
+		y = evt.clientY;	// = evt.clientY - c.offsetTop;
+		console.log ("Detected you at " + x + ", " + y + "!");
+	}
+	c.addEventListener("click", trackMouseClick, false);
+
 	</script>
 
 </body>

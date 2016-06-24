@@ -111,4 +111,28 @@ ANIMATION
 		});
 	</script>
 - The above shows a single frame of the video. Play events are fired when user clicks play!
-- 
+* - Common to animate by calling draw function to setInterval or setTimeout, BUT
+* - requestAnimationFrame is "the better way"!
+	- this is a basic browser API for the update loop process
+	- ONLY requests when last frame drawn and window actively used
+	
+	function draw(){
+		canvas.getContext('2d').drawImage(myVideo,0,0);
+		requestAnimationFrame(draw);
+	}
+
+- INPUT is another thing we can work with over time
+	- create a game loop!
+	- use libraries: Kibo.js associates keycodes w common names
+	- track mouse clicks with an event listener
+
+	/* 
+	 * 	Use the event's client X,Y and canvas offsets
+	 *	to get canvas-relative position of each click
+	 */
+	function trackClick(event) {
+		x = event.clientX - canvas.offsetLeft;
+		y = event.clientY - canvas.offsetTop;
+		console.log ("You clicked here: "+x+", "+y);
+	}
+	canvas.addEventListener("click", trackClick, false);
