@@ -98,8 +98,13 @@
 	}
 	c.addEventListener("click", trackMouseClick, false);
 
+	
+	/* Animate a square over time */
+
 	var x = 0;
 	var y = 0;
+	var sqW = 2;
+	var sqH = 2;
 	// animate an element over time
 	function loopAnimation () {
 		requestAnimationFrame (loopAnimation);
@@ -112,10 +117,9 @@
 	function drawBall () {
 		var time = new Date().getTime() * 0.002;
 
+		ctx.clearRect(0, 0, c.width, c.height);
 		ctx.fillStyle = 'blue';
-		ctx.fillRect (x, y, x+2, y+2);
-		x+=2;
-		y+=2;
+		ctx.fillRect (x, y, x+sqW, y+sqH);
 		ctx.beginPath();
 		ctx.fillStyle = 'red';
 		ctx.closePath();
