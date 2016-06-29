@@ -101,27 +101,25 @@
 	
 	/* Animate a square over time */
 
-	var x = 0;
-	var y = 0;
-	var sqW = 2;
-	var sqH = 2;
+	var sPosX = 0;		// shape location
+	var sPosY = 0;
+	var sWidth = 10;	// shape (rect) dimensions
+	var sHeight = 10;
 	// animate an element over time
 	function loopAnimation () {
 		requestAnimationFrame (loopAnimation);
-		drawBall ();
-		x += 2;
-		y += 2;
+		drawShape ();
+		sPosX += 2;
 	}
 	loopAnimation();
 
-	function drawBall () {
+	function drawShape () {
 		var time = new Date().getTime() * 0.002;
-
 		ctx.clearRect(0, 0, c.width, c.height);
-		ctx.fillStyle = 'blue';
-		ctx.fillRect (x, y, x+sqW, y+sqH);
-		ctx.beginPath();
 		ctx.fillStyle = 'red';
+		ctx.fillRect (sPosX, sPosY, sWidth, sHeight);
+		ctx.beginPath();
+		//ctx.fillStyle = 'red';
 		ctx.closePath();
 		ctx.fill();
 	}
