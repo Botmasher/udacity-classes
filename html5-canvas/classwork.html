@@ -9,11 +9,11 @@
 	var ctx = c.getContext("2d");
 
 	// Load and draw an image
-	// var img = new Image();
-	// img.onload = function () {
-	// 	ctx.drawImage(img,0,0,c.width,c.height);
-	// };
-	// img.src = "test-img.png";
+	var img = new Image();
+	img.onload = function () {
+		ctx.drawImage(img,0,0,c.width,c.height);
+	};
+	img.src = "test-img.png";
 
 	// Clear the canvas
 	ctx.clearRect (0, 0, c.width, c.height);
@@ -43,8 +43,15 @@
 	ctx.strokeText(memeText.toUpperCase(), 150, 200);
 
 	// get and put image data
+	var img = new Image();
+	img.onload = function () {
+		ctx.drawImage(img,0,0,c.width,c.height);
+	};
+	img.src = "test-img.png";
 	var imgData = ctx.getImageData(0,0,c.width,c.height);
 	//ctx.putImageData(imgData,0,0);
+
+	var imgDataForLater = ctx.getImageData(0,0,c.width,c.height);
 
 
 	/* Change every nth pixel to green */
@@ -109,6 +116,7 @@
 	function loopAnimation () {
 		requestAnimationFrame (loopAnimation);
 		drawShape ();
+		moveImage ();
 		sPosX += 2;
 	}
 	loopAnimation();
@@ -122,6 +130,10 @@
 		//ctx.fillStyle = 'red';
 		ctx.closePath();
 		ctx.fill();
+	}
+
+	function moveImage() {
+		ctx.putImageData(imgDataForLater, sPosX, sPosY);
 	}
 
 
