@@ -42,7 +42,9 @@
 	ctx.fillText(memeText.toUpperCase(), 150, 200);
 	ctx.strokeText(memeText.toUpperCase(), 150, 200);
 
-	// get and put image data
+	
+	/* Get and put image data */
+
 	var img = new Image();
 	img.onload = function () {
 		ctx.drawImage(img,0,0,c.width,c.height);
@@ -50,8 +52,6 @@
 	img.src = "test-img.png";
 	var imgData = ctx.getImageData(0,0,c.width,c.height);
 	//ctx.putImageData(imgData,0,0);
-
-	var imgDataForLater = ctx.getImageData(0,0,c.width,c.height);
 
 
 	/* Change every nth pixel to green */
@@ -97,7 +97,7 @@
 	ctx.putImageData(imgData,0,0);
 
 
-	// track the location of user clicks
+	/* Track the location of user clicks */
 	function trackMouseClick(evt) {
 		x = evt.clientX;	// = evt.clientX - c.offsetLeft;
 		y = evt.clientY;	// = evt.clientY - c.offsetTop;
@@ -112,14 +112,14 @@
 	var sPosY = 0;
 	var sWidth = 10;	// shape (rect) dimensions
 	var sHeight = 10;
+
 	// animate an element over time
-	function loopAnimation () {
-		requestAnimationFrame (loopAnimation);
+	function loopShapeAnimation () {
+		requestAnimationFrame (loopShapeAnimation);
 		drawShape ();
-		moveImage ();
 		sPosX += 2;
 	}
-	loopAnimation();
+	loopShapeAnimation();
 
 	function drawShape () {
 		var time = new Date().getTime() * 0.002;
@@ -132,8 +132,21 @@
 		ctx.fill();
 	}
 
+
+	/* Animate an image over time
+	 * 	- uses img loaded from top of this snippet
+	 * 	- relies on position and dimension vars from above
+	 *	- watch out for interactions with shape animation above
+	 */
+
+	function loopImgAnimation () {
+		requestAnimationFrame (loopImgAnimation);
+		moveImage ();
+	}
+	loopImgAnimation();
+
 	function moveImage() {
-		ctx.putImageData(imgDataForLater, sPosX, sPosY);
+		ctx.drawImage(img, sPosX, sPosY+20, sWidth*10, sHeight*10);
 	}
 
 
