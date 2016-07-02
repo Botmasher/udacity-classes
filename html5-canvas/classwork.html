@@ -133,11 +133,15 @@
 	}
 
 
-	/* Animate an image over time
+	/* Animate an image over time on keypress
 	 * 	- uses img loaded from top of this snippet
-	 * 	- relies on position and dimension vars from above
-	 *	- watch out for interactions with shape animation above
 	 */
+	 
+	var userKey = "up";
+	var imgPosX = 0;
+	var imgPosY = 20;
+	var imgWidth = 200;
+	var imgHeight = 200;
 
 	function loopImgAnimation () {
 		requestAnimationFrame (loopImgAnimation);
@@ -146,9 +150,25 @@
 	loopImgAnimation();
 
 	function moveImage() {
-		ctx.drawImage(img, sPosX, sPosY+20, sWidth*10, sHeight*10);
+		// move when key is up, stop moving when key released
+		if (userKey == "down") {
+			imgPosX += 3;
+		} else if (userKey == "up"){
+			imgPosX = imgPosX;
+		}
+		ctx.drawImage(img, imgPosX, imgPosY, imgWidth, imgHeight);
 	}
 
+	// Set key to pressed or released
+	function SetKeyPressed (event) {
+		userKey = "down";
+		//return event.keyCode;
+	}
+	function SetKeyReleased (event) {
+		userKey = "up";
+	}
+	window.addEventListener ("keydown", SetKeyPressed, false);
+	window.addEventListener ("keyup", SetKeyReleased, false);
 
 	</script>
 
