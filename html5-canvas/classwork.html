@@ -137,7 +137,7 @@
 	 * 	- uses img loaded from top of this snippet
 	 */
 	 
-	var userKey = "up";
+	var userKey = false;
 	var imgPosX = 0;
 	var imgPosY = 20;
 	var imgWidth = 200;
@@ -150,22 +150,25 @@
 	loopImgAnimation();
 
 	function moveImage() {
-		// move when key is up, stop moving when key released
-		if (userKey == "down") {
+		// move when key is pressed, stop moving when key released
+		if (userKey) {
 			imgPosX += 3;
-		} else if (userKey == "up"){
+		} else if (!userKey){
 			imgPosX = imgPosX;
+		}
+		if (imgPosX > c.width) {
+			imgPosX = 0;
 		}
 		ctx.drawImage(img, imgPosX, imgPosY, imgWidth, imgHeight);
 	}
 
 	// Set key to pressed or released
 	function SetKeyPressed (event) {
-		userKey = "down";
+		userKey = true;
 		//return event.keyCode;
 	}
 	function SetKeyReleased (event) {
-		userKey = "up";
+		userKey = false;
 	}
 	window.addEventListener ("keydown", SetKeyPressed, false);
 	window.addEventListener ("keyup", SetKeyReleased, false);
