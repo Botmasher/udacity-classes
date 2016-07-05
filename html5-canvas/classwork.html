@@ -134,33 +134,74 @@
 
 
 	/* Animate an image over time on keypress
-	 * 	- uses img loaded from top of this snippet
+	 * 	- stores images in states in a player character object
 	 */
-	 
+	
+	var MainCharacter = function (posX, posY, width, height) {
+		this.x = posX;
+		this.y = posY;
+		this.width = width;
+		this.height = height;
+		this.states = {"_UNDEFINED_":null};
+		this.state = "_UNDEFINED_";
+	} 
+	MainCharacter.prototype.loadImage = function (imgSource) {
+		var newImg = new Image();
+		newImg.onload = function () {
+			ctx.drawImage(newImg, this.x, this.y, this.width , this.height);
+		};
+		newImg.src = imgSource;
+		return newImg;
+	}
+	MainCharacter.prototype.addState = function (stateName, stateImg) {
+		if (stateName in this.states || typeof stateName !== "string" || typeof stateImg !== "string") {
+			return null;
+		}
+		this.states[stateName] = this.loadImage(stateImg);
+	}
+	MainCharacter.prototype.move = function (offsetX, offsetY) {
+		this.x += offsetX;
+		this.y += offsetY;
+		if (this.state != "_UNDEFINED_") {
+			this.draw();
+		}
+	}
+	MainCharacter.prototype.draw = function () {
+		ctx.drawImage (this.states[this.state], this.x, this.y, this.width, this.height);
+	}
+
+	player = new MainCharacter(10,10,200,200);
+	player.addState("walking","test-img.png");
+	player.addState("stopping","test-img-2.png");
+	player.state = "walking";
+
+	// check if any key is pressed
 	var userKey = false;
-	var imgPosX = 0;
-	var imgPosY = 20;
-	var imgWidth = 200;
-	var imgHeight = 200;
 
 	function loopImgAnimation () {
 		requestAnimationFrame (loopImgAnimation);
-		moveImage ();
+		if (userKey) {
+			player.state = "walking";
+			player.move(2,0);
+		} else {
+			player.state = "stopping";
+			player.move(0,0);
+		}
 	}
 	loopImgAnimation();
 
-	function moveImage() {
-		// move when key is pressed, stop moving when key released
-		if (userKey) {
-			imgPosX += 3;
-		} else if (!userKey){
-			imgPosX = imgPosX;
-		}
-		if (imgPosX > c.width) {
-			imgPosX = 0;
-		}
-		ctx.drawImage(img, imgPosX, imgPosY, imgWidth, imgHeight);
-	}
+	// function moveImage() {
+	// 	// move when key is pressed, stop moving when key released
+	// 	if (userKey) {
+	// 		imgPosX += 3;
+	// 	} else if (!userKey){
+	// 		imgPosX = imgPosX;
+	// 	}
+	// 	if (imgPosX > c.width) {
+	// 		imgPosX = 0;
+	// 	}
+	// 	ctx.drawImage(img, imgPosX, imgPosY, imgWidth, imgHeight);
+	// }
 
 	// Set key to pressed or released
 	function SetKeyPressed (event) {
