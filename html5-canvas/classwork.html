@@ -137,6 +137,7 @@
 	 * 	- stores images in states in a player character object
 	 */
 	
+	// set up a player object
 	var MainCharacter = function (posX, posY, width, height) {
 		this.x = posX;
 		this.y = posY;
@@ -168,8 +169,29 @@
 	}
 	MainCharacter.prototype.draw = function () {
 		ctx.drawImage (this.states[this.state], this.x, this.y, this.width, this.height);
+		this.flipImage();
+	}
+	MainCharacter.prototype.flipImage = function () {
+		var flipData = ctx.getImageData(this.x, this.y, this.width, this.height);
+		tempData = [];
+		var r,g,b,a;
+		for (var i = 0; i < flipData.data.length; i++) {
+			r = flipData.data [ flipData.data.length - (i+3) ];
+			g = flipData.data [ flipData.data.length - (i+2) ];
+			b = flipData.data [ flipData.data.length - (i+1) ];
+			a = flipData.data [ flipData.data.length - (i+0) ];
+			tempData.push (r);
+			tempData.push (g);
+			tempData.push (b);
+			tempData.push (a);
+		}
+		for (var i=0; i<tempData.length; i++) {
+			flipData.data[i] = tempData[i];
+		}
+		ctx.putImageData(flipData, this.x, this.y);
 	}
 
+	// instantiate the player
 	player = new MainCharacter(10,10,200,200);
 	player.addState("walking","test-img.png");
 	player.addState("stopping","test-img-2.png");
