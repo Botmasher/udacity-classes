@@ -136,3 +136,5 @@ ANIMATION
 		console.log ("You clicked here: "+x+", "+y);
 	}
 	canvas.addEventListener("click", trackClick, false);
+
+- 

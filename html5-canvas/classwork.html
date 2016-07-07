@@ -138,7 +138,7 @@
 	 */
 	
 	// set up a player object
-	var MainCharacter = function (posX, posY, width, height) {
+	var MainCharacter = function(posX, posY, width, height) {
 		this.x = posX;
 		this.y = posY;
 		this.width = width;
@@ -146,7 +146,7 @@
 		this.states = {"_UNDEFINED_":null};
 		this.state = "_UNDEFINED_";
 	} 
-	MainCharacter.prototype.loadImage = function (imgSource) {
+	MainCharacter.prototype.loadImage = function(imgSource) {
 		var newImg = new Image();
 		newImg.onload = function () {
 			ctx.drawImage(newImg, this.x, this.y, this.width , this.height);
@@ -154,87 +154,66 @@
 		newImg.src = imgSource;
 		return newImg;
 	}
-	MainCharacter.prototype.addState = function (stateName, stateImg) {
+	MainCharacter.prototype.addState = function(stateName, stateImg) {
 		if (stateName in this.states || typeof stateName !== "string" || typeof stateImg !== "string") {
 			return null;
 		}
 		this.states[stateName] = this.loadImage(stateImg);
 	}
-	MainCharacter.prototype.move = function (offsetX, offsetY) {
-		this.x += offsetX;
+	MainCharacter.prototype.move = function(offsetX, offsetY) {
+		// set location
+		if (this.x > c.width) {
+			this.x = 0;
+		} else {
+			this.x += offsetX;
+		}
 		this.y += offsetY;
+		// draw at this position and this state
 		if (this.state != "_UNDEFINED_") {
 			this.draw();
 		}
 	}
-	MainCharacter.prototype.draw = function () {
+	MainCharacter.prototype.draw = function() {
 		ctx.drawImage (this.states[this.state], this.x, this.y, this.width, this.height);
-		this.flipImage();
-	}
-	MainCharacter.prototype.flipImage = function () {
-		var flipData = ctx.getImageData(this.x, this.y, this.width, this.height);
-		tempData = [];
-		var r,g,b,a;
-		for (var i = 0; i < flipData.data.length; i++) {
-			r = flipData.data [ flipData.data.length - (i+3) ];
-			g = flipData.data [ flipData.data.length - (i+2) ];
-			b = flipData.data [ flipData.data.length - (i+1) ];
-			a = flipData.data [ flipData.data.length - (i+0) ];
-			tempData.push (r);
-			tempData.push (g);
-			tempData.push (b);
-			tempData.push (a);
-		}
-		for (var i=0; i<tempData.length; i++) {
-			flipData.data[i] = tempData[i];
-		}
-		ctx.putImageData(flipData, this.x, this.y);
 	}
 
 	// instantiate the player
 	player = new MainCharacter(10,10,200,200);
 	player.addState("walking","test-img.png");
-	player.addState("stopping","test-img-2.png");
-	player.state = "walking";
+	player.addState("stopping","test-img-idle.png");
+	player.addState("turning","test-img-lookback.png");
+	player.state = "stopping";
 
 	// check if any key is pressed
 	var userKey = false;
 
-	function loopImgAnimation () {
-		requestAnimationFrame (loopImgAnimation);
-		if (userKey) {
+	function loopImgAnimation() {
+		requestAnimationFrame(loopImgAnimation);
+		if (userKey == 39) {
+			// move right with right arrow
 			player.state = "walking";
-			player.move(2,0);
+			player.move(3,0);
+		} else if (userKey == 37) {
+			// look left with left arrow 
+			player.state = "turning";
+			player.move(0,0);
 		} else {
+			// IDLE if userkey == false
 			player.state = "stopping";
 			player.move(0,0);
 		}
 	}
 	loopImgAnimation();
 
-	// function moveImage() {
-	// 	// move when key is pressed, stop moving when key released
-	// 	if (userKey) {
-	// 		imgPosX += 3;
-	// 	} else if (!userKey){
-	// 		imgPosX = imgPosX;
-	// 	}
-	// 	if (imgPosX > c.width) {
-	// 		imgPosX = 0;
-	// 	}
-	// 	ctx.drawImage(img, imgPosX, imgPosY, imgWidth, imgHeight);
-	// }
-
 	// Set key to pressed or released
-	function SetKeyPressed (event) {
-		userKey = true;
-		//return event.keyCode;
+	function SetKeyPressed(event) {
+		userKey = event.keyCode;
 	}
-	function SetKeyReleased (event) {
+	function SetKeyReleased(event) {
 		userKey = false;
 	}
-	window.addEventListener ("keydown", SetKeyPressed, false);
-	window.addEventListener ("keyup", SetKeyReleased, false);
+	window.addEventListener("keydown", SetKeyPressed, false);
+	window.addEventListener("keyup", SetKeyReleased, false);
 
 	</script>
 
