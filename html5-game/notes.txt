@@ -1,0 +1,32 @@
+HTML 5 GAME DEVELOPMENT
+
+- Welcome! There's an optional JS crash course at the end if not familiar.
+
+0. CANVAS
+(Hey, didn't I just take this? ;)
+- How to write a 2d, tile-based engine: HTML5 canvas element
+- Canvas as large memory blob of pixel data
+	- it's an HTML5 drawing surface that exposes APIs
+	- 2 attribs spec to it: width and height
+- canvas.getContext('2d');
+	- handle to the drawing APIs we'll use
+- FULLSCREEN == window.innerWidth, window.innerHeight
+- IMAGES
+	1. declare Image() object
+	2. define onload()
+	3. set image.src
+	(JS kicks off a load func once source is set!)
+- canvas.drawImage(img, posX, posY) from top L corner of canvas
+- jpeg for size vs png for alpha vs webp for both
+- ANIMATION
+	- simple flipbook:
+		0. setup frame and framerate variables
+		1. load an array of imgs into a frames var
+			frames.push(new Image());
+			frames[i].onload = // your load func ;
+			frames[i].src = // your img src ;
+		2. animate setInterval every say 30 ms (but last class did render frame)
+		3. when you draw frames in animate func, set to loop back around:
+*			frame = (frame + 1) % frames.length; 		// get it?!?
+		4. add clearRect for no skinning
+- Awesome story about Carmack and "Dirty Rect"
