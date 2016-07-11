@@ -30,3 +30,26 @@ HTML 5 GAME DEVELOPMENT
 *			frame = (frame + 1) % frames.length; 		// get it?!?
 		4. add clearRect for no skinning
 - Awesome story about Carmack and "Dirty Rect"
+
+1. ATLASES
+- as # images in asset set increases, ups drawing to screen complexity
+- browser has upper limit on # connections available
+	- if only 6 connections available and >6 requests, the other requests get stacked until something gives
+	- ask for 1 big img 241 ms VS split it into 16 smaller 4 secs!
+	- pack imgs together and deliver at once
+- Texture Atlasing: packing smaller imgs into larger imgs
+	- well-studied process in most games
+	- 1 Tex Atlas contains many smaller sub-imgs each ref'd indepdtly
+- vs "Spritesheets", a term originally just for animated objects
+	- Atlases might be say bg tiles
+	- this is a bone of contention in game dev jargon!
+*- Texture Packing: tricky engineering "bin packing problem"!
+	- NP Hard, he uses it as an interview question
+- Atlas info in JSON format
+	- list of img names (the "original LOOSE ASSET"), and for each img:
+		- frame: x, y, w, h  			// the img within the atlas
+		- rotated: true/false
+		- trimmed: true/false
+		- spriteSourceSize: {x,y,w,h} 	// for drawing to our canvas
+		- sourceSize: {w,h}
+- 
