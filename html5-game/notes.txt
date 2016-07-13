@@ -78,4 +78,11 @@ HTML 5 GAME DEVELOPMENT
 		* draw image with axis origin at center:
 			- hold off {x: posX-sprite.w*0.5, y: posY-sprite.h*0.5}
 			- use those .x, .y vals when drawing positionX, positionY
-- 
+- Now handle TRIMMED sprites (usually cut out alpha edges)
+	0. Smart trim crops from the edges to the center. Think about this.
+	1. Initialize new center x and center y vals
+	2. From the sprite JSON, get the trimmed img's x y w h
+	3. subtract half the height from the y, half the width from the x
+		- This accounts for the cropped offset from the bottom r corner (in other words, from the w and h vals of the img)
+		- Think why: geometrically, we are now moving the image "behind" its starting w h values. From now on, we can call those vals when we draw the trimmed image!
+-  
