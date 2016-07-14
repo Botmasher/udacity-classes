@@ -79,10 +79,60 @@ HTML 5 GAME DEVELOPMENT
 			- hold off {x: posX-sprite.w*0.5, y: posY-sprite.h*0.5}
 			- use those .x, .y vals when drawing positionX, positionY
 - Now handle TRIMMED sprites (usually cut out alpha edges)
-	0. Smart trim crops from the edges to the center. Think about this.
+	0. Smart trim crops from the edges to the center. Think on this.
 	1. Initialize new center x and center y vals
 	2. From the sprite JSON, get the trimmed img's x y w h
 	3. subtract half the height from the y, half the width from the x
 		- This accounts for the cropped offset from the bottom r corner (in other words, from the w and h vals of the img)
 		- Think why: geometrically, we are now moving the image "behind" its starting w h values. From now on, we can call those vals when we draw the trimmed image!
--  
+- The classic tools aren't dead in HTML5!
+	- can read traditional formats that you might not expect
+	- important for new game devs and studios who think they have to reinvent all tools to work in HTML5
+- ENVIRONMENTS: drawing the 2D map
+	- have atlas that works like the sprites
+*	- TILE also generates for us a large, complex data file
+		- this shows how atlas should be rendered to draw bg
+		- big games would have artist take this
+		- here we're going to read in our json.
+		- Tile tells us which atlases to load and how the layers are organized on top of each other
+	0. setup an XHR
+		function xhrGet(reqUri,callback) {
+			var xhr = new XMLHttpRequest();
+			xhr.open("GET", reqUri, true);
+			xhr.onload = callback;
+			xhr.send();
+		}
+	1. perform an XHR to load tiles
+		var TILEDMapClass = Class.extend({
+		    // Boolean flag set once map atlas loads
+		    fullyLoaded: false,
+		    load: function (map) {
+		        // Perform an XMLHttpRequest to grab the
+		        // JSON file at url 'map'. We've provided
+		        // the xhrGet function from the optional
+		        // unit for you to use if you want.
+		        //
+		        // Once the XMLHttpRequest loads, set the
+		        // 'fullyLoaded' flag to true.
+		        //
+		        xhrGet(map, false, function(data) {
+		            this.fullyLoaded = true;
+		        });       
+		    }
+		});
+	2. Parse the JSON file
+		- initial parameters: size of tile map expects (tilew, tileh)
+		- initial params: # of vert and horiz tiles used (width)
+		- understand dimensions: width * tilewidth gives # pixels w
+		- "tilesets": which atlases, including paths and firstgid
+		- separate section devoted to layers:
+			- "data": HUGE array of ints for each tile placed this lyr
+			- "type": whether it's a tile lyr or an object lyr
+		- Raster Scan Order: each row listed after previous row
+		- Any non-zero val in data reps a tile index for a given atlas
+			- That "firstgid" for each atlas in "tilesets"
+			- Each atlas inside tile has its own gid
+			- Tiled has own heuristic for each subsequent loaded atlas, don't worry, but be aware
+			- 167 = 1st gid (atlas), tile 166 /!\
+	3. Loading the tile maps (COMPLEX procss)
+		- 
