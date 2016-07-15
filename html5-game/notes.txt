@@ -135,4 +135,15 @@ HTML 5 GAME DEVELOPMENT
 			- Tiled has own heuristic for each subsequent loaded atlas, don't worry, but be aware
 			- 167 = 1st gid (atlas), tile 166 /!\
 	3. Loading the tile maps (COMPLEX procss)
-		- 
+		- modify xhrGet to call a parseMapJSON function
+		- in parseMapJSON, assign JSON.parse(mapJSON)
+		- use assigned this.currentMapData to cache vals
+			( kw THIS refers to gMap object the function is within )
+			- avoids walking thru the JSON later on
+			- first vals to care about are:
+				a. num X tiles, num Y tiles
+				b. size of tiles x,y
+				c. pixel size of the entire map x, y
+					( calc based on num tiles * size of tiles)
+		- set the fullyLoaded attribute to true
+	4. 
