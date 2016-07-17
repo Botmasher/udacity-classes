@@ -146,4 +146,10 @@ HTML 5 GAME DEVELOPMENT
 				c. pixel size of the entire map x, y
 					( calc based on num tiles * size of tiles)
 		- set the fullyLoaded attribute to true
-	4. 
+*		/!\ Parse function still not working even when perfectly matches instructor solution /!\
+	4. Loading tileset data described in the file
+		- create a new image for each tile
+		- set a callback function for once done loading
+		- set the source value to the tileset's img attribute
+*		- kicking off ASYNCHRONOUS loads of imgs when our map is ALREADY asynchronously loading!
+		- so wait to set fullyLoaded to true until after all tilesets fully loaded into memory (use a counter val)
