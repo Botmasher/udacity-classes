@@ -163,4 +163,15 @@ HTML 5 GAME DEVELOPMENT
 			};
 			img.src = tilesets.imgURL;
 		}
-	5. 
+	5. Final parsing step: keep an array of avail tileSets
+		
+		- create a new object with all relevant tile attributes
+		
+		- map the tileset attributes from JSON to obj properties
+		// your number of x and y tiles will need to factor in both the JSON tileset and your local properties
+		"numXTiles": Math.floor(map.tilesets[i].imagewidth / this.tilesize.x),
+        "numYTiles": Math.floor(map.tilesets[i].imageheight / this.tilesize.y)
+
+		- push that object to the new array tileSets
+
+	6. 
