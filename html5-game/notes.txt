@@ -168,10 +168,45 @@ HTML 5 GAME DEVELOPMENT
 		- create a new object with all relevant tile attributes
 		
 		- map the tileset attributes from JSON to obj properties
+		ts = { "firstgid":map.tilesets[i].firstgid,
+		// and so on for width, height, name
+
 		// your number of x and y tiles will need to factor in both the JSON tileset and your local properties
 		"numXTiles": Math.floor(map.tilesets[i].imagewidth / this.tilesize.x),
         "numYTiles": Math.floor(map.tilesets[i].imageheight / this.tilesize.y)
+        }
 
 		- push that object to the new array tileSets
+		this.tilesets.push(ts);
 
-	6. 
+	6. Now find img and coord of spec tile in tileset from our array
+		// create function that takes index and returns tile packet
+		// tile pkt contains atlas img and x,y index for the tiel
+		getTilePacket: function(tileIndex) {
+
+			var pkt = { "img": null, "px": 0, "py": 0 };
+
+			// tileIndex will be <= firstgid
+			var i;
+			for (i=0; i < this.tileSets.length; i++) {
+				if this.tileSets[i].firstgid >= tileIndex {
+					pkt.img = this.tileSets[i].image;
+					break;
+				}
+			}
+
+			// calc x and y values based on tile arrangement
+			var localId = tileIndex-this.tileSets[i].firstgid;
+					
+			var localX = Math.floor(localId % this.tileSets[i].numXTiles);
+			var localY = Math.floor(localId / this.tileSets[i].numXTiles);
+			// stumped like me? It's simple geometry! For x offset in grid, all you need to find is how many tiles you are from the left (the remainder, hence modulo). For y offset in grid, all you need to know is how many groups of x you've already been over (hence the division)!
+
+			// factor in the output tilesizes (you just have indexes)
+			pkt.px = localX * this.tileSize.x;
+			pkt.py = localY * this.tileSize.y;
+
+			// good to go!
+			return pkt;
+		}
+		
