@@ -209,4 +209,30 @@ HTML 5 GAME DEVELOPMENT
 			// good to go!
 			return pkt;
 		}
+	7. Prepare for drawing! - which tiles to draw from parsed data
+		- (Check that gMap was fully loaded)
+		- Layer data in JSON file, very often 0's (no tile)
+		- Loop through each layer
+		- For each layer loop thru tile id's in the data of each layer
+		- A significant % of them will be set to 0 (draw no tiles)
+		- If tile id isn't 0, grab getTilePacket (above) with that id
 		
+		// ignore if the map isn't loaded yet
+		if(!gMap.fullyLoaded) return;
+
+		// variables for making my loop life easier
+        lyrs = this.currMapData.layers;
+        var pkt;
+
+        // dig into each tile id within data within layers
+        for (var i = 0; i < lyrs.length; i++) {
+            if (lyrs[i].type === "tilelayer") {
+                for (var j=0; j < lyrs[i].data.length; j++) {
+                    if (lyrs[i].data[j] !== 0) {
+                        pkt = this.getTilePacket(lyrs[i].data[j]);
+                    }
+                }
+            }
+        }
+
+    8. 
