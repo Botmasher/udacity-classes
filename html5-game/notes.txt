@@ -235,4 +235,24 @@ HTML 5 GAME DEVELOPMENT
             }
         }
 
-    8. 
+    8. Actually draw the tile to the game world
+    	- figure out where based on the tile id and gmap tiles across
+    	- figure out the x/y size of the tile
+    	- combine these to set up the x/y offset from canvas origin
+
+    	// use same x y magic from the tile packet to figure world XY
+    	var worldX = Math.floor(tileIndex % this.numXTiles) * this.tileSize.x;
+    	var worldY = Math.floor(tileIndex / this.numXTiles) * this.tileSize.y;
+
+    	// Draw the image to the canvas
+    	// Note this.tileSize is repeated to keep scaling same
+    	/* 
+    	 * If you're digging into this code, do yourself a favor and
+    	 *   bring up the documentation for these 9 args!
+    	 * It's basically source img, pos, scale (5 args) and 
+    	 *   target pos, scale (4 args).
+    	 */
+    	ctx.drawImage (pkt.img, pkt.px, pkt.py, this.tileSize.x, this.tileSize.y, worldX, worldY, this.tileSize.x, this.tileSize.y);
+
+2. INPUT
+	- 
