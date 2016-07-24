@@ -255,4 +255,51 @@ HTML 5 GAME DEVELOPMENT
     	ctx.drawImage (pkt.img, pkt.px, pkt.py, this.tileSize.x, this.tileSize.y, worldX, worldY, this.tileSize.x, this.tileSize.y);
 
 2. INPUT
+	- capture input and react to it properly
+	- WASD + mouse input (or arrow keys) for turret
+	- turret doesn't update until ready to fire (fire rate)
+	- combinations of arrow or mouse directions for shooting diagonals
+	- (Un)fair gameplay:
+		- back in the day, turning down resolution or using DSL instead of dialup on Quake to get unfair advantage
+		- in this game, pay attention to fairness from the get-go
+		- mouse won't have extra degrees of freedom compared to keys
+	- JS input data is like newspaper subscriptions
+		- subscribe to a process like onMouseMove, onKeyDown, onClick
+		- decide what function you'll call when that event happens
+	- hook up mouse move and key down from events to methods
+
+	// the mousemove event contains clientX, clientY coords
+	// while keydown event contains a KeyID property
+
+	function setup() {
+		document.getElementById('canvas').addEventHandler('mousemove', onMouseMove);
+		document.getElementById('canvas').addEventHandler('keydown', onKeyDown);
+	}
+
+	function onMouseMove(event) {
+		return (event.clientX, event.clientY);
+	}
+
+	function onKeyDown(event) {
+		return event.keyID;
+	}
+
+*	- Bad practice to respond to even within callback
+		- Update loop and render can get out of sync, because input from browser can come at pretty much any time even after we've already made decisions for where to place everything that frame
+		- Instead, we keep the input and hold it, allowing update loop to query it whenever it wants
+
+	- Set up to handle key input
+
+		// array for ASCII values
+		var keyState = [];
+    	keyState.length = 256;
+    	keyState = Array.apply(this, keyState);
+	    
+	    // add an event handler 
+	    document.getElementById('canvas').addEventHandler('keyup', funcName);
+	   	document.getElementById('canvas').addEventHandler('keydown', funcName);
+
+	    // build functions to set true on keydown and false on keyup
+	    // basically both funcs set keyState[event.keyID] = t/f
+	
 	- 
