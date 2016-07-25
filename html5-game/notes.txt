@@ -1,4 +1,4 @@
-HTML 5 GAME DEVELOPMENT
+aHTML 5 GAME DEVELOPMENT
 
 - Welcome! There's an optional JS crash course at the end if not familiar.
 
@@ -302,4 +302,30 @@ HTML 5 GAME DEVELOPMENT
 	    // build functions to set true on keydown and false on keyup
 	    // basically both funcs set keyState[event.keyID] = t/f
 	
-	- 
+	- Keymapping allows user-customized keys
+		- variably modify what key corresponds to what action
+		- instead of checking for ASCII values, query for action names
+		- example would be checking for 'move-up' instead of '87'
+		- create a bind function and a bindings dictionary alongside that key values dictionary
+		- create an actions dictionary that maps values to true/false
+
+		// onKeyDown now sets the action to true
+		this.actions[this.bindings[event.keyID]] = true;
+
+		// onKeyUp now sets the action to false
+		this.actions[this.bindings[event.keyID]] = true;\
+
+		// the new bind function maps keys to actions
+		bind: function(key,action) {
+			this.bindings(key) = action;
+		},
+
+		// make sure to avoid out of bounds errors for null actions
+
+	- Using physics, teleportation becomes a problem
+		- lack a straightforward way to pick up and move player
+		- can't ignore the physics going on without confusing physics engine
+		- e.g. if we move player to intersect with wall, get stuck
+		- instead, update the physics (velocity) so that the effect is moving the player where we want to
+*		- "Teleportation issues"
+		- 
