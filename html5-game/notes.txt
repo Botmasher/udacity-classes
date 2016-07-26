@@ -1,4 +1,4 @@
-aHTML 5 GAME DEVELOPMENT
+HTML 5 GAME DEVELOPMENT
 
 - Welcome! There's an optional JS crash course at the end if not familiar.
 
@@ -328,4 +328,14 @@ aHTML 5 GAME DEVELOPMENT
 		- e.g. if we move player to intersect with wall, get stuck
 		- instead, update the physics (velocity) so that the effect is moving the player where we want to
 *		- "Teleportation issues"
-		- 
+		- Constrain physics through API to move properly on input
+		- separate out GameEngine.js (physics) versus InputEngine.js
+
+		// check for actions move-up, move-down, move-left, move-right
+		if (gInputEngine.actions['move-up']){
+			// adjust the move_dir vector 2
+			// remember canvas! up is -y and down is y!!
+			move_dir = new Vec2 (move_dir[0] - 1, move_dir[1]);
+		}
+
+	- 
