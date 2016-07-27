@@ -335,7 +335,14 @@ HTML 5 GAME DEVELOPMENT
 		if (gInputEngine.actions['move-up']){
 			// adjust the move_dir vector 2
 			// remember canvas! up is -y and down is y!!
-			move_dir = new Vec2 (move_dir[0] - 1, move_dir[1]);
+			move_dir.y -= 1;
 		}
 
-	- 
+		// query to check if move_dir is non-zero
+		if (move_dir.LengthSquared()) {
+			// adjust vector length based on player's walk speed
+			move_dir.Normalize();
+			move_dir.Multiply(this.Player0.walkSpeed);
+		}
+
+		- 
