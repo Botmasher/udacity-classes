@@ -326,10 +326,12 @@ HTML 5 GAME DEVELOPMENT
 		- lack a straightforward way to pick up and move player
 		- can't ignore the physics going on without confusing physics engine
 		- e.g. if we move player to intersect with wall, get stuck
-		- instead, update the physics (velocity) so that the effect is moving the player where we want to
+	
+	- Instead, update the physics (velocity) so that the effect is moving the player where we want to
 *		- "Teleportation issues"
 		- Constrain physics through API to move properly on input
 		- separate out GameEngine.js (physics) versus InputEngine.js
+*		- We're using Box2d which has a Vec2 constructor
 
 		// check for actions move-up, move-down, move-left, move-right
 		if (gInputEngine.actions['move-up']){
@@ -338,11 +340,65 @@ HTML 5 GAME DEVELOPMENT
 			move_dir.y -= 1;
 		}
 
-		// query to check if move_dir is non-zero
+		// 
+		// Check that the squared length of the vector is non-zero
 		if (move_dir.LengthSquared()) {
-			// adjust vector length based on player's walk speed
+			// turn the vector into unit of length 1.0
 			move_dir.Normalize();
+			// adjust vector length based on player's walk speed
+			// multiplies vector's components by a scalar (arg0)
 			move_dir.Multiply(this.Player0.walkSpeed);
 		}
 
-		- 
+		// Set the player velocity through the physics body
+		gGameEngine.gPlayer0.mpPhysBody.setLinearVelocity(gGameEngine.move_dir.x, gGameEngine.move_dir.y);
+
+	- Mouse firing your fancy missiles towards other robots
+		1. Find directional vector from robot to mouse cursor in game space. Subtracting mouse position from the robot position, giving us an unnormalized Vec2
+		2. Normalize this Vec2
+		3. Use normalized Vec2 to find the velocity path for the projectile
+		4. Now actually launch the thing (later)
+
+		if (gInputEngine.actions.fire0 || gInputEngine.actions.fire1){
+
+			// use provided gRenderEngine.getScreenPosition method
+			// to grab player's onscreen x and y
+		    var playerCanvasPos = {
+		        x: gRenderEngine.getScreenPosition(gGameEngine.gPlayer0.pos).x,
+		        y: gRenderEngine.getScreenPosition(gGameEngine.gPlayer0.pos).y
+		    };
+
+			// set dirVec to be the diff between player pos and
+			// mouse pos then normalize the vector
+			var mouse = gInputEngine.mouse;
+			var dirVec = new Vec2(0,0);
+			dirVec.x = playerCanvasPos.x - mouse.x;
+			dirVec.y = playerCanvasPos.y - mouse.y;
+		    dirVec.Normalize();
+
+			// actually launch the thing!
+
+		}
+
+	- Keyboard firing your missiles (much like position move_dir)
+		if (gInput.Actions['fire-up']) {
+		    gGameEngine.dirVec.y -= 1;
+		} else if (gInput.Actions['fire-down']) {
+		    gGameEngine.dirVec.y += 1;
+		}
+		if (gInput.Actions['fire-left']) {
+		    gGameEngine.dirVec.x -= 1;
+		} else if (gInput.Actions['fire-right']) {
+		    gGameEngine.dirVec.x += 1;
+		}
+
+	- Keyboard input only allows cardinal and ordinal firing relative to player position. To disallow mouse advantage (degrees of freedom), snap mouse vector to one of the 8 directions that keyboard controls allow.
+		- They use a LUT (lookup table) populated with the 8 directional vectors, unitized
+		- They then make a getQuantizedAngleIndex function to:
+		- atan2 to find the dirVec angle in radians
+		- then round and modulo that into an integer between 0-7
+		- return that and use as index to find value in LUT
+
+3. ENTITIES
+	- Classes in our actual game environment. All entities should keep track of their position in the world and "think" or be able to do something each tick.
+	- You have a class that makes this entity different from all the other entities in the world.
