@@ -402,3 +402,12 @@ HTML 5 GAME DEVELOPMENT
 3. ENTITIES
 	- Classes in our actual game environment. All entities should keep track of their position in the world and "think" or be able to do something each tick.
 	- You have a class that makes this entity different from all the other entities in the world.
+
+*	// Basic entity class creation in Entity.js
+	// properties for individual entities, including an
+	// update function that will be added to for behavior
+	EntityClass = Class.extend({
+		'pos' : { 'x':null, 'y':null },
+		'size' : { 'x':null, 'y':null },
+		'update' : function (){}
+	});
