@@ -407,7 +407,42 @@ HTML 5 GAME DEVELOPMENT
 	// properties for individual entities, including an
 	// update function that will be added to for behavior
 	EntityClass = Class.extend({
-		'pos' : { 'x':null, 'y':null },
-		'size' : { 'x':null, 'y':null },
-		'update' : function (){}
+		pos : { x: 0, y: 0 },
+		size : { x: 0, y: 0 },
+		update : function (){}
 	});
+
+	- in GameEngineClass def (the one with dirVec, move_dir, gPlayer0.pos, gPlayer0.walkSpeed), make a spawnEntity function
+
+	GameEngineClass = Class.extend({
+		// return a new instance of requested class
+		spawnEntity : function (typename) {
+			if (typename == "Player") {
+				return new PlayerClass();
+			} else if (typename == "Landmine") {
+				return new LandmineClass();
+			} else if (tyoename == "QuadDamage") {
+				return new QuadDamageClass();
+			}
+		}
+	});
+	gGameEngine = new GameEngine();
+
+	- This works, but what if there are dozens or hundreds of entity types? This is a large case statement. Minimal scalability.
+
+	// Don't do the above branching. Create a factory object
+	// that maps entityname to classname in a hash table
+	GameEngine ...
+		factory : {},
+		...
+	});
+	gGameEngine.factory['EntityType'] = ClassDefinitionName;
+
+	// within the refactored spawnEntity function
+		spawnEntity : function (typename) {
+			return new (factory[typename])();
+		}
+
+*	- Engineers often hardcode refs to assets, making artists have to talk to engineers if they want to change path / asset. With Data-Driven Design, there's a text/xml/json that allows designer and artist to iterate on without talking to someone in the pit. To change the assets they can reference a new asset there, like say a certain frame for a kick in a fighting game. You can become too reliant, though, moving most of your code "out there", which then means that small changes necessitate bringing engineers back in.
+
+	- 
