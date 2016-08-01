@@ -445,4 +445,48 @@ HTML 5 GAME DEVELOPMENT
 
 *	- Engineers often hardcode refs to assets, making artists have to talk to engineers if they want to change path / asset. With Data-Driven Design, there's a text/xml/json that allows designer and artist to iterate on without talking to someone in the pit. To change the assets they can reference a new asset there, like say a certain frame for a kick in a fighting game. You can become too reliant, though, moving most of your code "out there", which then means that small changes necessitate bringing engineers back in.
 
-	- 
+	- Update all gGameEngine entities at once, e.g. to destroy
+		(I notice this matches what was done in the basic Engine.js file written by the instructor to build my OO JS class final project on top of: define entities, spawn entities, move them to an array, have a general update loop call each entity's individual update loop)
+
+	// add array to GameEngine Class to keep track of spawned entities
+	entities: []
+
+	// mod .spawnEntity (typename) {} to push to that array
+	// GameEngine update function {
+		var ent = new (gGameEngine.factory[typename])();
+		gGameEngine.entities.push(ent);	// new code!
+		return ent;
+	// }
+
+	// and iterate over them (watch your scoping! you forgot "this."!)
+	for (var i=0; i < this.entities.length, i++) {
+		this.entities[i].update();
+	}
+
+	- Update Each Entity. Since you're now calling update functions for each entity, make sure they have update() and they're doing what you expect within update().
+
+	// LandMineDiskClass will be a subclass of WeaponInstanceClass.
+	// It will wait for an unknowing robot to walk on top of it.
+	// (note that we haven't yet written the Physics Engine)
+
+	LandMineDiskClass = WeaponInstanceClass.extend ({
+		lifetime: 100,
+
+		// METHOD OVERRIDE parent's death func
+		kill: function () {
+			// disable physics on this thing then destroy it
+			gPhysicsEngine.removeBodyAsObj(this.physBody);
+			this.physBody = null;
+			gGameEngine.removeEntity(this);
+		},
+
+		update: function () {
+			if (this.lifetime <= 0.0) {
+				this.kill();
+				return;
+			}
+			this.lifetime -= 0.05;
+*			// after local update still call parent's update
+			this.parent();
+		}
+	});
