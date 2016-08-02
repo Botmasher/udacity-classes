@@ -490,3 +490,32 @@ HTML 5 GAME DEVELOPMENT
 			this.parent();
 		}
 	});
+
+	- Killing entities
+	// add a flag to entity to let renderer know whether killed
+	_killed : false,
+
+	// now move to GameEngine update() entities loop to check flags
+	if (this.entities[i]._killed===false) this.entities[i].update();
+
+*	- Who gets killed in what order? Order of Operations.
+	- Most RTS as just allow damage to happen blindly, but...
+	- ... they make sure all clients have SAME order of ops
+
+	- Or bucketize/group order (1st infantry, 2nd tanks, 3rd bullets)
+	- But then things can have upper hand on same update.
+
+	// add a _deferredKill array to GameEngine
+	_deferredKill: [],
+
+	// in update, walk through and deal with each entity
+	    for (var i=0; i<this._deferredKill.length,i++) {
+            var ent = this._deferredKill[i]; // do something with it
+            // then remove from entities
+            this.entities.splice ( this.entities.indexOf(ent) );
+        }
+        this._deferredKill = [];
+
+        // this just in! use .ERASE on lists with deferredKill[i] :!!
+
+    - 
