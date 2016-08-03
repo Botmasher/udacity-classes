@@ -518,4 +518,57 @@ HTML 5 GAME DEVELOPMENT
 
         // this just in! use .ERASE on lists with deferredKill[i] :!!
 
+*	- EntityClass Render 
+    // add current spritename string variable as class property
+    EntityClass = Class.extend({
+    	...
+    	currSpriteName : null,
+
+    	update : function() {},
+
+    // add a draw func that uses string to fetch atlas info for sprite
+    // and calls canvas.drawImage(...)
+        draw : function () {
+        	if (this.currSpriteName !== null) {
+        		// see centering math above - I think it's like this
+            	canvas.drawImage (this.currSpriteName, this.pos.x.round()-this.size.x, this.pos.y.round()-this.size.y);
+        	}
+        	return;
+        }
+    });
+
+*	- Z INDEX to remedy entities rendering above/below others
+	// property within EntityClass
+	EntityClass = ...
+		zindex : 0,
+	...
+
+	// then modify GameEngine's .DRAW() to BUCKET BY ZINDEX
+
+		// first draw map
+		this.gMap.draw(null);
+
+		var fudgeVariance = 128;	// more or less in view
+		zindexArray = [];
+		
+		this.entities.forEach(function(ent) {
+
+			// don't draw if not in vies
+			if (ent.pos.x >= gGameEngine.gMap.viewRect.x - fudgeVariance && ent.pos.y >= gGameEngine.gMap.viewRect.y - fudgeVariance) {
+
+				// arrange entities
+				// 	/!\ SOLVE - there could be multiple with		// 	same zindex! This doesn't handle that!
+
+                if (!zIndex_array.indexOf(entity.zindex)) {
+                    entities_bucketed_by_zIndex[entity.zindex] = entity;
+                    zIndex_array.push(entity.zindex);
+                }
+            }
+        });
+
+        // Draw each entity in turn, already sorted by zIndex
+        for (var i = 0; i < zIndex_array.length; i++) {
+            entities_bucketed_by_zIndex[i].draw();
+        }
+
     - 
