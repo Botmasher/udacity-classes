@@ -571,4 +571,15 @@ HTML 5 GAME DEVELOPMENT
             entities_bucketed_by_zIndex[i].draw();
         }
 
-    - 
+4. PHYSICS
+	- Brute force of making things collide: for every pixel, check if every other pixel of the other object is where this pixel is.
+*	- Approximation instead: AXIS-ALIGNED BOUNDING BOX
+	- AABB collisions account for min(x,y) & max(x,y) only
+		// compare 2 rects each having a .top, .bottom, .left, .right
+		intersectRect : function (r1, r2) {
+			return !( r2.top > r1.bottom ||
+				r2.bottom < r1.top ||
+				r1.right < r2.left ||
+				r1.left > r2.right );
+		}
+	- 
