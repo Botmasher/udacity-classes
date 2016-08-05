@@ -582,4 +582,41 @@ HTML 5 GAME DEVELOPMENT
 				r1.right < r2.left ||
 				r1.left > r2.right );
 		}
-	- 
+*	- getting data out of AABB collisions (LOCATION)
+		- anywhere that two overlap is a good choice for point
+		- which you choose can impact how rest of collision mgmt works
+*	- Imagine you have a bullet that updates in 2 timesteps, going fast enough that it would miss wall bounding box between the 2. How calculate?
+		- draw a "swept area" to capture things in the path between 2 timesteps!
+
+		- IF you want to answer questions like these ("down the rabbit hole"), write your own physics engine. Otherwise use one that's already up and working. maybe open source!
+
+		- Wish list! Want the engine to:
+			- create physics objects for entities
+			- update physics every frame (take care of the work)
+			- fire of collisions and respond to them arbitrarily
+			- pull updated pos info each obj each frame (feed to rendering engine for drawing)
+
+*		- Enter Box2D. Written C, then Flash AS! Now ported to JS.
+
+	- the core of box2D is World(), main handle to rest of APIs
+		- takes vector2 that represents the gravity of the world (0 if don't need)
+		- takes object sleep boolean to allow for sleeping
+
+	// a bunch of Box2D assignments up here
+	Vec2 = Box2D.Common.Math.b2Vec2;
+	BodyDef = Box2D.Dynamics.b2BodyDef;
+	Body = Box2D.Dynamics.b2Body;
+	//...
+
+	PhysicsEngineClass = Class.extend({
+		world: null,
+		create: function () {
+			this.world = new World (
+				// top-down game, not using gravity
+				new Vec2(0,0),	// empty gravity vector
+				false			// don't allow sleep
+			);
+		}
+	});
+
+	var gPhysicsEngine = new PhysicsEngineClass();
