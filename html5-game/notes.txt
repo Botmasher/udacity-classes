@@ -596,7 +596,7 @@ HTML 5 GAME DEVELOPMENT
 			- fire of collisions and respond to them arbitrarily
 			- pull updated pos info each obj each frame (feed to rendering engine for drawing)
 
-*		- Enter Box2D. Written C, then Flash AS! Now ported to JS.
+*		- Enter Box2D. Written C++, then Flash AS! Now ported to JS.
 
 	- the core of box2D is World(), main handle to rest of APIs
 		- takes vector2 that represents the gravity of the world (0 if don't need)
@@ -620,3 +620,30 @@ HTML 5 GAME DEVELOPMENT
 	});
 
 	var gPhysicsEngine = new PhysicsEngineClass();
+
+*	- update using world object with world.Step
+	- .Step takes:
+		1. 	framerate for physics updates
+		2. 	num velocity iterations to calc
+		3. 	num position iterations to calc
+	- calculating more iterations allows us to do things that can't be done in one pass (like checking if freeing us from one collision will put us into another), but is more costly. It's the performance / perfection tradeoff here
+	
+	update: function () {
+		var start = Date.now();
+
+		this.world.Step (	// bound in PhysicsEngine instance
+			// see param info in above notes
+			1.0/60.0,
+			10,
+			10
+		);
+
+		// added to reset physics
+		// erases and removes velocity vector for less glidey,
+		// airhockey-like feel to movement in our top-down game
+		this.world.ClearForces();
+
+		return (Date.now() - start);
+	}
+
+	
