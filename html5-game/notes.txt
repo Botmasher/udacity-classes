@@ -646,4 +646,19 @@ HTML 5 GAME DEVELOPMENT
 		return (Date.now() - start);
 	}
 
-	
+	- Physics Bodies to the world to simulate entities properly
+		1.  create a body definition object
+		2. 	set params (dyn/static, etc.)
+		3.  register body with this.world.createBody();
+		4. 	use that handle to the obj to refer to the physbody
+		5.  set the physics properties with Fixture Definitions
+			- friction, density, restitution are handled here
+			- usu objects in a world resemble similar characteristics
+			- group objects using flags to set oddballs
+				// e.g. we have a bouncy bullet
+				if (entityDef.useBouncyFixture) {}
+		6.  set the fixture using e.g. SetAsBox method
+		7. 	go play with it!
+		X.  We're using Box2D. Think about other engines. They often have a whole suite of bodies. They give performance bonuses to simple ones like squares, cubes and spheres. Polygons are an option but cost in performance, so use only as needed.
+
+	- 
