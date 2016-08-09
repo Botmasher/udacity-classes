@@ -646,7 +646,7 @@ HTML 5 GAME DEVELOPMENT
 		return (Date.now() - start);
 	}
 
-	- Physics Bodies to the world to simulate entities properly
+*	- Box2D is created, but now we need Physics Bodies to the world to simulate entities properly
 		1.  create a body definition object
 		2. 	set params (dyn/static, etc.)
 		3.  register body with this.world.createBody();
@@ -661,4 +661,63 @@ HTML 5 GAME DEVELOPMENT
 		7. 	go play with it!
 		X.  We're using Box2D. Think about other engines. They often have a whole suite of bodies. They give performance bonuses to simple ones like squares, cubes and spheres. Polygons are an option but cost in performance, so use only as needed.
 
-	- 
+	// Add body within PhysicsEngine object
+
+	registerBody: function (bodyDef) {
+        var body = this.world.CreateBody(bodyDef);
+        return body;
+    },
+
+    addBody: function (entityDef) {
+        // Create a new BodyDef object
+        var bodyDef = this.word.BodyDef();
+
+        var id = entityDef.id;
+        
+        // set body as static or dynamic
+        if (entityDef.type == 'static') {
+            bodyDef.type = Body.b2_staticBody;
+        } else {
+            bodyDef.type = Body.b2_dynamicBody;
+        }
+
+        // Set the position based on 
+        // passed-in entityDef object.
+        bodyDef.position.x = entityDef.x;
+        bodyDef.position.y = entityDef.y;
+
+        // Attach it to our world w above func
+        var entityBody = this.registerBody(bodyDef);
+
+        // Create a new FixtureDef object
+        var fixtureDef = new FixtureDef();
+
+        if (entityDef.useBouncyFixture) {
+            // Use a bouncy 'density', 'friction', 'restitution'
+            fixtureDef.density = 1.0;
+            fixtureDef.friction = 0;
+            fixtureDef.restitution = 1.0;
+        }
+
+        // Create a new PolygonShape object
+        fixtureDef.shape = new PolygonShape();
+
+        // Set shape with SetAsBox, which takes half the
+        // width and half the height of the box as parameters.
+        fixtureDef.shape.SetAsBox (entityDef.halfWidth, entityDef.halfHeight);
+
+        // Attach the fixture to your BodyDef object.
+        entityBody.CreateFixture (fixtureDef);
+
+        // Return your BodyDef object.
+        return entityBody;
+    }
+
+
+   	- Destroy the body
+
+   	removeBody : function (object) {
+   		this.world.DestroyBody (object);
+   	}
+
+   	
