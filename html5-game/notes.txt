@@ -721,3 +721,25 @@ HTML 5 GAME DEVELOPMENT
    	}
 
    	
+*   - Using above methods, allow Entities to have physics body
+
+  	 	// add a handle in specific entity class in case it needs one
+  	 	physBody : none,
+  	 	lifetime : 0,
+
+  	 	// now inside  init: function() {
+  	 	// fill out entity def and pass into the above method
+  	 	var entityDef = {
+  	 		id : "EntityTypename" + guid,
+  	 		x : startPos.x,
+  	 		y : startPos.y,
+  	 		halfWidth : this.width*0.5,
+  	 		halfHeight : this.height*0.5,
+  	 		damping :  	// integer property vals dampening, friction, etc.
+  	 	}
+
+  	 	// 
+  	 	this.physBody = gPhysicsEngine.addBody (entityDef);
+
+
+  	 - 
