@@ -742,4 +742,24 @@ HTML 5 GAME DEVELOPMENT
   	 	this.physBody = gPhysicsEngine.addBody (entityDef);
 
 
-  	 - 
+  	- Now you have to query the physics engine results through the physics bodies in order to update the entities!
+* 		- ensures visual rep of obj matches physics engine representation
+		- remember we inherit a .pos from general entity superclass
+
+		// within specific entity's update property
+
+		update: function () {
+        	
+        	this.lifetime -= 0.05;
+        	if(this.lifetime <= 0) {
+            	this.kill();
+            	return;
+        	}
+
+			// Set this entity's pos thru the physBody
+        	if (this.physBody !== null) {
+        		this.pos = this.physBody.GetPosition();
+        	}
+
+        	this.parent();
+    	}
