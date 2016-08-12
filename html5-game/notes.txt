@@ -763,3 +763,17 @@ HTML 5 GAME DEVELOPMENT
 
         	this.parent();
     	}
+
+
+    - Setting position of physics object
+    	- use .SetPosition for teleport, as ignores intervening collisions
+    	- use .SetInitialVelocity to simulate and update as expected
+    	- do setting each frame to ensure things go smoothly!
+
+    	// within specific entity's init method
+    	var physVec = new Vec2(this.dir.x*this.speed,this.dir.y*this.speed);
+    	this.physBody.SetLinearVelocity (physVec);
+
+* 		// do the same within entity's update to reboot each frame!
+
+	
