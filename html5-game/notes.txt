@@ -776,4 +776,20 @@ HTML 5 GAME DEVELOPMENT
 
 * 		// do the same within entity's update to reboot each frame!
 
-	
+*	- Now put it together to DRIVE the engine from our GameEngine class
+		// we have Phys Engine (init/update/add/delete)
+		// we have entities that can add phys bodies and update them
+		// 
+
+		0.  Create the Physics Engine in the GameEngine's .setup
+		1.  Define number of physics updates we want per frame
+		2.  Inside GameEngine update, call the physics engine .update
+
+		// basic property in GameEngine
+		PHYSICS_UPDATES_PER_SEC: 60,
+
+		// inside GameEngine's .setup
+			this.physEngine = gPhysicsEngine.create();
+
+		// inside GameEngine's .update
+			this.physEngine = gPhysicsEngine.update();
