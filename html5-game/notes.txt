@@ -793,3 +793,32 @@ HTML 5 GAME DEVELOPMENT
 
 		// inside GameEngine's .update
 			this.physEngine = gPhysicsEngine.update();
+
+
+	- What to do when a collision happens?
+		- Box2D onCollision callback given to physics bodies that touch
+		- to receive these callbacks:
+			0. Go to physics class
+			1. Create wrapper function to listen for calls
+			2. Build listener in that func that takes in callbacks
+				- define logic to issue callback to those functions once the engine hits that point
+				(e.g. if callbacks.PostSolve method exists, then define postsolve on the listener)
+				- give the callback the two bodies that contacted
+			3. Add this listener to the world (bake into world)
+				- now anytime get these collision objects, get these callbacks
+		- Having the collided physics body is good, but it lacks specific info that allows us to react with our game logic. Therefore, we need a way to correlate a body to an entity that created that body.
+
+		- Could create hash tables to solve this. OR could use Box2D's handy little userData property. Assign to bodies, that way each body will have a pointer to its owning entity!
+
+			0.  open physics class
+			1.  assign userData if userData was passed in as part of assigning and registering body
+
+		// inside the class, inside add body func
+		AddBody : function (entityDef) {
+			...
+			if (entityDef.userData !== null) {
+				bodyDef.userData = entityDef.userData;
+			}
+			...
+		}
+
