@@ -822,3 +822,41 @@ HTML 5 GAME DEVELOPMENT
 			...
 		}
 
+
+	- Now go back and update any Entity that creates a physBody
+		
+		// metadata we can later use for collisions
+		userData : {
+			// ref back to this Entity
+			ent :  this,
+			// add unique index to entity tag
+			id  :  this.id+guid 	// this.id is like "Projectile"
+			// be specific if necessary, like if this is a projectile
+			// from a weapon, can name wpnSimpleProjectile+guid
+		}
+
+		// most importantly, it's a "this" obj that points
+		// back to the entity and its useful properties (this.id!)
+
+
+	- We now have to define the callbacks somewhere
+
+	// inside GameEngine
+	setup : function () {
+		gPhysicsEngine.create();
+		gPhysicsEngine.addContactListener ({
+			
+			/**  Make better!
+			 *	 Check for existence/null of bodies and methods here
+			 */
+			PostSolve : function (bodyA, bodyB, impulse) {
+				var collObjA = bodyA.GetUserData().ent;
+                var collObjB = bodyB.GetUserData().ent;
+                // assumes you have an onTouch method in entity
+                // null here is standing for a position
+                collObjA.onTouch (bodyB, null, impulse);
+                collObjB.onTouch (bodyA, null, impusle);
+			}
+		});
+	}
+	// expect any entity should now define onTouch method
