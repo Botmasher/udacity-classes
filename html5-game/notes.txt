@@ -860,3 +860,66 @@ HTML 5 GAME DEVELOPMENT
 		});
 	}
 	// expect any entity should now define onTouch method
+
+
+	- let's build out that onTouch function called in GameEngine
+
+	onTouch : function (otherBody, point, impulse) {
+		// make sure you have a physBody to collide with
+		if (!this.physBody) return false;
+
+		// make sure the other guy has a physBody and can tell us
+		// who it belongs to
+		if (otherBody === null || !otherBody.GetUserData()) {
+			return false;
+		}
+
+		// store entity reference we created a couple sections ago
+		var physOwner = otherBody.GetUSerData().ent;
+
+		// now do the actual physics stuff. Commonly:
+			// - 1 - some control flow and calculations
+			// - 2 - then, call funcs, like .dealDamage or whatever
+			// - 3 - finally, set flags, like this.markForDeath=true;
+
+		/*
+		 *	/!\ WHEN WRITING this function or similar, PLEASE
+		 * 		remember what the entities are and keep big pic
+		 * 		in mind of how behaving in world. Notetoself
+		 */
+
+		return true;
+	}
+
+
+	// simple example in practice: an Energy Canister (in class)
+
+	onTouch: function (otherBody, point, impulse) {
+
+		// checks explained in model code above
+        if(!this.physBody) return false;
+        if(!otherBody.GetUserData()) return false;
+
+        // assignment explained in model code above
+        var physOwner = otherBody.GetUserData().ent;
+
+        if(physOwner !== null) {
+        	// check collided obj for pulse
+            if(physOwner._killed) return false;
+
+            // canister increases 'energy' property of 'physOwner'
+            physOwner.energy += 10;
+
+            // or BETTER
+            if (physOwner.energy < physOwner.maxEnergy) {
+            	physOwner.energy = Math.min (physOwner.maxEnergy, physOwner.energy + 10);
+            }
+
+            // or BEST (assuming .addHealth exists and does checks)
+            physOwner.AddHealth (10);
+
+            // destroy canister
+            this.markForDeath = true;
+        }
+        return true;
+    }
