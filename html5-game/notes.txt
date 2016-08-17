@@ -923,3 +923,32 @@ HTML 5 GAME DEVELOPMENT
         }
         return true;
     }
+
+
+5. SOUND
+	// so you can hear the zombies chasing you
+
+	- using audio APIs for web to make game clearly stand out
+
+* - How Web Audio Works
+	- As analog signal that gets digitized and then
+	- can be run through series of nodes for fx
+	- visualize this with the website Web Audio Playground app
+	- this is called an Audio Context. everything in it runs on code
+
+	- We will be playing basic sound clips and adjusting vol based on game state, e.g. distance from player
+
+	- However, you might want more fx like doppler fx
+
+*	- When grab sounds from various sources, they won't be unified
+*	- run them through POST-PROCESSOR!
+
+	// create a new SoundManager
+	var SoundManager = Class.extend({
+		clips : {},			// obj not array so can still query by url
+		enabled : true,		// whether to play sounds
+		_context : null,	// the webkitAudioContext object
+		_mainNode : null	// primary audio node in this context
+	});
+
+	var gSM = new SoundManager();
