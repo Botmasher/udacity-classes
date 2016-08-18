@@ -952,3 +952,22 @@ HTML 5 GAME DEVELOPMENT
 	});
 
 	var gSM = new SoundManager();
+
+
+*	- Audio nodes experimental & webkit only.
+
+	// Catch any exceptions on webkit audio initialization
+	// within SoundManager
+	create: function () {
+		try {
+			this._context = new webkitAudioContext();
+		} catch (e) {
+	        window.alert("Your browser does not support Web Audio API. The audio in this game may not work as designed.");
+		}
+
+*		// now create and set up a node through the context
+		this._mainNode = this._context.createGainNode (0);
+*		// connect the node to audio destination (usu speakers)
+		this._mainNode.connect (this._context.destination);
+	}
+
