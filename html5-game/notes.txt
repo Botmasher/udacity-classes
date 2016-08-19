@@ -971,3 +971,51 @@ HTML 5 GAME DEVELOPMENT
 		this._mainNode.connect (this._context.destination);
 	}
 
+
+*- Audio LOADING
+	- Async similar to imgs on canvas
+	- Check if sound is loaded. If is, call callback func
+	- If it's NOT loaded, kick off a load:
+		- kick it off in form of XHR xml-http request
+		- then assign callback function for once load complete
+	- Return actual click data either way
+	
+	loadAsync : function (path, callbackFn) {}
+	
+		// check if the clip's already there and run the function
+		if (this.clips[path]) {
+			callbackFn (this.clips[path].s);
+			return this.clips[path].s;
+		}
+
+		// clip has an audio obj, buffer val and an isloaded boolean
+		var clip = {s: new Sound(), null, false};
+
+		// add clip to the clips object for this class
+		this.clips[path] = clip;
+
+		clip.s.path = path;
+
+		// fire off XML request
+		var request = new XMLHttpRequest();
+		request.open('GET', path, true);
+
+		// the response won't be text but an array buffer
+		request.responseType = 'arraybuffer';
+
+		// decode the array buffer using .decodeAudioData
+		request.onload = function() {
+			this._context.decodeAudioData(request.response,
+				// store buffer into the clip
+				function(buffer) {
+					clip.b = buffer;
+					clip.l = true;
+					callbackFn (clip.s);
+				},
+				function (data) {
+					Logger.log("failed");
+				});
+		}
+		
+		return clip.s;
+	}
