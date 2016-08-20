@@ -1019,3 +1019,64 @@ HTML 5 GAME DEVELOPMENT
 		
 		return clip.s;
 	}
+
+
+*	- PLAY the sound. Create a play method that handles the settings dictionary and checks and then plays through the object.
+
+	playSound : function (path, settings) {
+		// Check if the Sound Manager has been enabled
+		if (!this.enabled) return false;
+
+		// Set default values for looping and volume.
+		var looping = false;
+		var volume = 0.2;
+
+		// Check for volume and looping, then update those
+		if (settings) {
+			if (settings.looping) looping = settings.looping;
+			if (settings.volume) volume = settings.volume;
+		}
+
+		// Check if the path has an associated sound clip,
+		// and whether the sound has been loaded yet.
+		var sd = this.clips[path];
+		if (sd === null) return false;
+		if (sd.l === false) return false;
+
+		var currentClip = null;
+
+		// use context to create buffer source for the sound
+		currentClip = this._context.createBufferSource();
+		
+		// Set the properties of currentClip
+		currentClip.buffer = sd.b;
+		currentClip.gain.value = settings.volume;
+		currentClip.loop = settings.looping;
+		
+		// Connect currentClip to the main node, then play now (0)
+		currentClip.connect(this._mainNode);
+		currentClip.noteOn(0);
+
+		return true;
+	}
+
+*	- STOP playing by disconnecting node from main node
+	
+	stopAll : function () {
+		this._mainNode.disconnect();
+		
+		// Create a new GainNode inside our context.
+		this._mainNode = this._context.createGainNode(0);
+
+		// Connect it to context's audio 'destination'.
+		this._mainNode.connect (this._context.destination);
+	}
+
+*	- MUTE by setting value of gain node
+
+	togglemute : function () {
+		// BETTER YET! - remember old vol and set back to that
+		var gain = this._mainNode.gain.value;
+		if (gain > 0) this._mainNode.gain.value = 1;
+		this._mainNode.gain.value = 0;
+	}
