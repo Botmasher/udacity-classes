@@ -1080,3 +1080,22 @@ HTML 5 GAME DEVELOPMENT
 		if (gain > 0) this._mainNode.gain.value = 1;
 		this._mainNode.gain.value = 0;
 	}
+
+
+	- Now we want to attach sounds to entities so they can play on events. Create a sound object for this.
+
+Sound = Class.extend({
+	path: "",
+
+	play: function(loop) {
+		// Call the playSound function with the Sound object's path
+		// Remember to pass loop & vol as a settings dictionary.
+		gSM.playSound (this.path, {volume: 1, looping: loop});
+	}
+});
+
+function playSoundInstance(soundpath) {
+	// Load a new Sound object using loadAsync.
+	// Call sound object's .play in the callback to loadAsync
+	gSM.loadAsync (soundpath, function(sObj){sObj.play(false);} );
+}
