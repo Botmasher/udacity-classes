@@ -1099,3 +1099,46 @@ function playSoundInstance(soundpath) {
 	// Call sound object's .play in the callback to loadAsync
 	gSM.loadAsync (soundpath, function(sObj){sObj.play(false);} );
 }
+
+
+*	- GAME ENGINE PLAY sounds and adjust them on the fly.
+	- distant explosion sounds fainter than health pickup right here
+	- Distance calculation based on view rect size. Screen radius sounds at full vol, scale down to 0 as reach 2x radius.
+
+	// within GameEngine class
+    playWorldSound: function (soundURL, x, y) {
+
+        // First we check if the player exists. If not, then we
+        // don't need to bother playing sounds.
+        if (gGameEngine.gPlayer0 === null) return;
+
+        // We set a shorthand for gGameEngine.gMap for ease of use.
+        var gMap = gGameEngine.gMap;
+
+        // Grab the maximum of half width and height of viewRect
+        var viewSize = Math.max(gMap.viewRect.w,gMap.viewRect.h)*0.5;
+
+        // Grab the player's position.
+        var oCenter = gGameEngine.gPlayer0.pos;
+
+        // Distance from player position to sound position
+        distX = Math.abs(oCenter.x-x);
+        distY = Math.abs(oCenter.y-y);
+
+        // Normalize distance from player to the sound by screens
+        var distScreensAway = Math.max(distX,distY)/viewSize;
+        
+        // set sound based on distance from player
+        var vol;
+        if (distScreensAway < 0.5) {
+        	vol = 1.0;
+        } else if (distScreensAway < 1.0) {
+        	vol = 0.5;
+        } else {
+        	vol = 0.0;
+        }
+ 
+        // Play sound using load and callback we wrote earlier 
+        gSM.loadAsync (soundURL, function(sObj) { gSM.playSound(sObj.path,{volume:vol,looping:false}); } );
+        
+    }
