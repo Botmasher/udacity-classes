@@ -1142,3 +1142,27 @@ function playSoundInstance(soundpath) {
         gSM.loadAsync (soundURL, function(sObj) { gSM.playSound(sObj.path,{volume:vol,looping:false}); } );
         
     }
+
+
+    - Note that sound design can be expensive and require lots of retooling at every change. Usually saved for end of pipeline.
+
+
+6. ASSET LOADING
+	- Get it right, games load quickly. Wrong, bad load times.
+	
+	// we've already done this
+	var img = new Image();
+	img.onload = function () {
+		// do sth and return;
+	}
+	img.src = "";
+
+	- as things get complex, need more flexibility
+	- Might be fetching from web every time. What if could just check for and return the in memory version?
+	- This sets us down the path to Asset Loading Manager
+	- All are async, so don't need to put together all the logic of communicating between threads. Just use callbacks once loaded.
+
+	- Asset Manager:
+		0. cached asset management (for loaded so no reloads)
+		1. async callbacks once asset loaded
+		2. batched asset loading (heterogenous file computation e.g. map loading)
