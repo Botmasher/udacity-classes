@@ -1166,3 +1166,23 @@ function playSoundInstance(soundpath) {
 		0. cached asset management (for loaded so no reloads)
 		1. async callbacks once asset loaded
 		2. batched asset loading (heterogenous file computation e.g. map loading)
+
+
+*	- CREATE and CHECK CACHE before loading images
+
+	function loadAsset (assetName, callbackFcn) {
+		// if image exists, run the callback on it
+		if (assetName in gCachedAssets) {
+		    callbackFcn (gCachedAssets[assetName]);
+		}
+
+		// load the new image
+		var img = new Image();
+		img.onload = function () {
+			callbackFcn(img);
+		};
+		img.src = assetName;
+
+		// Add the new asset to the cache.
+		gCachedAssets[assetName] = img;
+	}
