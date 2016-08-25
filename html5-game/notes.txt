@@ -1186,3 +1186,45 @@ function playSoundInstance(soundpath) {
 		// Add the new asset to the cache.
 		gCachedAssets[assetName] = img;
 	}
+
+
+	- When upload a suite of files, have callback for each one. Instead, have a list of files and get one callback once all loaded.
+
+// modify to take a list of asset names
+var gCachedAssets = {};
+
+function loadAssets(assetList, callbackFcn) {
+	//
+	// Load each element of assetList. The elements
+	// of assetList will be strings representing asset
+	// names. Call the callback only once ALL images
+	// are loaded.
+	//
+	var batch = {
+	    count : assetList.count,
+	    progress : 0,
+	    callback : callbackFcn
+	};
+	
+	for (var i=0; i<assetList.count; i++) {
+        assetName = assetList[i];
+        
+        // image is cached - check if all loaded and issue callback
+    	if (assetName in gCachedAssets) {
+    		batch.progress += 1;
+            if (batch.progress == batch.count) batch.callback(gCachedAssets[assetName]);
+        
+    	} else {
+    	    // load image, cache it and run callback if all imgs loaded
+    		var img = new Image();
+    		img.onload = function () {
+    			batch.progress += 1;
+    			if (batch.progress == batch.count) batch.callback(img);
+    		};
+    		img.src = assetName;
+
+	    	gCachedAssets[assetName] = img;
+    		
+        }
+	}
+}
