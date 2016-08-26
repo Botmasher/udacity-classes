@@ -1228,3 +1228,43 @@ function loadAssets(assetList, callbackFcn) {
         }
 	}
 }
+
+
+	- Extend beyond imgs. Determine type of asset trying to load
+
+function getAssetTypeFromExtension(fname) {
+	if(fname.indexOf('.jpg') != -1 || fname.indexOf('.jpeg') != -1 || fname.indexOf('.png') != -1 || fname.indexOf('.gif') != -1 || fname.indexOf('.wp') != -1) {
+		// It's an image!
+		return 0;
+	}
+
+	if(fname.indexOf('.js') != -1 || fname.indexOf('.json') != -1) {
+		// It's javascript!
+		return 1;
+	}
+
+	// Uh Oh
+	return -1;
+}
+
+	// then in the check if file in cache from last section
+	...
+		if(gCachedAssets[assetList[i]] == null) {
+			...
+			var assetType = getAssetTypeFromExtension(assetList[i]);
+
+			// do image load stuff just like before
+			if (assetType === 0) {
+				...
+			}
+			// it's a script; add to the DOM
+			else if (assetType === 1) {
+				var el = document.createElement("script");
+				el.setAttribute("type", "text/javascript");
+				el.addEventListener("load", function(e){
+					onLoadedCallback(el, loadBatch);
+				}, false);
+				el.setAttribute("src", filename);
+				document.getElementsByTagName("head")[0].appendChild(el);
+				gCachedAssets[assetName] = el;
+			}
