@@ -1249,7 +1249,7 @@ function getAssetTypeFromExtension(fname) {
 
 	// then in the check if file in cache from last section
 	...
-		if(gCachedAssets[assetList[i]] == null) {
+		// IF assetList[i] isn't in gCachedAssets :
 			...
 			var assetType = getAssetTypeFromExtension(assetList[i]);
 
@@ -1264,7 +1264,45 @@ function getAssetTypeFromExtension(fname) {
 				el.addEventListener("load", function(e){
 					onLoadedCallback(el, loadBatch);
 				}, false);
-				el.setAttribute("src", filename);
+				el.setAttribute("src", assetList[i]);
 				document.getElementsByTagName("head")[0].appendChild(el);
-				gCachedAssets[assetName] = el;
+				gCachedAssets[assetList[i]] = el;
 			}
+
+
+*	- Just like old days of single-thread loading CD ROMS, users on slow connection will have trouble both loading and rendering UI to screen. Extending ASYNC methodology to menus/UI, we can nip this problem in the bud
+	PHASE 1.  Menu data. First screen. Load immediately.
+		- handled by: browser's page parser and handler
+	PHASE 2.  load scripts when user hits "join game"
+		- handled by: undefined by DOM, so issue fetch to AssetLoader and wait until it's been loaded.
+		/!\ Game scripting and menu scripting are two separate code bases, so loaded separately as well.
+	PHASE 3.  Load subsequent assets. Good practice to do this after scripts have come in!
+	PHASE 4.  LOADED! Turn off the UI and show the canvas element.
+
+	initialLoad.js
+
+	var inputScripts = [
+		"./scripts/core/core.js",
+		"./scripts/core/GameEngine.js"
+	];
+
+	AssetLoader.loadAssets (
+		inputScripts,
+		function(){
+			window.alert("All files have been loaded.");
+		}
+	);
+
+
+* PROPER ASSET LOADING * - a note about UX
+If you have streaming loading overhead, need something to cover that from the user. Animation, whatever.
+Famous examples:
+	- Devil May Cry: while loading, do damage to loading bar
+	- Metroid Prime: tunnel shooter, so next tunnel loads when get near end and shoot the door. However, if run too fast, sit there shooting the door but next level hadn't loaded yet!
+	- Jak & Daxter: infinite terrain, but if area not loaded, your player tripped and played getup animation.
+Most GameDev is smoke and mirrors!
+Write an asset loading tool. Throughout game dev career, constantly fighting to load more and more data faster into less and less memory.
+
+
+7. XTRA JS MINICOURSE
+- 
