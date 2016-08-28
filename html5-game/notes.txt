@@ -1305,4 +1305,64 @@ Write an asset loading tool. Throughout game dev career, constantly fighting to 
 
 
 7. XTRA JS MINICOURSE
-- 
+
+	// Create an object using Object Literal Notation
+	var RenderEngineClass = {
+		// creating a function
+		propertyName : function () {
+			// statements
+		}
+	};
+
+	// Access through dot notation
+	var ctx = gRenderEngine.context;
+	ctx.font = ...
+	
+	// IF statements and FOR loops
+	
+	// single line
+	if (condition == True) do that;
+	for (var i=0; i<n; i++) doThatTo(i);
+	
+	// multi line
+	if (condition === True) {
+		do that;
+	}
+	for (var i=0; i<n; i++) {
+		doThatTo(i);
+	}
+
+
+	// JSON formatted objects
+	var parsed = {
+		"frames": {
+			"chaingun.png" : {
+				"frame" : {
+					"x" : 600,
+					"y" : 400,
+					"w" : 50,
+					"h" : 40
+				},
+				"rotated": false,
+				"trimmed": true,
+				"spriteSourceSize": {
+					...
+				},
+				"sourceSize": {
+					...
+				}
+			},
+			...
+		}
+	};
+
+	// Parse JSON
+	parseJSON = function (weaponJSON) {
+		
+		// Do the actual parsing
+		var parsed = JSON.parse(weaponJSON);
+
+		// Assign and access properties
+		var chaingun = parsed['frames']['chaingun.png'];
+		console.log (chaingun.spriteSourceSize.x);
+	}
