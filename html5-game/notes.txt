@@ -1366,3 +1366,27 @@ Write an asset loading tool. Throughout game dev career, constantly fighting to 
 		var chaingun = parsed['frames']['chaingun.png'];
 		console.log (chaingun.spriteSourceSize.x);
 	}
+
+
+	// XMLHTTPRequest to retrieve JSON from server
+	// specify URL and function call on response
+	// 	1.  Create new XMLHttpRequest() Object
+	//  2.  xhr.open("GET","URL",async)
+	//  3.  xhr.onload = function(){}
+	//  4.  xhr.send()
+
+
+var setup = function() {
+
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.open("GET","/....png",true);
+
+    // Access the JSON response with the this kw
+    xmlhttp.onload = function() {
+        var parsedJSON = JSON.parse(this.responseText);
+        ...
+    }
+
+    xmlhttp.send();
+
+};
