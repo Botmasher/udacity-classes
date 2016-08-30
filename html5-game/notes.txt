@@ -1375,18 +1375,59 @@ Write an asset loading tool. Throughout game dev career, constantly fighting to 
 	//  3.  xhr.onload = function(){}
 	//  4.  xhr.send()
 
+	var setup = function() {
 
-var setup = function() {
+	    var xmlhttp = new XMLHttpRequest();
+	    xmlhttp.open("GET","/....png",true);
 
-    var xmlhttp = new XMLHttpRequest();
-    xmlhttp.open("GET","/....png",true);
+	    // Access the JSON response with the this kw
+	    xmlhttp.onload = function() {
+	        var parsedJSON = JSON.parse(this.responseText);
+	        ...
+	    }
 
-    // Access the JSON response with the this kw
-    xmlhttp.onload = function() {
-        var parsedJSON = JSON.parse(this.responseText);
-        ...
-    }
+	    xmlhttp.send();
 
-    xmlhttp.send();
+	};
 
-};
+
+	// Loading sound using XHR with arraybuffer
+	// specifies this is binary rather than text
+
+	var setup = function() {
+
+		// arraybuffer so browser doesn't think it's text
+		// and slow to a crawl and crash
+
+		var soundRequest = new XMLHttpRequest();
+		soundRequest.open ('GET','/files/sound.ogg',true);
+		soundRequest.responseType = 'arraybuffer';
+
+		// and now the .load and .send
+		// note load is doing audio node stuff learned earlier
+
+		soundRequest.onload = function () {
+
+			try {
+				var context = new webkitAudioContext();
+
+				var mainNode = context.createGainNode(0);
+				mainNode.connect(context.destination);
+
+				var clip = context.createBufferSource();
+
+				context.decodeAudioData(soundRequest.response, function (buffer) {
+					clip.buffer = buffer;
+					clip.gain.value = 1.0;
+					clip.connect(mainNode);
+					clip.loop = true;
+					clip.noteOn(0);
+				}, function (data) {});
+			}
+			catch(e) {
+				console.warn('Web Audio API is not supported in this browser');
+			}
+		};
+
+		soundRequest.send();
+	};
