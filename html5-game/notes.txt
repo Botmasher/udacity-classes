@@ -1431,3 +1431,35 @@ Write an asset loading tool. Throughout game dev career, constantly fighting to 
 
 		soundRequest.send();
 	};
+
+
+*	// Abstract out XHR into function
+	// and run it from playsound, parsejson and other methods!
+	function xhrGet (uri, callback, type) {
+
+		// store who called this method for error logging
+		var caller = xhrGet.caller;
+
+		var xhr = new XMLHttpRequest();
+		xhr.open ('GET', uri, true);
+
+		// it's text if null, binary if arraybuffer
+		if (type) xhr.responseType = type;
+
+		// run callback
+		// assume callback takes xhr response as param
+		xhr.onload = function () {
+			if (callback) {
+				try {
+					callback (xhr);
+				} catch (e) {
+					throw 'xhrGet failed: \nCaller: ' + caller + '\nError:' + e;
+				}
+			}
+		};
+
+		xhr.send();
+		return xhr.response;
+	}
+
+	// better yet: catch errors on type, load and xhr.caller
