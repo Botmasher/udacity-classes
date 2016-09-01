@@ -1463,3 +1463,16 @@ Write an asset loading tool. Throughout game dev career, constantly fighting to 
 	}
 
 	// better yet: catch errors on type, load and xhr.caller
+
+
+	// DOM - selecting, creating and inserting
+	document.getElementById("exampleform").onsubmit = function () {
+		var notify = document.getElementById("notify");
+		if (notify === null) {
+			notify = document.createElement ("p");
+			notify.textContent = "Some text!";
+			notify.id = "notify";
+			var body = document.getElementsByTagName("body")[0];
+			body.appendChild(notify);
+		}
+	};
