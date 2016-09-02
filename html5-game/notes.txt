@@ -1476,3 +1476,16 @@ Write an asset loading tool. Throughout game dev career, constantly fighting to 
 			body.appendChild(notify);
 		}
 	};
+
+
+	// Grab the body and create a canvas inside it
+
+	var manipulateDOM = function() {
+		var body = document.getElementById("body");
+		var div = document.createElement("div");
+		div.id = "gameContent";
+		var canvas = document.createElement("canvas");
+		canvas.id = "gameCanvas";
+		div.appendChild(canvas);
+		body.appendChild(div);
+	};
