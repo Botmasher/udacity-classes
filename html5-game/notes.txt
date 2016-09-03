@@ -1489,3 +1489,16 @@ Write an asset loading tool. Throughout game dev career, constantly fighting to 
 		div.appendChild(canvas);
 		body.appendChild(div);
 	};
+
+
+	// Classes for "faking" traditional OO inheritance
+	Weapon = Class.extend({
+		init: function () {
+			this._super();
+		}
+	});
+	Bazooka = Weapon.extend({
+		init: function () {
+			this._super();
+		}
+	});
