@@ -1,12 +1,31 @@
 <html>
 <body>
 
+<canvas element>
+
 <script type = "text/javascript">
 
 	// create an array of a certain length
 	var a = [];	
 	a.length = 256;
 	a = Array.apply(this, a);
+
+	add images function
+	var imgUris = [];
+	var frame = 0;
+	var frames = []; 			// array of images
+	for (var i=0; i<imgUris.length; i++) {
+		frames.push(new Image());
+		frames[i].onload = ;		// your load func ;
+		frames[i].src = imgUris[i];	// your img src ;
+	}
+
+	draw function
+	window.setInterval (function() {
+
+	},
+	30);
+	frame = (frame + 1) % frames.length;
 
 </script>
 
