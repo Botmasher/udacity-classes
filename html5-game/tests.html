@@ -1,31 +1,44 @@
 <html>
 <body>
 
-<canvas element>
+<canvas id = "c"></canvas>
 
 <script type = "text/javascript">
+	
+	// grab the canvas element and canvas context
+	var c = document.getElementById("c");
+	c.width = 1280;
+	c.height = 720;
+	ctx = c.getContext("2d");
 
-	// create an array of a certain length
+	// create an empty array of specified length
 	var a = [];	
 	a.length = 256;
 	a = Array.apply(this, a);
 
+	function draw (image, positionX, positionY) {
+		ctx.drawImage (image, positionX, positionY);
+	};
+
+	// build image array
 	add images function
 	var imgUris = [];
 	var frame = 0;
 	var frames = []; 			// array of images
 	for (var i=0; i<imgUris.length; i++) {
 		frames.push(new Image());
-		frames[i].onload = ;		// your load func ;
+		frames[i].onload = function(){
+			draw (frames[i], 0, 0);
+		};
 		frames[i].src = imgUris[i];	// your img src ;
 	}
 
-	draw function
+	// perform flipbook animation
 	window.setInterval (function() {
-
+		draw (frames[frame])
+		frame = (frame + 1) % frames.length; 	// handles 0, n
 	},
 	30);
-	frame = (frame + 1) % frames.length;
 
 </script>
 
