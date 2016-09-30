@@ -5,6 +5,37 @@
 
 <script type = "text/javascript">
 	
+	var imgUris = [
+		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0001.jpg',
+		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0002.jpg'
+	];
+	var imgAtlas = {
+		// add this to handle url? Where else would it be handled?
+		root: 'http://www.example.com/imgs/'
+		// the image within the atlas
+		'imgname.png' : {
+			frame: {
+				x: 0,
+				y: 0,
+				w: 10,
+				h: 10
+			},
+			rotated: false,
+			trimmed: false,
+			// for drawing to our canvas
+			spriteSourceSize: {
+				x: 0,
+				y: 0,
+				w: 10,
+				h: 10
+			}
+			sourceSize: {
+				w: 10,
+				h: 10
+			}
+		}
+	};
+
 	// grab the canvas element and canvas context
 	var c = document.getElementById("c");
 	c.width = 1280;
@@ -20,39 +51,6 @@
 		ctx.drawImage (image, positionX, positionY);
 	};
 
-	// array of source urls for image objects
-	var imgUris = [
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0001.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0002.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0003.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0004.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0005.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0006.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0007.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0008.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0009.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0010.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0011.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0012.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0013.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0014.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0015.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0016.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0017.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0018.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0019.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0020.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0021.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0022.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0023.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0024.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0025.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0026.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0027.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0028.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0029.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0030.jpg',
-	];
 
 	// build images array
 	var frame = 0;
