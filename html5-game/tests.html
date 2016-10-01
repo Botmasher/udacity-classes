@@ -5,15 +5,20 @@
 
 <script type = "text/javascript">
 	
+	// create an empty array of specified length
+	var a = [];	
+	a.length = 256;
+	a = Array.apply(this, a);
+
 	var imgUris = [
 		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0001.jpg',
 		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0002.jpg'
 	];
+
 	var imgAtlas = {
-		// add this to handle url? Where else would it be handled?
-		root: 'http://www.example.com/imgs/'
 		// the image within the atlas
-		'imgname.png' : {
+		'img1.png' : {
+			url: 'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0001.jpg',
 			frame: {
 				x: 0,
 				y: 0,
@@ -28,7 +33,7 @@
 				y: 0,
 				w: 10,
 				h: 10
-			}
+			},
 			sourceSize: {
 				w: 10,
 				h: 10
@@ -42,33 +47,28 @@
 	c.height = 720;
 	ctx = c.getContext("2d");
 
-	// create an empty array of specified length
-	var a = [];	
-	a.length = 256;
-	a = Array.apply(this, a);
-
 	function draw (image, positionX, positionY) {
 		ctx.drawImage (image, positionX, positionY);
-	};
-
+	}
 
 	// build images array
 	var frame = 0;
 	var frames = []; 			// array of images
-	for (var i=0; i<imgUris.length; i++) {
+	for (var i=0; i < imgAtlas.length; i++) {
+		console.log (imgAtlas[i])
 		frames.push(new Image());
 		frames[i].onload = function(){
 			//draw (frames[i], 0, 0);
 		};
-		frames[i].src = imgUris[i];	// your img src ;
+		// build img src from JSON root URL + image name
+		frames[i].src = imgAtlas[i]['url'];
 	}
 
 	// perform flipbook animation
 	window.setInterval (function() {
 		draw (frames[frame], 0, 0)
 		frame = (frame + 1) % frames.length; 	// handles 0, n
-	},
-	40);
+	}, 40);
 
 </script>
 
