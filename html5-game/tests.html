@@ -10,15 +10,10 @@
 	a.length = 256;
 	a = Array.apply(this, a);
 
-	var imgUris = [
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0001.jpg',
-		'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0002.jpg'
-	];
-
 	var imgAtlas = {
 		// the image within the atlas
 		'img1.png' : {
-			url: 'http://www.nativlang.com/backup-files/videos/general-interest/taboos-kwaio/renders/0001.jpg',
+			url: 'http://www.example.com/img1.png',
 			frame: {
 				x: 0,
 				y: 0,
@@ -54,14 +49,16 @@
 	// build images array
 	var frame = 0;
 	var frames = []; 			// array of images
-	for (var i=0; i < imgAtlas.length; i++) {
-		console.log (imgAtlas[i])
+	var counter = 0;
+	for (var img in imgAtlas) {
+		console.log (imgAtlas[img])
 		frames.push(new Image());
-		frames[i].onload = function(){
-			//draw (frames[i], 0, 0);
+		frames[counter].onload = function(){
+			//draw (frames[counter], 0, 0);
 		};
 		// build img src from JSON root URL + image name
-		frames[i].src = imgAtlas[i]['url'];
+		frames[counter].src = imgAtlas[img]['url'];
+		counter++;
 	}
 
 	// perform flipbook animation
