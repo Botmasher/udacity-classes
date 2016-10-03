@@ -59,7 +59,6 @@ HTML 5 GAME DEVELOPMENT
 		1. Map those values to an object
 		2. Add that object to a sprites array
 		3. Load JSON atlas data and parse it
-
 		4. Call the define sprites method on that json data
 * drawImage - the advanced version
 	- not just x,y,w,h BUT ALSO a SOURCE x,y,w,h vs a DEST x,y,w,h

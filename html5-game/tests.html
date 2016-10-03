@@ -67,6 +67,34 @@
 		frame = (frame + 1) % frames.length; 	// handles 0, n
 	}, 40);
 
+	// define a sprite object and add to sprites array
+	var spritesArray = [];
+	function defineSprite (name, x, y, w, h, cx, cy) {
+		var newSprite = {
+			name: name,
+			x: x,
+			y: y,
+			w: w,
+			h: h,
+			/* center-x and -y are offsets from w and h
+			 * stored to avoid calculating at runtime */
+			cx: cx,
+			cy: cy
+		};
+		spritesArray.push (newSprite);
+	}
+
+	// 
+	function parseSpriteData (atlas) {
+		var result = JSON.parse (atlas);
+		for (sprite in results) {
+			var src = results.sprite.spriteSourceSize;
+			var cx = (src.w * 0.5) + src.x;
+			var cy = (src.h * 0.5) + src.y;
+			defineSprite(src.url, src.x, src.y, src.w, src.h, cx, cy);
+		}
+	}
+
 </script>
 
 </body>
