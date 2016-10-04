@@ -42,8 +42,14 @@
 	c.height = 720;
 	ctx = c.getContext("2d");
 
+	// simple draw image
 	function draw (image, positionX, positionY) {
 		ctx.drawImage (image, positionX, positionY);
+	}
+
+	// advanced draw image for source vs destination scaling
+	function draw (image, sx, sy, sw, sh, dx, dy, dw, dh) {
+		ctx.drawImage (image, sx, sy, sw, sh, dx, dy, dw, dh);
 	}
 
 	// build images array
