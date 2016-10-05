@@ -90,7 +90,7 @@
 		spritesArray.push (newSprite);
 	}
 
-	// 
+	// go through all sprites in an atlas
 	function parseSpriteData (atlas) {
 		var result = JSON.parse (atlas);
 		for (sprite in results) {
@@ -99,6 +99,19 @@
 			var cy = (src.h * 0.5) + src.y;
 			defineSprite(src.url, src.x, src.y, src.w, src.h, cx, cy);
 		}
+	}
+
+	// dict mapping sprites to their atlases
+	spriteAtlasMap = {};
+
+	drawSprite (sprite) {
+		// figure out which atlas sprite is in
+		// pass to internal
+	}
+
+	__drawSpriteInternal (sprite, sheet, posX, posY) {
+		// pass entire spritesheet to drawimage
+		// draw img with axis origin at center (calc)
 	}
 
 </script>
