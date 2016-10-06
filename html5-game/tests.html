@@ -104,9 +104,15 @@
 	// dict mapping sprites to their atlases
 	spriteAtlasMap = {};
 
-	drawSprite (sprite) {
-		// figure out which atlas sprite is in
+	// draw sprite from name of loose asset and coords
+	drawSprite (asset, x, y) {
+		
+		// figure out which atlas contains this sprite
+		var sheet = null;
+		if (asset in spriteAtlasMap) sheet = spriteAtlasMap[asset];
+
 		// pass to internal
+		__drawSpriteInternal (sprite, sheet, x, y);
 	}
 
 	__drawSpriteInternal (sprite, sheet, posX, posY) {
