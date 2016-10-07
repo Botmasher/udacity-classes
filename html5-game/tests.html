@@ -118,6 +118,13 @@
 	__drawSpriteInternal (sprite, sheet, posX, posY) {
 		// pass entire spritesheet to drawimage
 		// draw img with axis origin at center (calc)
+
+		/* Pass in the ENTIRE SPRITESHEET to drawImage
+		   Draw image with axis origin at center:
+			- hold off {x: posX-sprite.w*0.5, y: posY-sprite.h*0.5}
+			- use those .x, .y vals when drawing positionX, positionY
+		*/
+		drawImage(sheet, posX, posY);
 	}
 
 </script>
