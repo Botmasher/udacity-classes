@@ -106,26 +106,35 @@
 
 	// draw sprite from name of loose asset and coords
 	drawSprite (asset, x, y) {
-		
+
 		// figure out which atlas contains this sprite
 		var sheet = null;
 		if (asset in spriteAtlasMap) sheet = spriteAtlasMap[asset];
+
+		if (sheet.asset.trimmed == true) {
+			var ctrX, ctrY;
+			var trimX = sheet.asset.frame.x;
+			var trimY = sheet.asset.frame.y;
+			var trimW = sheet.asset.frame.w;
+			var trimH = sheet.asset.frame.h;
+			ctrX = trimX - (trimW * 0.5);
+			ctrY = trimY - (trimH * 0.5);
+			return;
+		}
 
 		// pass to internal
 		__drawSpriteInternal (sprite, sheet, x, y);
 	}
 
 	__drawSpriteInternal (sprite, sheet, posX, posY) {
-		// pass entire spritesheet to drawimage
-		// draw img with axis origin at center (calc)
 
-		/* Pass in the ENTIRE SPRITESHEET to drawImage
-		   Draw image with axis origin at center:
-			- hold off {x: posX-sprite.w*0.5, y: posY-sprite.h*0.5}
-			- use those .x, .y vals when drawing positionX, positionY
-		*/
-		drawImage(sheet, posX, posY);
+		// draw image with axis at center
+		var x = posX-sprite.w*0.5;
+		var y = posY-sprite.h*0.5;
+		// pass the ENTIRE SPRITESHEET to drawImage
+		draw (sheet, x, y);
 	}
+
 
 </script>
 
