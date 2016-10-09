@@ -136,6 +136,32 @@
 	}
 
 
+
+	//	Use TILE to generate how atlas should be rendered to draw bg
+	//  0. setup an XHR
+	function xhrGet(reqUri,callback) {
+		var xhr = new XMLHttpRequest();
+		xhr.open("GET", reqUri, true);
+		xhr.onload = callback;
+		xhr.send();
+	}
+	//  1. perform an XHR to load TILE tiles
+	var TILEDMapClass = Class.extend({
+	    // Boolean flag set once map atlas loads
+	    fullyLoaded: false,
+	    load: function (map) {
+	        // Perform an XMLHttpRequest to grab the
+	        // JSON file at url 'map'.
+	        // Once the XMLHttpRequest loads, set the
+	        // 'fullyLoaded' flag to true.
+	        //
+	        xhrGet(map, false, function(data) {
+	            this.fullyLoaded = true;
+	        });       
+	    }
+	});
+	//	2. Parse the TILE JSON file
+
 </script>
 
 </body>
