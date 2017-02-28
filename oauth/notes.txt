@@ -92,3 +92,59 @@
 		  "given_name": "", 
 		  "id": "117667974869561719729"
 		}
+
+2. Creating a G+ Signin
+	- Flow 1: initiated by browser in JS, passing token to G+ that's passed back
+		- client-side is quick and easy
+		- but trusts browser/mobile and server cannot make API calls for user
+	- Flow 2: server side, server obtains the token on behalf of user (user can revoke)
+		- server-side is more powerful
+		- but server now responsible for implementing session tracking for users
+		- secure storage and access tokens
+*	- G+ hybridized flow: authent on client, but server makes API calls for client 
+		https://developers.google.com/identity/protocols/OAuth2#scenarios
+	- even if hack access code btwn server & G, can't do stuff w/o "client secret"
+*	- /!\ CLONED REPO gives me trouble.
+		- I can clone, bring up vagrant, ssh in and navigate to the oauth directory
+		- I can see all the listed py files there
+		- I can run the db create and the db populate scripts just fine
+		- I can run the project startup script just fine
+		- when I navigate to the localhost port I see nothing
+		- issue continues when I change project py and copy/paste e.g. localhost:8020
+*	- /!\ USE my FoodBase project instead! It works just fine.
+*		- it's in a separate udacity-fullstack folder
+*		- navigate to vagrant/, vagrant up, vagrant ssh, then to /vagrant/finalProject
+*		- now let's implement oauth on this thing!
+	(1) setup to communicate with API library at console.developers.google.com
+		- create new project
+		- API > credentials
+		- create new client id
+		- now have "Client ID", "Client secret" and "Creation date"
+	(2) Configure local version of code to work
+		- Edit Client Settings
+		- find Authorized JS Origins
+		- add localhost:port (where port is the 4 ints you're using)
+		- if you're also using the IP version (0.0....), this needs added as well
+	(3) Use client ID and secret to add OAuth to app
+	- Anti-Forgery State Tokens
+		- make sure that the user is actually the one doing a request
+		- unique session token that client side returns alongside authorization token
+		- in later steps, verify this unique session token w server on all reqs
+	(4) imports for Login Session in Flask app
+
+	from flask import session as login_session 	# this is a dict
+	import random, string 	# to create pseudorandom string for each session
+
+	(5) create showLogin that makes the state var (32 chars, mix uppercase + digits)
+		- store that state as login_session['state'] to use later
+	
+	@app.route('/login')
+	def showLogin():
+		state = ''.join(random.choice(string.ascii_uppercase + string.digits) for x in xrange(32))
+		login_session['state'] = state
+		return "Current session state: %s" % login_session['state']
+
+	 	- for x-site request forgery, attacker would have to guess this code to make a request on the user's behalf
+	 	- later, we'll check to make sure user and login session have same state val
+
+	(6) Make an actual button user can click to login
