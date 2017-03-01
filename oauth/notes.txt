@@ -148,3 +148,37 @@
 	 	- later, we'll check to make sure user and login session have same state val
 
 	(6) Make an actual button user can click to login
+		- create new login template in project templates folder
+		- inside the new template's <head> tags, include the following scripts
+			<script src = "//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
+			</script>
+			<script src = "https://apis.google.com/js/client:platform.js?onload=start" async defer></script>
+		- in the body, create a div to hold the actual G signin data
+			<div id = "signinButton">
+				<span class = "g-signin"
+					data-scope = "openid"
+					data-clientid = "YOUR CLIENT ID HERE"
+					data-redirecturi = "postmessage"
+					data-accesstype = "offline"
+					data-cookiepolicy = "single_host_origin"
+					data-callback = "signinCallback"
+					data-approvalprompt = "force">
+				</span>
+			</div>
+			<div id = "result"></div>
+		- data-scope : which G resources we want to be able to access. Compare the documentation to see kind of info you'll get in res obj (e.g. name, email, ...)
+			## should read "openid email" to retrieve a user's email
+		- data-clientid : the client id value generated when creating project at console.developers.google.com
+		- data-redirecturi : sends a post messg, enabling one-time use codeflow
+		- data-accesstype : do you want to send api calls even if user not logged in?
+		- data-cookiepolicy : scope of uri that can access cookie. Single origin if just one host name and no subdomains.
+		- data-callback : the cb to pass onetime use code and access token if user grants access to profile data
+		- data-approvalprompt : user must login each time visit the login page (no check for already logged in).  /!\ Debug friendly, but disable in production /!\
+
+	(7) Change views.py login to render the login template
+		return render_template ('login.html') 	 # but .php in my example
+
+	(8) Vagrant up, run server and test /login endpoint!
+		- Nothing interesting happens upon logging in... yet.
+
+	- 
