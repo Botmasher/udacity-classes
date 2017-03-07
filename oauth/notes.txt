@@ -224,17 +224,27 @@
 	(10) Now back to views logic: several imports needed
 
 	# create flow obj from json client id, client secret and other OAuth2 params
+	# This json-formatted file stores client id, client secret and other Oauth params
+	# For G, these are params we got w created app in console.developers.google.com,
+	# and the JSON file is the client secret file dl under that app at that G acct
 	from oauth2client.client import flow_from_clientsecrets
-	# method for errors when trying to exchange one-time code for authorization token
+	
+	# method for errors when trying to exchange one-time code for token
+	# the one-time code is the authorization, the token is the access token
 	from oauth2client.client import FlowExchangeError
+	
 	# comprehensive http client library in Python
 	import httplib2
+	
 	# also need JSON for this
 	import json
+
 	# turn return val from function into a real response obj to send off to client
 	from flask import make_response
+	
 	# Apache 2 licensed http lib similar to urllib but with improvements
 	import requests 
+
 
 	(11) Navigate to G dev console again. Select project credentials. Download JSON.
 		- rename downloaded file to client_secrets.json
@@ -322,4 +332,45 @@
 		flash('You are now logged in as %s' % login_session['username'])
 		return o
 
-	(14) Whew!
+
+	(14) Check errors and scopes. I'm having trouble with code above, so some of the things I had to change to avoid 401 errors and 500 errors:
+		- stored credentials.access_token instead of credentials
+			login_session['credentials'] = credentials.access_token
+		- stopped storing email at least with these scopes (is this because of account settings or because of the scope?)
+		# login_session['email'] = data['email']
+
+	(15) Add disconnect code to revoke token and reset login_session. TEST this uri.
+	@app.route('/gdisconnect')
+	def gdisconnect():
+		credentials = login_session.get('credentials')
+		# we don't have record of a user that we can disconnect
+		if credentials is None:
+			response = make_response(json.dumps('Current user isn\'t connected.'), 401)
+			response.headers['Content-Type'] = 'application/json'
+			return response
+		# pass access token to G url for revoking tokens
+		access_token = credentials.access_token
+		url = 'https://accounts.google.com/o/oauth2/revoke?token=%s' % access_token
+		# hit url and store response in a results object
+		h = httplib2.Http()
+		result = h.request(url, 'GET')[0]
+
+		# successful response
+		if result['status'] == 200:
+			# reset our app login_session data
+			del login_session['credentials']
+			del login_session['gplus_id']
+			del login_session['username']
+			#del login_session['email']
+			del login_session['picture']
+			# pass client successful disconnect
+			response = make_response(json.dumps('User successfully disconnected.'), 200)
+			response.headers['Content-Type'] = 'application/json'
+			return response
+		# invalid token or somehow logout not successful
+		else:
+			response = make_response(json.dumps('Failed to revoke token and disconnect user.'), 400)
+			response.header['Content-Type'] = 'application/json'
+			return response
+
+	(16) 
