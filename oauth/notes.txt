@@ -384,3 +384,17 @@
 	- what about users modifying other user data? Permission system.
 
 2. Local Permission System ("Lesson Three")
+	- use server-side logic and db to control data based on credentials
+	- db must store info in a more user-specific way
+		- table of Users to identify which data belongs to whom
+		- Restaurant and MenuItems should track user_id
+	- back-end code hooks everything together
+		login_session[]
+		createUser()
+	(1) User table
+		name 		string
+		email 		string
+		picture 	string
+		id 			integer
+	(2) Modify Restaurant and MenuItem to include user_id
+		- go into 
