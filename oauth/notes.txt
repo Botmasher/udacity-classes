@@ -356,7 +356,7 @@
 		result = h.request(url, 'GET')[0]
 
 		# successful response
-		if result['status'] == 200:
+		if result['status'] == '200':
 			# reset our app login_session data
 			del login_session['credentials']
 			del login_session['gplus_id']
@@ -373,4 +373,14 @@
 			response.header['Content-Type'] = 'application/json'
 			return response
 
-	(16) 
+	(16) Protect your pages from non-logged-in users
+		- under a method e.g. /restaurant/create
+			if 'username' not in login_session:
+				return redirect('/login')
+		- pay attention to user experience
+			- e.g. annoying to fill out a form, submit it, only to hit login wall
+		- often read makes sense unrestricted, then c/u/d restricted
+
+	- what about users modifying other user data? Permission system.
+
+2. Local Permission System ("Lesson Three")
