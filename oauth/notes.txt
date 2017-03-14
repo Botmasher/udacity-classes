@@ -396,5 +396,49 @@
 		email 		string
 		picture 	string
 		id 			integer
-	(2) Modify Restaurant and MenuItem to include user_id
-		- go into 
+	(2) Modify Restaurant and MenuItem classes to include user_id
+		- in SQLAlchemy, add as foreign key
+			user_id = Column(Integer, ForeignKey('user.id'))
+		- in SQLAlchemy, also make sure to store relationship with user
+			user = relationship(User)
+		- update json properties in the models if you're serializing data
+			@property
+		def serialize(self):
+			return {
+				'id': self.id,
+				...
+				...
+				'user': self.user
+			}
+	(3) Open up project file and add the User to the model imports
+		- he's relying on email for checking user
+		from models import Base, Restaurant, MenuItem, User
+	
+	(4) Add user create and get info methods
+
+		def createUser(login_session):
+			newUser = User(name=login_session['username'],picture=login_session['picture'])
+			session.add(newUser)
+			session.commit()
+			user = session.query(User).filter_by(email=login_session['email']).one
+			return user.id
+
+		def getUserInfo (user_id):
+			user = session.query(User).filter_by(id=user_id).one()
+			return user
+
+		def getUserID (email):
+			try:
+				user = session.query(User).filter_by(email=email).one()
+				return user.id
+			except:
+				return None
+
+	(5) Now whenever you create new restaurant or menuItem, pass user_id too
+		
+		# or whatever your route and method is
+		@app.route('/restaurants/new/')
+		def newRestaurant():
+			# inside POST
+			newRestaurant = Restaurant(name=request.form['name'],user_id=login_session['user_id'])
+			# then do your add and commit
