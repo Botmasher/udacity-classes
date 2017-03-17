@@ -442,3 +442,17 @@
 			# inside POST
 			newRestaurant = Restaurant(name=request.form['name'],user_id=login_session['user_id'])
 			# then do your add and commit
+
+	(6) add user check to the gconnect method; automatically create new user if none exists
+		/!\ REALLY depends on how you set up User model. How did you handle auth id? /!\
+
+		# see if user exists, if not make a new one
+		user = session.query(User).filter_by(gplus_id=login_session['gplus_id']).one()
+		if user == None:
+			newUser = User(name=login_session['username'], gplus_id=login_session['gplus_id'], picture=login_session['picture'])
+			session.add(newUser)
+			session.commit()
+		user = session.query(User).filter_by(gplus_id=login_session['gplus_id']).one()
+
+		# add user.id to login_session for future user queries
+		login_session['user_id'] = user.id
