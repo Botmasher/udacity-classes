@@ -456,3 +456,26 @@
 
 		# add user.id to login_session for future user queries
 		login_session['user_id'] = user.id
+
+		// BETTER: refactor user check to utilize those three methods you wrote in #4
+	
+	(10) Protect menu and restaurant add/edit/delete functions
+		
+		// do not show the links on page to non-logged-in users
+		if 'username' in login_session and login_session['user_id']==m.userId:
+			output += '<a href="%s">edit</a>' % (url_for('update',...))
+
+		// keep users from being able to post data they do not have access to through url 
+		// this example uses a JS alert and was added to my update and delete methods
+		if login_session['user_id'] != session.query(Restaurant).filter_by(id=index).one().userId:
+			return '<script>function alertPermiss() {alert("Not authorized to update. Create a restaurant in order to update it.");}</script><body onload="alertPermiss=()">'
+
+	(10.5) I had to go back through and repop my db, setup the forms page to work with user, and all pages to point to the new db since I renamed it to distinguish models from models with User added.
+
+
+3. FB as additional OAuth provider
+
+	(1) First have to register your app on FB to create client ID and secret
+		developers.facebook.com
+
+	(2) Create .json file to store id and secret
