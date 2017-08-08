@@ -1,0 +1,57 @@
+LESSON 2: FUNCTIONS
+
+- Arrow functions
+	
+	- consider mapping function results onto an array
+	- recall that map:
+		- is a method on array's prototype
+		- takes a function and runs it on every element in an array
+		- gathers returned values up and makes a new array out of them
+		- returns that new array
+	const upperizedNames = ['jhiggly', 'scrumbly', 'tanuki'].map(function(name) { return name.toUpperCase() });
+
+	- pass in an arrow function instead; note that the arg stays but kw and parens and braces are gone
+	const upperizedNames = ['jhiggly', 'scrumbly', 'tanuki'].map( name => name.toUpperCase() );
+
+	- take one more xample for practice
+	const names = ["Ba", "Bababaaah", "Bansnu", "Bansnuchi", "Baddabaddasti"];
+	const longNames = names.filter ( name => name.length>6 ); 		// assigns to array containing the 3 long names
+
+- Arrow functions are "arrow function expressions" NOT declarations
+
+	- can only be used when valid expression is evaluated
+		- store in variable
+		- pass as arg to function
+		- store in object property
+
+	- carefully consider the "confusing" syntax of storing in a variable
+	const greet = name=>`Hello, ${name}!`; 		// stores function in variable greet
+	greet ("Shampoozo"); 						// returns "Hello, Shampoozo!"
+
+	- parameters with parens
+	
+	const sayHi = () => console.log("Hi you!");
+	sayHi();
+
+	const orderShake = (flavor, thickness) => console.log (`Here's your ${flavor} shake, nice and ${thickness}!`);
+	orderShake ('chocolate', 'runny');
+
+	- some devs use _ (underscore) for single unused param
+
+	setTimeout(_ => { 					// instead of ()=>{}
+		console.log("Running test");
+		test.start();
+	}, 2000);
+
+- Concise vs Block Body syntax
+
+	- concise: no braces around a single line automatically returning the expression
+	- block body: more lines wrapped in braces and a return statement
+
+	- these are requirements: you can't write e.g. a concise one with a return statement and no curly braces
+	- these are requirements: you can't write e.g. a block body one without a return statement
+
+- Arrow fn Gotcha #1: there is no such thing as an "arrow function declaration"
+- Arrow fn Gotcha #2: the "this" keyword (of course! - more below)
+
+- 
