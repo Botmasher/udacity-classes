@@ -1,1 +1,92 @@
 LESSON 3: BUILT-INS
+
+- Symbols
+	
+	- unique identifier (usu) to identify properties within an object
+	- imagine you want to add multiple of the same kind of properties to an obj
+		- like bananas in a bowl, once you add >1, you start having to keep track of them
+		- if you add a new 'banana' to an object, you just overwrite the prev 'banana'
+		- common solution is to number them banana1, banana2, ...
+	- symbols have an optional description but that string isn't the symbol itself
+	
+	const symNoDesc = Symbol();
+	const b1 = Symbol('banana');
+	const b2 = Symbol('banana');
+	b1 === b2; 						// false
+
+	- using symbols within an object
+	const bowl = {
+		[Symbol('apple')]: {color:'red'},
+		[Symbol('banana')]: {color:'yellow'},
+		[Symbol('banana')]: {color:'brown'}
+	};
+
+- Iterable protocol
+	- for...of as a built-in iterable usable on any iterable object
+	- any iterable object must implement the "iterable interface"
+		- basically means it must contain a default iterator method
+		- default method defines how obj is to be iterated
+	- iterator method is avail via the constant [Symbol.iterator]
+		- it's a zero arg func that returns an iterator obj
+		- an iterator obj is an obj that conforms to the iterator protocol
+	- iterator protocol
+		- defines standard way an obj produces a sequence of value
+		- really means that you have a process for determining how obj will iterate
+	- obj becomes iterator when implements .next()
+	- .next() returns an obj w two properties:
+		- value (the next value in the obj)
+		- done (boolean for done going through sequence of values)
+
+	const digits = [0,1,2,3,4,5];
+	const arrayIterator = digits[Symbol.iterator]();
+	console.log (arrayIterator.next());		// Object {value: 0, done: false}
+	console.log (arrayIterator.next());		// Object {value: 1, done: false}
+
+	- iterating through an object
+
+	// sample object
+	const james = {
+ 	   name: 'James',
+	    height: `5'10"`,
+	    weight: 185
+	};
+
+	// generator function
+	james[Symbol.iterator] = function* () {
+    	const keys = Object.keys(james);
+    	for (const key of keys) {
+        	yield james[key];
+    	}
+	}
+
+	let iterator = james[Symbol.iterator]();
+	console.log(iterator.next().value); 		// 'James'
+	console.log(iterator.next().value); 		// `5'10`
+	console.log(iterator.next().value); 		// 185
+
+
+	// change the next method to return what you want from an object
+	// here getting the key as well as the value and done
+	james[Symbol.iterator] = function () {
+		let i = 0;
+		const keys = Object.keys (this);
+		return {
+			next: () =>  {
+				let done;
+				if (i < keys.length) {
+					done = false;
+					i++;
+				} else {
+					done = true;
+				}
+				return { key: keys[i-1], value: this[keys[i-1]], done: done };
+			}
+		};
+	}
+
+- Sets
+	- collections of unique elements
+	- unlike array, cannot be dups
+
+	const games = new Set({'Mario','Banjo','Cod','Borderlandias'});
+	
