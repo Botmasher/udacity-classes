@@ -207,4 +207,82 @@ LESSON 2: FUNCTIONS
 		}
 	}
 
-- 
+- Subclasses: "super" and "extends"
+	
+	- ES5 subclass-like pattern
+
+	function Tree (size, leaves) {
+		this.size = size;
+		this.leaves = leaves;
+	}
+	Trees.prototype.changeSeason = function(season) {
+		if (season === 'spring') this.size += 1;
+	}
+	function Maple (syrup, size, leaves) {
+		Tree.call (this, size, leaves);
+		this.syrup = syrup;
+	}
+	Maple.prototype = Object.create(Tree.prototype);
+	Maple.prototype.changeSeason = function(season) {
+		Tree.prototype.changeSeason.call(this, season);
+		if (season === 'spring') this.syrup += 1;
+	}
+
+	- ES6 subclasses
+
+	class Tree {
+		constructor(size=10, leaves={spring:'green',summer:'green',fall:'orange',winter:null}) {
+			this.size = size;
+			this.leaves = leaves;
+		}
+		changeSeason(season) { 		// same as if added to prototype
+			if (season === 'spring') this.size += 1;
+		}
+	}
+	class Maple extends Tree { 		// extending base class to subclass (like setting base prototype)
+		constructor(syrup=15, size, leaves) {
+			super(size,leaves);
+			this.syrup = syrup;
+		}
+		changeSeason(season) {
+			super.changeSeason(season);
+			if (season === 'spring') this.syrup += 1;
+		}
+	}
+
+	- in both you can create a new maple and change seasons
+	const myMaple = new Maple(15, 5);
+
+	- both have the same functionality though syntax is different
+		- no longer need to create the base prototype for the subclass prototype
+		- no longer need to rewire the original constructor function back to the subclass
+		- BUT this is still being done under the hood
+	Maple.prototype = Object.create(Tree.prototype);
+	Maple.prototype.constructor = Maple;
+
+- SUPER
+
+	- note that SUPER is both called for the constructor and as an object for the methods
+	super(...args) {} 		// calls base class constructor, prev ObjFunc.call(this,...args)
+	super.methodName() {} 	// calls base class method
+
+	- subclass constructor SUPER must be called before THIS can be used
+	class Apple { ... }
+	class GrannySmith extends Apple {
+		constructor (tartness, calories) {
+			this.tartness = tartness;
+			super (calories); 				// this before super throws error!
+		}
+	}
+
+	- subclass objects are now instanceof super class
+	gs = new GrannySmith ('very', 65);
+	gs instanceof Apple; 				// true
+
+	- from inside subclass constructor method, create instance of parent using super()
+	super(); 		// if inside GrannySmith, will be Apple()
+
+	- keep in mind passing/overwriting defaults through to super constructor
+	constructor (newDefault=5) {
+		super(newDefault);
+	}

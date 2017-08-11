@@ -157,6 +157,13 @@ LESSON 1: SYNTAX
 	console.log (total, subtotal, tax, items); 			// each is separated out; items now its own array
 
 - Rest vs Spread (both syntactically ...)
+
+	- spread is ...iterable that is spread out
+		- like move one array's elems into an array instead of nesting it as a subarray
+	- rest is ...iterable that packs the rest together into an iterable
+		- like destructure the rest of the elements of an array into another
+		- or like use a ...iterable to capture the rest of the args in a func call
+
 	- spread like unpacking a box
 	package = ["almonds","cookies","happiness"];
 	console.log (...package);
