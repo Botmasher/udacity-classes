@@ -90,3 +90,40 @@ LESSON 3: BUILT-INS
 
 	const games = new Set({'Mario','Banjo','Cod','Borderlandias'});
 	
+	- .add() and .delete() an item from a set
+	games.add ('Mario2'); 		// false if unsuccessful (like item already in set) but no error
+	games.delete ('Banjo'); 	// false if unsuccessful (like item not in set) but no error
+
+	- clear the set
+	games.clear();
+
+	- other properties
+	games.size; 		 	// length of the array
+	games.has('Mario'); 	// if item exists
+	games.values(); 		// returns a SetIterator object
+	games.keys();			// an alias for .values() for similarity with maps
+
+	- sets are built-in iterables so:
+		(1) you can use default iterator to step through each item in a Set one by one
+		(2) you can use for...of to loop through items in a Set
+
+	- (1) stepping through requires using .next on SetIterator values
+	const iterator = games.values();
+	iterator.next(); 		// Object {value: 'Mario', done: false}
+	iterator.next(); 		// and so on...
+
+	- (2) for...of as easier
+	for (const game of games) { ... }
+
+- WeakSets
+
+	- can ONLY hold objects
+	- is NOT iterable (no looping over or stepping through!)
+	- doesn't have .clear()
+
+	- why use? GC!
+		- if you set an object to null it's removed from the set automatically
+		- null objects are effectively deleted ones
+		- so effectively this means you don't have to worry about your set pointing to deleted objects
+
+- 
