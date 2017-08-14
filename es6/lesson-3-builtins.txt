@@ -126,4 +126,48 @@ LESSON 3: BUILT-INS
 		- null objects are effectively deleted ones
 		- so effectively this means you don't have to worry about your set pointing to deleted objects
 
-- 
+- Maps
+	- collections of kv pairs
+	- maps are to objects as sets are to arrays
+	- add kv using .set() c 2 args k,v
+		- both k and v can be objects, primitives or a combo
+		- use existing key won't add to map but won't return error (it's like Sets)
+	- .delete() specific k
+	- .has() to check if k exists
+	- .get() to return value for k
+	- .clear()
+	
+	const students = new Map(); 	// creates Map{}
+	students.set('james@studerifics.com', {
+		firstName: 'James',
+		lastName: 'K',
+		field: 'spachuchis'
+	});
+	students.set('julia@studerifics.com', {
+		firstName: 'Julia',
+		lastName: 'L',
+		field: 'manuchis'
+	});
+		// now have Map{'james@...'=>Object{...}, 'julia@...'=>Object{...}}
+	students.has('javier@studerifics.com'); 	// false
+	students.get('julia@studerifics.com'); 		// returns the object
+	students.clear(); 			// back to empty Map {}
+
+- Maps: looping through Maps
+	
+	// (1) step through using Map's default iterator
+
+	let iteratorForKeys = students.keys();		// or .values() to get values iterator
+	iteratorForKeys.next(); 					// Object {value: 'james@...', done: false}
+
+	// (2) loop through kv pairs using for...of
+
+	for (const student of students) {
+		const[k,v] = student;  		// it gives us arrays so k is student[0], v is student[1]
+	}
+
+	// (3) loop through kv pairs using .forEach()
+
+	students.forEach((value, key) => ...); 		// do something with each v,k
+
+- WeakMaps
