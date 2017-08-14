@@ -171,3 +171,131 @@ LESSON 3: BUILT-INS
 	students.forEach((value, key) => ...); 		// do something with each v,k
 
 - WeakMaps
+	- only objects as keys (parallel to WeakSet, which is only objects)
+	- not iterable (like WeakSet)
+	- no .clear() method (like WeakSet)
+
+	- GC: automatically alloc mem when needed and freed up when no longer needed
+	- since only obj as key, null object frees up mem when GC runs
+
+	const book1 = {title: 'Book 1 Title'};
+	const book2 = {title: 'Book 2 Title'};
+	const library = new WeakMap();
+	library.set(book1, true);
+	library.set(book2, false);
+
+	- GC algorithms in JS
+	developer.mozilla.org/en-US/docs/Web/JavaScript/Memory_Management#Garbage_collection
+
+- Promises
+	- do this thing now, then notify me when it's done so I can pick up where I left off
+	- gives me a ticket saying what I ordered, then comes back to tell me it's done
+
+	- give the promise the code that will be run async (as arg to constructor func) 
+	- promise is fulfilled: resolve method (success) or reject method (failure)
+
+	new Promise(function(resolve, reject) {
+		window.setTimeout(function createSundae(flavor = 'chocolate') {
+			const sundae = {};
+			// build my sundae...
+			if (/* out of my flavor */) {
+				reject(`Sorry, all out of ${flavor}!`);
+			}
+			resolve(sundae);		// the data we want to return
+		}, Math.random() * 2000); 	// start a few secs after making the request
+	});
+
+	- promises return obj IMMEDIATELY
+	- obj's .then() method takes two funcs (one to run if resolve, other if reject)
+	mySundae = new Promise(function(resolve, reject){
+		// sundae code
+	});
+
+	mySundae.then(function(sundae){ 	// receives the resolve obj above
+		...
+	}, function(msg){ 		// here recieves the reject text above
+		...
+	});
+
+	- (nod to udacity course on promises)
+
+- Proxies
+	- a proxy does work for / in place of another obj
+	- sits btwn real obj and the calling code
+	- calling code interacts with proxy instead of real obj
+	- new Proxy() constructor
+		- needs to know obj it will be proxy for
+		- needs to know "handler": list of methods it will handle for the proxied obj
+		- handler is among 13 different "trap" functions
+		- if trap not defined, behavior sent directly to target obj
+
+	// "Pass through" proxy c empty handler and no intercept
+	const durtimus = {status: 'dirty'};
+	const agent = new Proxy(durtimus, {}); 	// proxy for durtimus
+	agent.status; 							// is 'dirty'!
+
+	- .get used in handler to return obj info
+
+	// "Get Trap" proxy c .get(target,property) handler
+	const handler = {
+		get(target, property) { 		// e.g. durtimus, .status
+			return target[property]; 	// durtimus['status']
+		}
+	};
+	const agent = new Proxy(durtimus, handler);
+	agent.status; 		// intercepts call to property and returns the target prop thru
+
+	// "Direct" feedback proxy return info
+	// instead of return target[property], just have .get return e.g. some text mssg
+
+	- .set() used in handler to change property
+	const handler = {
+		set (target, propName, value) {
+			if (propName === 'payRate') { 	// if pay being set,
+				value = value*.85; 			// take a commission
+			}
+		}
+	};
+
+	agent.payRate = 1000; 	// set the pay rate
+	agent.payRate; 			// will read 850!
+
+- Proxy traps
+	- beyond .get and .set, other traps
+	- apply trap: proxy handles being invoked (proxies for a func)
+	- has trap: proxy handles using operator "in"
+	- deleteProperty trap: proxy handles if a prop is deleted
+	- ownKeys trap: proxy handles when all keys are requested
+	...
+
+- Proxy vs Getter/Setter methods
+	- ES5 already had getters and setters! Why proxy?
+	- needed to know before which properties get and set
+	- you would get/set when initializing an object
+	- now we don't need to know beforehand!
+
+	// old way
+	var obj = {
+		_age: 5,
+		_height: 4,
+		get age() {
+			console.log(`getting the "age" property`);
+			console.log(this._age);
+		}
+		get height() {
+			console.log(`getting the "height" property`);
+			console.log(this._height);
+		}
+	};
+	obj.weight = 100;
+	obj.weight; 		// just logs "100"
+
+	// new way
+	const proxyObj = new Proxy({age:5, height: 4}, {
+		get(targetObj, property) {
+			console.log(`getting the ${property} property`);
+			console.log(targetObj[property]);
+		}
+	});
+	proxyObj.weight = 100;
+	proxyObj.weight; 		// now logs out our formatted string!
