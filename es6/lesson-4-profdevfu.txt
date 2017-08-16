@@ -9,3 +9,40 @@ LESSON 4: PROFESSIONAL DEVELOPER-FU
 	
 - ECMAScript compatability table
 	http://kangax.github.io/compat-table/es6/
+
+- Polyfills
+
+	- JS file to patch holes in browser by replicating missing native feature
+	- https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills
+	- starts by checking if method already exists to avoid overwriting
+
+	// example polyfill for ES6 startsWith()
+	if (!String.prototype.startsWith) {
+		String.prototype.startsWith = function (searchString, position) {
+			position = position || 0;
+			return this.substr(position, searchString.length) === searchString;
+		};
+	}
+
+	- consider more robust version of the func:
+	https://github.com/mathiasbynens/String.prototype.startsWith/blob/master/startswith.js
+
+	- so many uses for polyfills:
+	https://github.com/Modernizr/Modernizr/wiki/HTML5-Cross-Browser-Polyfills
+
+- Transpiling
+	- compilers take source code and convert into machine readable (lower lvl) language
+	- transpilers turn from one human readable into another
+	- useful for JS bc can take ES6 and convert it to ES5
+	- Babel as most popular
+
+	// see how this transpiles:  http://babeljs.io/repl/
+	class Student {
+		constructor (name) {
+			this.name = name;
+		}
+		displayInfo() {
+			console.log(`${this.name} is a student.`);
+		}
+	}
+	const richard = new Student('Richard');
