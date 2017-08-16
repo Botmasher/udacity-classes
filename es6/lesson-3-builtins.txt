@@ -299,3 +299,77 @@ LESSON 3: BUILT-INS
 	});
 	proxyObj.weight = 100;
 	proxyObj.weight; 		// now logs out our formatted string!
+
+- Generators
+	- normal funcs are "run-to-completion": once invoked, JS engine runs through lines
+	- gen funcs are pausable functions
+	- "powerful" that can pause execution while maintaining own state!
+		- e.g. app needs list of repos and num times they've been starred
+		- first you could get user's info
+		- then you take user profile to find all repos
+		- this makes them useful in "upcoming additions" to JS 
+
+	function* getEmployee() {
+		console.log('Function has started!');
+		const names = ['Amanda','Diego','Farrin','James'];
+		for (const name of names) {
+			console.log(name);
+		}
+		console.log('Function has ended!');
+	}
+	
+	- running this just gives getEmployee GeneratorStatus suspended mssg!
+	- iterators come back in to help
+
+	const generatorIterator = getEmployee();
+	generatorIterator.next(); 					// will run thru the entire func above
+
+	- wait, it didn't pause!
+	- use "yield"
+
+	...
+		for (const name of names) {
+			console.log(name);
+			yield;
+		}
+	...
+
+	- NOW you can step through all those names w .next()
+	- yield data if you want to RETURN the data
+
+	...
+		for (const name of names) {
+			yield name;
+		}
+	...
+
+- Getting info into and out of generator
+	
+	- store data passed INTO a .next(arg)
+	- can both send and receive
+	- the first .next() STARTS the gen func and it PAUSES at the first yield
+
+	// receive data while paused
+	function * displayResponse() {
+		const response = yield;
+		...
+	}
+	const iterator = displayResponse();
+	iterator.next();					// start up the generator func
+	iterator.next('Some txt'); 			// send data into generator
+
+	// both send and receive data while pausing
+	function *getEmployee() {
+		const names = ['Amanda','Diego','Farrin'];
+		const facts = [];
+		for (const name of names) {
+			facts.push(yield name); 	// yield OUT name, then push data passed INTO .next
+		}
+		return facts;
+	}
+	const genIter = getEmployee();
+	let name = genIter.next().value; 					// start generator function
+	name = genIter.next(`${name} rocks!`).value; 		// pass data in AND get the next name out
+	name = genIter.next(`${name} shoots!`).vlaue; 		// pass data in AND get the next name out
+	const all = genIter.next(`${name} scores!`).value; 	// pass last data in and store return array
+	all.join('\n'); 									// store single str c each name on own line

@@ -1,0 +1,11 @@
+LESSON 4: PROFESSIONAL DEVELOPER-FU
+
+- prepare to deploy ES6 in ever-changing web
+- won't be supported by older browsers
+- how to write ES6 then?
+
+- ES6 Language Specification
+	http://www.ecma-international.org/ecma-262/6.0
+	
+- ECMAScript compatability table
+	http://kangax.github.io/compat-table/es6/
