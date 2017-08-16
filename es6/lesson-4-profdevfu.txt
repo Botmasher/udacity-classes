@@ -46,3 +46,56 @@ LESSON 4: PROFESSIONAL DEVELOPER-FU
 		}
 	}
 	const richard = new Student('Richard');
+
+- Transpiling exercise
+	- Babel transpiles by using plugins
+	- there are plugins for arrow funcs, template literals transform, etc.
+		http://babeljs.io/docs/plugins/
+	- Babel also has presets (groups of plugins bundled) incl all
+	- put those into a .babelrc file
+	- Babel uses both Node and NPM to distribute its plugins!
+
+	// .js file code to transpile
+	['Richard', 'James'].map(name => `${name}!`);
+
+	// .babelrc file listing plugins or presets
+	{
+		"presets": ["es2015"];
+	}
+
+	/* package.json file showing all packages this project depends on
+	 * 	- this is listing what SHOULD be installed
+	 * 	(1) depends on Babel CLI
+	 * 	(2) depends on ES2015 collection of all plugins
+	 * 	(3) then need to tell Babel CLI which plugin to use
+	 *		- CLI will check the .babelrc file for plugins and presets
+	 *		- babel-preset-es2015 was only saying what should be installed, not which to use
+	 * 	(4) tell Babel to transpile - we add a build script to do this
+	 * 		- simply: "babel ES6 -d ES5"
+	 *		- take files from ES6 directory and put transformed code in ES5 directory
+	 */
+	{
+		"name": "es6",
+		"version": "1.0.0",
+		"description": "Simple app to demo transpiling",
+		"main": "",
+		"scripts": {
+			"build": "babel ES6 -d ES5" 
+		},
+		"author": "Your Name",
+		"license": "MIT",
+		"devDependencies": {
+			"babel-cli": "ˆ6.16.0",
+			"babel-preset-es2015": "ˆ6.16.0"
+		}
+	}
+
+	// transpiled result is something like this
+	'use strict';
+	['Richard', 'James'].map(function(name) {
+		return name + '!';
+	});
+
+- Recommendation to use transpiling to ES 5.1 (supported virtually everywhere)
+	- only until browsers keep up
+	- this way you can use ES6 but still 

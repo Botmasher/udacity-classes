@@ -1,0 +1,112 @@
+LESSON 1: CREATING PROMISES
+
+- will use promises to request data about planets
+
+- Async work
+	- deferred and async computations
+	- what is async work?
+	- normally code executes statement by statement, immed one after other
+	- JS Engine ensures unbroken timeline
+	- assume instead you have NO idea when ASYNC operations will complete
+		- network, events, threads
+		- but anything that may return in any order
+
+- Callbacks
+	
+	- default way to do async work
+	- pass func to another func, then callback that func at later time
+	- good, but wait: how do you handle errors?
+	- VERY important to assume fault in network request
+	- should JS errors be handled differently from network errors?
+
+	- node makes error-first callbacks mandatory
+	- this doesn't solve problem: you have to define and implement error handling
+	- what if the callback is itself an async operation AND you need sth else to happen after?
+
+	// imagine callback is async and requires another thing to happen after
+	function loadImage(src, parent, callback) {
+		let img = document.createElement('img');
+		img.src = src;
+		img.onload = callback;
+		parent.appendChild(img);
+	}
+
+	// leads to Pyramid of Doom! - nested callbacks within callbacks
+	loadImage('above-the-fold.jpg', imgContainer, function () {
+		loadImage('below-the-fold.jpg', imgContainer, function () {
+			loadImage('some-great-art.jpg', imgContainer, function () {
+				loadImage('egyptian-pyramids.jpg', imgContainer, function () {
+					loadImage('last-one.jpg', imgContainer);
+				})
+			})
+		})
+	})
+
+	// same concept but with promises!
+	var sequence = get('example.json')
+	.then(doSomething)
+	.then(doSomethingElse);
+
+- Promise Stages
+	(1) Wrapping. 	Promise
+	(2) Thenning. 	Promise -value-> Action
+	(3) Catching. 	Promise -value-> Recovery
+	(4) Chaining. 	Promise -value-> Promise -value-> ...
+
+- Promise terminology
+	- FULFILLED / Resolved : 	it worked
+	- REJECTED :				it failed
+	- PENDING : 				still waiting
+	- SETTLED : 				something happened!
+
+- Promises vs Events timeline
+	- event fires > event listener set :					DOES NOT execute
+	- promise resolves > action for resolution val set :	DOES execute!
+
+	// unlike event listeners, promises don't keep firing
+	new Promise (function(resolve, reject){
+		resolve('hi'); 		// promises only resolve once
+		resolve('bye'); 	// never called
+	});
+
+	- BLOCKING
+		- can BLOCK the main thread!
+		- unlike events, promises can take as long to compute as needed
+		- so their timeline can potentially extend beyond the point where resol val needed
+		- i.e. the async work might settle AFTER resolution value accessed
+
+	- "Think of them as try/catch wrappers around asynchronous work."
+
+- "Promisifying": when to use promises
+
+	- YES when loading data via AJAX request
+		
+		var data = get('data.json');
+		data.onload = function () {
+			analyze(this.responseText);
+		};
+
+	- NO when doing long, intense calcs over lots of data in main thread
+		- promises run in the main thread so you gain nothing
+
+		hugeArrayOfImages.forEach(function(i) {
+			makeSepia(i);
+		});
+
+	- NO when creating a number of elements in order
+		- creating and appendind DOM elements is synchronous
+		- maybe if these were img elems or external data
+
+		data.forEach(function(d) {
+			var div = createDiv(d);
+			body.appendChild(div);
+		});
+
+	- YES when using web workers
+		- e.g. to post messages back and forth btwn main thread and a web worker
+		- JS running in background while keeping the main thread free
+		- www.w3schools.com/HTML/html5_webworkers.asp
+		
+		var worker = new Worker('worker.js');
+		worker.postMessage(data);
+		worker.onmessage = doSomething;
