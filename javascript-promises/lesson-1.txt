@@ -110,3 +110,83 @@ LESSON 1: CREATING PROMISES
 		var worker = new Worker('worker.js');
 		worker.postMessage(data);
 		worker.onmessage = doSomething;
+
+- Promise as Try-Catch Wrapper
+	- a try-catch wrapper that finishes at an unpredictable time
+	- can store as variable
+	- OR can just work on it right there
+	- pass a function to the promise with resolve, reject
+		- resolve and reject are two callbacks that you pass in
+		- use these to run when something works or 
+
+	// working on promise as a variable
+	var promise = new Promise(function(resolve[, reject]) {
+		var value = doSomething();
+		if (itWorked) {
+			resolve(value);
+		} else if (somethingWentWrong) {
+			reject();
+		}
+	}).then(function(value) {
+		// success!
+		return nextThing(value);
+	}).catch(rejectFunction);
+
+	// working on promise right there
+	new Promise(function(resolve, reject){
+		var img = document.createElement('img');
+		img.src = 'image.jpg';
+		img.onload = resolve;		// queues up the func passed to .then
+		img.onerror = reject; 		// note that these are NOT the last code executed in func!
+		document.body.appendChild(img);
+	})
+	.then(finishLoading)
+	.catch(showAlternateImage);
+
+	- when resolve or reject called, the promise has been "settled"
+	- once settled, the next part of the chain runs
+	- usually next part of the chain is a .then or a .catch
+	- any value passed to resolve or reject is used by subsequent .then or .Catch
+	- if no arg passed, the method simply receives "undefined"
+
+	var promise = new Promise(function(resolve[, reject]) {
+		var value = doSomething();
+		if (itWorked) {
+			resolve(value); 			// .then with resolved value
+		} else if (somethingWentWrong) {
+			reject();					// reject called c 0 args
+		}
+	}).then(function(value) {			// fulfill value passed
+		return nextThing(value); 		
+	}).catch(rejectFunction);			// reject passes undefined (bc called c 0 args)
+
+	- the value passed can be a Promise!
+		- if the value is a Promise, it executes FIRST!
+		- once it evaluates, its value will be passed to next link (.then) instead
+
+	- resolve and reject have the same syntax
+		- resolve leads to the next .then in the chain
+		- reject leads to the next .catch in the chain
+
+	- .catch also called if JS error somewhere in body of Promise
+		- there's more to error handling; see next lesson
+
+	- "this" inside in scope of Promise is the Global Object
+		- Window function when I log it out
+		- will be different c ES2015 if you use arrow func
+		- but correct answer is the global obj
+
+- Transition from document.readyState to "thening"
+	- you've so far just done document.readyState stuff
+	- three possible states
+		- loading: 		self explan
+		- interactive: 	subresources like imgs and css yet to load (DOMContentLoaded event)
+		- complete: 	loaded everything
+	- insert readystatechange between these events
+
+	// wrap event listener in a Promise so it resolves when DOM is interactive
+	// 		- i.e. I want it to resolve when the readystate is no longer "loading"
+	//		- no need for error handling; if page not ready it just won't display anyhow
+	//		- chain by using .then to do some work after you resolve
+	document.addEventListener('readystatechange', function() {
+	}); 
