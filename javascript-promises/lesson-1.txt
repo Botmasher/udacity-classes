@@ -184,9 +184,43 @@ LESSON 1: CREATING PROMISES
 		- complete: 	loaded everything
 	- insert readystatechange between these events
 
-	// wrap event listener in a Promise so it resolves when DOM is interactive
+	// wrap event listener in a Promise so it resolves when DOM is interactive!
 	// 		- i.e. I want it to resolve when the readystate is no longer "loading"
 	//		- no need for error handling; if page not ready it just won't display anyhow
 	//		- chain by using .then to do some work after you resolve
-	document.addEventListener('readystatechange', function() {
-	}); 
+	
+	// ... go from this listener
+	document.addEventListener('readystatechange', function() { ... }); 
+
+	// ... to this ready func which you can call inline
+	function ready() {
+		new Promise( (resolve) => {
+			document.addEventListener('readystatechange', () => { 	// fire when state changes
+				if (document.readyState !== 'loading') resolve(); 	// resolve if interactive
+			});
+		})
+		.then( () => {
+			myWrapperResolvedFunction(); 				// do something when resolved
+		});
+	}
+
+	// better and more robust answer - credit: Jake Archibald
+	function ready() {
+		return new Promise(function(resolve) { 				// return the created promise
+			function checkState() { 						// same code we ran above in func 
+				if (document.readyState !== 'loading') {
+					resolve();
+				}
+			}
+			document.addEventListener('readystatechange', checkState); 	// pass our func
+			checkState(); 		// run func to catch state change (interactive) before promise!
+		});
+	}
+	// chain when calling (since returns a promise) rather than thening to the promise above
+	ready().then(wrapperResolved);
+
+	- USE THAT technique
+	- it's a useful one for checking and doing stuff as the DOM loads
+	- pay attention to and know your DOM loading events!
+
+- Exoplanet Explorer

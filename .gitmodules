@@ -1,0 +1,3 @@
+[submodule "javascript-promises/exoplanet-explorer"]
+	path = javascript-promises/exoplanet-explorer
+	url = https://github.com/Botmasher/exoplanet-explorer
