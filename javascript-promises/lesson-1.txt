@@ -224,3 +224,58 @@ LESSON 1: CREATING PROMISES
 	- pay attention to and know your DOM loading events!
 
 - Exoplanet Explorer
+	- instructions on setup
+		https://github.com/udacity/exoplanet-explorer
+	- installed locally
+		[.../udacity/javascript-promises]/exoplanet-explorer/
+	- needed to update node (ran this for root but in /app/): 	brew upgrade node
+	- needed to link to local files at /usr/local/bin/node: 	brew link --overwrite node
+	- started server from /app/ using: 							gulp serve
+	- tested building (incl lint and vulcanize): 				gulp
+
+- .Catching part
+	- officially moved on from thening!
+	- it's pretty similar to thening
+	- add .catch to a promise to see if there are errors and do something about them
+	- right now, we won't "RECOVER" we'll just log errors
+	- work inside Exoplanet Explorer /app/scripts/app.js file
+
+	// XMLHttpRequest wrapped in a promise - a LOT can go wrong with an XHR
+	// 		- reject if there's an error
+	// 		- reject if status is anything but 200
+	function get(url) {
+		var req = new XMLHttpRequest();
+		req.open('Get', url);
+		req.onload = function() {
+			if (req.status == 200) {
+				// worked! - resolve with data from req.response
+			} else {
+				// failed! - reject with req.statusText
+			}
+		};
+		req.onerror = function() {
+			// it failed! - pass a 'Network Error' to reject
+		};
+		req.send();
+	}
+
+	// wrap above in promise
+	function get(url) {
+		return new Promise(function(resolve, reject) {
+			var req = new XMLHttpRequest();
+			req.open('Get', url);
+			req.onload = function() {
+				if (req.status == 200) {
+					resolve(req.response);
+				} else {
+					reject(req.statusText);
+				}
+			};
+			req.onerror = function() {
+				reject('Network Error');
+			}
+			req.send();
+		});
+	}
+	get('http://www.mywhateverurl.url');
+	
