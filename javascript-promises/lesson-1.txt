@@ -279,3 +279,17 @@ LESSON 1: CREATING PROMISES
 	}
 	get('http://www.mywhateverurl.url');
 	
+- Promises Elsewhere
+	- implemented in other frameworks
+	- mostly the same e.g. Angular
+	- Angular 2 will take advantage of native JS promises
+	- Opera Mini and IE don't take adv - need polyfill or fallback
+	- promises as rec way to work with Service Workers - create apps that work offline
+
+- Fetch API
+	- XHRs are really annoying
+	- only worse c edge cases and browser compat
+	- new lib to deal c called fetch, built on native promises!
+	- use fetch to GET a URL and getJSON to parse a JSON response
+
+	
