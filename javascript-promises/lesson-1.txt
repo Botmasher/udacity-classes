@@ -292,4 +292,35 @@ LESSON 1: CREATING PROMISES
 	- new lib to deal c called fetch, built on native promises!
 	- use fetch to GET a URL and getJSON to parse a JSON response
 
-	
+	// first wrap the fetch promise alone in func get()
+	function get(url) {
+		return fetch(url) {
+			method: 'GET'; 		// optional bc default is "get"
+		});
+	}
+	// pass the fetch promise to parse JSON
+	function parseJSON(url) {
+		return get(url)
+		.then(function(response) {
+			return response.json(); 	// fetch api method - like json.parse
+		});
+	}
+	// now combine those to get some json in an event listener
+	window.addEventListener('WebComponentsReady', function() {
+		home = document.querySelector('section[data-route="home"]'); 	// first elem with this selector 
+		getJSON('myurlhere.url')
+		.then((response) => {
+			home.innerHTML = '<h2>'+response.query+'</h2>'; 	// the query for the response obj
+			return response.results[0]; 		// the first in the json obj (in quiz they're urls)
+		})
+		.then((url) => {
+			console.log(url); 					// then chain passes the first result here!
+		})
+	});
+
+- Chaining thenables
+	- can wrap a promise
+	- can pass promise value to then for action
+	- can pass promise value to catch for recovery
+	- not yet done chaining! (see above for a simple example though)
+	- we'll be doing sequences of async work in the next lesson
