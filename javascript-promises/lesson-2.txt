@@ -1,3 +1,21 @@
 LESSON 2: CHAINING PROMISES
 
-- 
+- chain .then and .catch to perform chains of async work
+- example fetching and displaying first exoplanet thumb
+
+	// see full code in exoplanet explorer's app/script/app.js
+	getJSON('someurl.url/someresultshere.json')
+	.then((response) => {
+		addSearchHeader(response.query); 		// adds txt in an innerHTML h2
+		return getJSON(response.results[0]); 	// pass to the next .then
+	})
+	.catch(() => {
+		throw Error('Search Request Error');
+	})
+	.then((planetData) => {
+		createPlanetThumb(planetData); 			// creates and appends thumb elem
+	})
+	.catch((error) => {
+		addSearchHeader('unknown');
+		console.log(error);
+	});
