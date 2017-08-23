@@ -19,3 +19,73 @@ LESSON 2: CHAINING PROMISES
 		addSearchHeader('unknown');
 		console.log(error);
 	});
+
+- .catch vs second .then callback
+	- can also catch rejects by passing callback as second .then arg
+
+	new Promise(...)
+	.then((res) => {...}, (e) => {...});
+
+	- in fact when they're doing work in same link of the chain they're equivalent
+	- HOWEVER second callback won't see errors caught in first callback!
+	- that and readability make it recommended to use .catch
+	- actually 2 diffs
+		(1) .then 2nd callback does not catch errors in first callback, unlike .catch
+			- "can't call both" : 	.then(resFunc,rejFunc);
+			- "can call both!"	: 	.then(resFunc).catch(rejFunc);
+		(2) "resolve" does not always mean success!
+			- it's a subtle point but it's NOT the opposite of reject
+				https://jakearchibald.com/2014/resolve-not-opposite-of-reject/
+			- rejection callback is called if x passed to resolve(x) is
+				(a) a promise that rejects
+				(b) undefined
+
+- Differences between error handling strategies
+	- chaining a .then(undefined, function(e){...}) to handle catch errors
+	- using .catch()
+	- passing both of two args to .then
+	- writing a recovery() method to get chain back on track and resolve if sth goes wrong
+		- this could be combined c above - in error func you do:  return recovery();
+	
+	// consider what will be logged if errors occur on specific lines below
+	asyncPromise('someobjects.json') 	// if err here, logs '13'... think about it
+	.then((data) => {
+		urls = data.urls;				// if err here, logs '13'
+		return asyncPromise(urls[0]);
+	})
+	.then(undefined, () => {
+		console.log(1);
+		return recovery(); 		// "things get back on track" so skip to next .then
+	})
+	.catch((e) => {
+		console.log(2);
+		return recovery(); 				// if err here, logs '' bc only called if another error
+	})										// (meaning found error in first .then)
+	.then(() => {
+		console.log(3);
+		return asyncPromise(urls[1]);	 // if err here, logs '34', noseriouslythinkaboutit
+	})
+	.then(asyncPromise, () => {
+		console.log(4);
+		nopeJustGiveUp();
+	});
+
+- Series vs Parallel chaining
+	- Actions In Series: one after another (ALWAYS true for sync code)
+		- must be done when one action depends on another prev action
+	- Actions In Parallel: all at the same time
+		- reduces the amount of time to e.g. load a bunch of data
+		- browser REALLY good at keeping track of requests so usu no collisions!
+		- but things will be done in random order (unpredictable returns/resolves)
+
+- How to make loaded things (like thumbs) appear in the right order?
+	- in the same order as the search results
+	- note that you DON'T need to request in series
+	- BUT you can instead await for sequence on resolve side
+
+	// refactor getJSON to load in the proper order as requests came in
+	function getJSON('urlArray.url') {
+		return get(url).then((response) => {
+			return response.json();
+		});
+	}
