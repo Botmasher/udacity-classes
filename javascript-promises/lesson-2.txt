@@ -89,3 +89,76 @@ LESSON 2: CHAINING PROMISES
 			return response.json();
 		});
 	}
+
+	/* WORK IN SEQUENCE
+	 * use a promise chain and append a .then() on each pass of a loop through your values
+	 * iteration 1: 	promise.then()
+	 * iteration 2: 	promise.then().then()
+	 * iteration 3: 	promise.then().then().then()
+	 * ...
+	 * Thumbnail task:	Do this for the two tasks - get JSON, then load thumb
+	 */
+	getJSON('../dir/url.json')
+    .then(function(response) {
+      var sequence = Promise.resolve();    		// store a promise resolved w given value
+      response.results.forEach(function(url) {	// the same forEach method (for loop)
+        sequence = sequence
+        .then(() => { 							// appending two thens to sequence
+          return getJSON(url);
+        })
+        .then(createPlanetThumb);				// on each iteration, seq longer by 2 thens!
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+    - each pass through the .forEach loop appends 2 .thens to the sequence
+    - each .then will have to wait for the promise before it to resolve to execute
+    - this makes the thumbnails show up in the right order
+    - HOWEVER it makes this happen in series
+
+    /* WORK IN PARALLEL
+     * use a promise with a then on each pass of a loop through your values
+     * iteration 1: 	promise.then()
+     * iteration 2: 	promise.then()
+     * iteration 3: 	promise.then()
+     * ...
+     * Thumbnail task:	Do this for the two tasks - get JSON, then load thumb
+     */
+    getJSON('../dir/url.json')
+    .then((response) => {
+    	var sequence = Promise.resolve(); 		// so far same as above
+    	response.results.forEach((url) => { 	// still just as above
+    		sequence.then(() => {				// NOW notice the .thens just overwrite
+    			return getJSON(url);			// they will still execute though
+    		})
+    		.then(createPlanetThumb);
+    	});
+    })
+    .catch((e) => {
+    	console.log(e);
+    });
+
+    - each pass through .forEach gives sequence two .thens
+    - the previous .thens will still execute
+    - it's tricky to troubleshoot though, esp if not obvious it's happening in parallel!
+
+- Checking in Console: Sequence vs Parallel
+	- XHR in the Network tab
+	- see the "Waterfall" column to check if resource bars in parallel or staggered in seq
+	- turn on Show Overview (little bars icon) to see requests depicted in timeline
+
+- Parallel c .map array method
+	- returns an array
+	- the array is a result of executing a func against every elem in array
+	- with promises, no guaranteed resolve order! (bc all fire as loop thru)
+
+	- use map (probably need a sequence) to load json thumbs in parallel
+
+	getJSON('../dir/url.json')
+	.then((response) => {
+		response.results.map((x) => { 			// run func against each elem
+			getJSON(x).then(createPlanetThumb);	// take adv of getJSON returns promise
+		}); 									// so get url then use return to create thumb
+	});				// add error handling
