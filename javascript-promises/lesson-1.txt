@@ -324,3 +324,40 @@ LESSON 1: CREATING PROMISES
 	- can pass promise value to catch for recovery
 	- not yet done chaining! (see above for a simple example though)
 	- we'll be doing sequences of async work in the next lesson
+
+	// create a sequence of promises that ALWAYS resolves in order sequence was created
+	function addSearchHeader(query) {...} 	// uses innerHTML to add an element
+	function createPlanetThumb(data) {...} 	// takes raw obj and creates a thumb
+	function get(url) {...} 				// XHR in promise, returns fetch c method:'get'
+	function getJSON(url) {...} 			// uses get above and returns response.json()
+	window.addEventListener('WebComponentsReady', function() {
+    	home = document.querySelector('section[data-route="home"]');
+    	getJSON('../data/earth-like-results.json')
+    	.then(function(response) {
+    		// refactor this!
+      		response.results.forEach(function(url) {
+        		getJSON(url).then(createPlanetThumb);
+      		});
+    	});
+  	});
+
+  	// focusing on the foreach loop to refactor it
+  	...
+  	getJSON('../data/earth-like-results.json')
+    .then(function(response) {
+    	dataCounter = response.results.length;    // to assign single-file
+    	dataObjects = [];
+    	response.results.forEach(function(url) {
+    		dataCounter -= 1;
+    		getJSON(url)
+    		.then((data) => {
+    			// slot the object into array at its position
+    			// determine if everything before it has already loaded
+    		})
+    		.catch((e) => {
+    			// error
+    		})
+   			.then(createPlanetThumb);
+   		)};
+    });
+  	...
