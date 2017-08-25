@@ -217,3 +217,53 @@ LESSON 2: CHAINING PROMISES
 
 - Learning about planets
 - and then one last extra "difficult" challenge, probably sth that never comes up in life
+
+	/*
+	 * 	BONUS!
+	 *	(1) request planet data and create thumbs using promises
+	 * 	(2) execute the network requests in parallel
+	 * 	(3) create the thumbs in the same order promises were created
+	 * 	(4) do NOT wait for all requests to settle before creating thumbs
+	 * 		- basically, create a thumb as soon as all previous promises settle
+	 *
+	 *	We've already done 1, 2 (using .map and .all), 3 (.foreach and .all)
+	 *
+	 */
+
+	// example - these all execute in parallel BUT wait for prev return before thumbing
+	getJSON(url1).then(createThumb)
+	.then(() => {
+		getJSON(url2).then(createThumb); 	// remember return auto passed to 1 param func
+	})
+	.then(() => {
+		getJSON(url3).then(createThumb);
+	})
+	.then(() => {
+		getJSON(url4).then(createThumb);
+	})
+	...;
+
+
+	// first attempt - and it worked!
+	
+	... 	// still inside window.AddEventListener
+
+	getJSON('../data/earth-like-results.json')
+    .then((response) => {
+      var promise = new Promise((resolve)=>{ resolve(0); }); 	// a blank promise
+      return Promise.all(response.results.map((url) => { 		// go thru all thumbs
+        promise = promise.then(() => { 							// thens chained to promise
+          getJSON(url).then(createPlanetThumb); 				// each one gets and thumbs!
+        });
+      }));
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+    ... 	// close out listener and doc
+
+    - Notes from first attempt
+    	- try to use either .map or .forEeach inside of a Promise.all
+    	- while iterating through, chain thens to produce the above result
+    	- the dummy promise works fine when resolve(0)
+    	- thumbs not load c resolve(null) and resolve(1) ? 1 bc maybe not updated ?
