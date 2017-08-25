@@ -162,3 +162,58 @@ LESSON 2: CHAINING PROMISES
 			getJSON(x).then(createPlanetThumb);	// take adv of getJSON returns promise
 		}); 									// so get url then use return to create thumb
 	});				// add error handling
+
+- Combine Parallel requests and ordering c .all method
+	- takes promises and executes all of them
+	- it FAILS FAST
+		- once it hits one that rejects, it rejects
+		- so either all resolve or none do
+
+	// structure
+	Promise.all(arrayOfPromises)
+	.then((arrayOfValues) => {...});
+
+	// so with the above fetch json and create thumb we can do
+	... 				// still inside the window.addEventListener('WebComponentsReady'...)
+	getJSON('whatever').
+	.then((response) => {
+		var promisesArr = response.results.map((url) => { 	// array of promises
+			getJSON(url);									// .map returns an array
+		});
+		return Promise.all(promisesArr); 					// return promises to next then
+	})
+	.then((planetDataArray) => { 							// use returned data from promises
+		planetDataArray.forEach((planet) => { 				// iterate thru and create thumbs
+			createPlanetThumb(planet);
+		});
+	})
+	.catch((e) => {
+		console.log(e);
+	});
+	...
+
+	// or to simplify
+	getJSON('whatever').
+	.then((response) => {
+		return Promise.all(response.results.map(getJSON)); 	// arg passed straight to getJSON
+															// and map array returned in .all
+	})
+	.then((planetDataArray) => { 							// use returned data from promises
+		planetDataArray.forEach((planet) => { 				// iterate thru and create thumbs
+			createPlanetThumb(planet);
+		});
+	})
+	.catch((e) => {
+		console.log(e);
+	});
+
+	// /!\ I'm getting results doing this tho /!\
+	getJSON('whatever').
+	.then((response) => {
+		Promise.all(response.results.map((url) {
+			getJSON(url).then(createPlanetThumb);
+		}));
+	});
+
+- Learning about planets
+- and then one last extra "difficult" challenge, probably sth that never comes up in life
