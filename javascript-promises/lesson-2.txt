@@ -250,7 +250,7 @@ LESSON 2: CHAINING PROMISES
 
 	getJSON('../data/earth-like-results.json')
     .then((response) => {
-      var promise = new Promise((resolve)=>{ resolve(0); }); 	// a blank promise
+      var promise = new Promise((resolve)=>{ resolve(0); }); 	// blank promise. why not Promise.resolve()?
       return Promise.all(response.results.map((url) => { 		// go thru all thumbs
         promise = promise.then(() => { 							// thens chained to promise
           getJSON(url).then(createPlanetThumb); 				// each one gets and thumbs!
@@ -267,3 +267,59 @@ LESSON 2: CHAINING PROMISES
     	- while iterating through, chain thens to produce the above result
     	- the dummy promise works fine when resolve(0)
     	- thumbs not load c resolve(null) and resolve(1) ? 1 bc maybe not updated ?
+
+
+    
+    // THEIR ANSWER, in three parts and (not the same order) 3 steps!
+
+    // (1) first change the thumb func to promisify it
+    // 		- this attaches a promisified version of createPlanetThumb to each request to render thumbs
+    // 		- it's actually step 2 in the process
+    function createPlanetThumb(data) {
+    	return new Promise((resolve) => { 		// added
+    		var pT = document.createElement('planet-thumb');
+    		for (var d in data) {
+    			pT[d] = data[d];
+    		}
+    		home.appendChild(pT);
+    		resolve(); 							// added
+    	}); 									// added
+    }
+
+    // (2) change the getJSON func
+    // 		- can also add if/else branch in .then to settimeout on one thumb to test timing
+    function getJSON(url) {
+    	return get(url).then((response) => {	// immed fetch url
+    		return new Promise((resolve) => { 	// then return resolved promise c json
+    			resolve(response.json);
+    		});
+    	});
+    }
+
+    // (3) change the addEventListener
+    //		- this accomplishes creating an array of network requests executed in parallel
+    // 		- this is step 1 in the process (see create thumb for step 2)
+    // 		- step 3 is in the sequence of promises that request then render each thumb (.then)
+    window.addEventListener('WebComponentsReady', () => {
+    	home = document.querySelector('section[data-route="home"]');
+    	getJSON('url.json')
+    	.then((response) => {
+    		addSearchHeader(response.query);
+    		return response
+    	})
+    	.then((response) => {
+    		var sequence = Promise.resolve();
+    		var arrayOfExecutingPromises = response.results.map((result) => {
+    			return getJSON(result);
+    		});
+    		arrayOfExecutingPromises.forEach((request) => {
+    			sequence = sequence.then(() => {
+    				return request.then(createPlanetThumb);
+    			});
+    		});
+    	});
+    });
+    // they know it's working bc their getJSON holds one image back in settimeout
+    //	- that image is received late
+    // 	- nothing besides that image should RENDER before it renders
+    // 	- that tests that your render chain is working by holding off execution until all prev thumbs render
