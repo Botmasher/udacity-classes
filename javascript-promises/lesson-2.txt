@@ -323,3 +323,58 @@ LESSON 2: CHAINING PROMISES
     //	- that image is received late
     // 	- nothing besides that image should RENDER before it renders
     // 	- that tests that your render chain is working by holding off execution until all prev thumbs render
+
+
+    /*
+     * My 2nd Try - testing through issues
+     */
+    // adding settimeout to test - now I see nothing loads after this thumb
+    ...
+	function createPlanetThumb(data) {
+		var pT = document.createElement('planet-thumb');
+		for (var d in data) {
+ 			pT[d] = data[d];
+		}
+		home.appendChild(pT);
+	}
+    function get(url) {
+		return fetch(url);
+    }
+    function getJSON(url) {
+	    // hold off one img to test if parallel loading vs serial thumbing worked
+	    if (url.indexOf('Kepler-69c') !== -1) {
+	      setTimeout(() => {
+	        return get(url).then((response) => {
+	          console.log(`Getting thumb ${url}...`);
+	          return response.json();
+	        });
+	      }, 5000);
+	    } else {
+	      // return each planet
+	      return get(url).then(function(response) {
+	        return response.json();
+	      });
+	    }
+	}
+	// now the .then(createPlanetThumb) is being run on undefined
+	//		- "cannot read property 'then' of undefined at promise.then"
+	// 		- this is happening to all the ones after Kepler-69c
+	//
+	window.addEventListener('WebComponentsReady', function() {
+		home = document.querySelector('section[data-route="home"]');
+		getJSON('../data/earth-like-results.json')
+		.then((response) => {
+			console.log(response);
+	    	var promise = Promise.resolve();
+	    	return Promise.all(response.results.map((url) => {
+	    		promise = promise.then(() => {
+	    			console.log(url);
+	        		getJSON(url).then(createPlanetThumb); 	// undefined
+	    		});
+	    	}));
+		})
+		.catch((e) => {
+			console.log(e);
+		});
+	});
+})(document);
